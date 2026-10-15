@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/skb-education-ecosystem/login/");
+      router.push("/login/");
     }
   }, [user, authLoading, router]);
 
@@ -79,7 +79,7 @@ export default function DashboardPage() {
               <div className="bangla mt-1 text-[13px]" style={{ color: "var(--text-muted)" }}>
                 এখনো কোনো প্রতিষ্ঠানে যুক্ত হননি
               </div>
-              <Link href="/signup"
+              <Link href="/institutions/new"
                 className="mt-4 inline-block rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-5 py-2 text-[13px] font-semibold text-white shadow-lg">
                 Create Institution →
               </Link>
