@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,38 +6,34 @@
 :root {
   --bg: #f6fbf8;
   --bg-soft: #eef6f0;
-  --surface: rgba(255, 255, 255, 0.88);
+  --surface: rgba(255,255,255,0.88);
   --surface-3: #ffffff;
-  --border: rgba(16, 42, 32, 0.08);
-  --border-strong: rgba(16, 42, 32, 0.14);
+  --border: rgba(16,42,32,0.08);
+  --border-strong: rgba(16,42,32,0.14);
   --text: #0f2218;
   --text-muted: #5a7465;
   --text-faint: #8aa195;
+  --shadow: 0 8px 32px rgba(16,100,60,0.08);
+  --shadow-lg: 0 20px 60px rgba(16,100,60,0.12);
 }
-
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #070f0b;
     --bg-soft: #0c1912;
-    --surface: rgba(18, 32, 24, 0.84);
+    --surface: rgba(18,32,24,0.84);
     --surface-3: #111f16;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.14);
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.14);
     --text: #e8f3eb;
     --text-muted: #9bb3a6;
     --text-faint: #6b8577;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
   }
 }
-
-* { box-sizing: border-box; }
-
-html, body {
-  padding: 0;
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
+* { box-sizing: border-box; font-family: Outfit, "Hind Siliguri", system-ui, sans-serif; }
+.bangla { font-family: "Hind Siliguri", sans-serif; }
+html, body { padding: 0; margin: 0; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
