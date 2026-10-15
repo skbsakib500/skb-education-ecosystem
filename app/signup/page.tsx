@@ -135,11 +135,13 @@ export default function SignupPage() {
                 onChange={(e) => update("institution_type", e.target.value)}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                <option value="school">School</option>
-                <option value="college">College</option>
-                <option value="coaching">Coaching Center</option>
-                <option value="madrasa">Madrasa</option>
-                <option value="other">Other</option>
+                <option value="school">🏫 School</option>
+                <option value="college">🎓 College</option>
+                <option value="university">🏛️ University</option>
+                <option value="institute">🔬 Institute</option>
+                <option value="coaching">📚 Coaching Center</option>
+                <option value="madrasa">🕌 Madrasa</option>
+                <option value="other">⭐ Other</option>
               </select>
             </div>
 
