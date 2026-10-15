@@ -1,11 +1,16 @@
-# vinext app
+# SKB Education Ecosystem
 
-This project was created with create-vinext-app.
+Multi-Tenant EdTech Platform — Schools, Colleges, Coaching Centers.
 
-## Scripts
+**Founder:** SKB Sakib (@skbsakib500)
 
-- `pnpm run dev` starts the vinext dev server.
-- `pnpm run build` builds the Cloudflare Worker output.
-- `pnpm run start` previews the built Worker locally.
-- `pnpm run deploy` deploys the Cloudflare Worker.
+## Stack
+- Next.js 14 (App Router, static export)
+- Tailwind CSS
+- Cloudflare Pages (hosting)
 
+## Dev
+pnpm install && pnpm dev
+
+## Deploy
+Push to `main` → Cloudflare Pages auto-builds.
