@@ -366,8 +366,33 @@ function BackgroundOrbs() {
   );
 }
 
-function StudentView({ cls, countdown, query, setQuery, filteredSubjects }: any) {
-  const stats = [
+interface StudentViewProps {
+  cls: number;
+  countdown: { d: number; h: number; m: number; s: number };
+  query: string;
+  setQuery: (v: string) => void;
+  filteredSubjects: Array<{
+    id: string;
+    name: string;
+    bn: string;
+    chapters: number;
+    completed: number;
+    color: string;
+    accent: string;
+  }>;
+}
+
+function StudentView({ cls, countdown, query, setQuery, filteredSubjects }: StudentViewProps) {
+  const stats: Array<{
+    label: string;
+    bn: string;
+    value: string;
+    sub: string;
+    icon: any;
+    grad: string;
+    pct: number;
+    warn?: boolean;
+  }> = [
     { label: "Completed Chapters", bn: "সম্পন্ন অধ্যায়", value: "24/48", sub: "50% of NCTB", icon: CircleCheck, grad: "from-emerald-500/15 to-teal-500/10", pct: 50 },
     { label: "MCQ Score", bn: "MCQ স্কোর", value: "84%", sub: "+6% this week", icon: Target, grad: "from-teal-500/15 to-cyan-500/10", pct: 84 },
     { label: "Weak Topics", bn: "দুর্বল টপিক", value: "3 Topics", sub: "Need revision", icon: TriangleAlert, grad: "from-amber-500/15 to-orange-500/10", warn: true, pct: 35 },
