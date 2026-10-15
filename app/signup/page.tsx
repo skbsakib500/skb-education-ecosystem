@@ -11,7 +11,7 @@ export default function SignupPage() {
     password: "",
     institution_name: "",
     institution_slug: "",
-    institution_type: "school",
+    institution_type: "high_school",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -135,10 +135,12 @@ export default function SignupPage() {
                 onChange={(e) => update("institution_type", e.target.value)}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                <option value="school">🏫 School</option>
-                <option value="college">🎓 College</option>
-                <option value="university">🏛️ University</option>
-                <option value="institute">🔬 Institute</option>
+                <option value="high_school">🏫 High School</option>
+                <option value="college">🎓 College (HSC)</option>
+                <option value="public_university">🏛️ Public University</option>
+                <option value="private_university">🏛️ Private University</option>
+                <option value="polytechnic">⚙️ Polytechnic</option>
+                <option value="medical_college">⚕️ Medical College</option>
                 <option value="coaching">📚 Coaching Center</option>
                 <option value="madrasa">🕌 Madrasa</option>
                 <option value="other">⭐ Other</option>

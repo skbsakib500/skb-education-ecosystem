@@ -1,21 +1,35 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import { getGroupedTypes, getInstitutionMeta, INSTITUTION_TYPES } from "@/lib/institution-types";
 
-const RESERVED = ["admin", "api", "app", "login", "signup", "dashboard", "www", "new", "edit"];
+const RESERVED = ["admin","api","app","login","signup","dashboard","www","new","edit"];
+const EMOJIS = ["🏫","🎓","🏛️","⚕️","⚙️","🕌","📚","🔧","🎨","🤝","⭐","🎯","💡","🔬","🌐"];
+
+const DIVISIONS = ["Dhaka","Chittagong","Rajshahi","Khulna","Barishal","Sylhet","Rangpur","Mymensingh"];
+
+const BOARDS = [
+  { value: "dhaka", label: "Dhaka Board" },
+  { value: "chittagong", label: "Chittagong Board" },
+  { value: "rajshahi", label: "Rajshahi Board" },
+  { value: "khulna", label: "Khulna Board" },
+  { value: "barishal", label: "Barishal Board" },
+  { value: "sylhet", label: "Sylhet Board" },
+  { value: "dinajpur", label: "Dinajpur Board" },
+  { value: "mymensingh", label: "Mymensingh Board" },
+  { value: "madrasah", label: "Madrasah Board" },
+  { value: "technical", label: "Technical Board" },
+  { value: "university", label: "University Grants Commission" },
+  { value: "none", label: "None / Independent" },
+];
 
 function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 40);
+  return input.toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-")
+    .replace(/-+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
 }
 
 type SlugStatus = "idle" | "checking" | "available" | "taken" | "invalid";
@@ -23,100 +37,117 @@ type SlugStatus = "idle" | "checking" | "available" | "taken" | "invalid";
 export default function NewInstitutionPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", slug: "", type: "school" });
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [form, setForm] = useState({
+    name: "",
+    slug: "",
+    type: "high_school",
+    emoji: "🏫",
+    division: "Dhaka",
+    city: "",
+    education_board: "dhaka",
+    contact_phone: "",
+    contact_email: "",
+    description: "",
+    motto: "",
+    established_year: new Date().getFullYear(),
+  });
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
   const [slugStatus, setSlugStatus] = useState<SlugStatus>("idle");
   const [slugError, setSlugError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) router.push("/login/");
   }, [user, authLoading, router]);
 
-  // Auto-generate slug from name (only if user hasn't manually edited)
   useEffect(() => {
     if (!slugTouched && form.name) {
       setForm((f) => ({ ...f, slug: slugify(form.name) }));
     }
   }, [form.name, slugTouched]);
 
-  // Live slug validation
+  // Auto-set emoji when type changes
+  useEffect(() => {
+    const meta = getInstitutionMeta(form.type);
+    if (meta.emoji) setForm((f) => ({ ...f, emoji: meta.emoji }));
+  }, [form.type]);
+
   useEffect(() => {
     const slug = form.slug;
-    if (!slug) {
-      setSlugStatus("idle");
-      setSlugError("");
-      return;
-    }
-    if (slug.length < 3) {
-      setSlugStatus("invalid");
-      setSlugError("Must be at least 3 characters");
-      return;
-    }
-    if (RESERVED.includes(slug)) {
-      setSlugStatus("invalid");
-      setSlugError(`"${slug}" reserved — choose another`);
-      return;
-    }
+    if (!slug) { setSlugStatus("idle"); setSlugError(""); return; }
+    if (slug.length < 3) { setSlugStatus("invalid"); setSlugError("Must be at least 3 characters"); return; }
+    if (RESERVED.includes(slug)) { setSlugStatus("invalid"); setSlugError(`"${slug}" reserved`); return; }
     setSlugStatus("checking");
     const timer = setTimeout(async () => {
-      const { data } = await supabase
-        .from("institutions")
-        .select("id")
-        .eq("slug", slug)
-        .maybeSingle();
-      if (data) {
-        setSlugStatus("taken");
-        setSlugError("Already taken — try another");
-      } else {
-        setSlugStatus("available");
-        setSlugError("");
-      }
+      const { data } = await supabase.from("institutions").select("id").eq("slug", slug).maybeSingle();
+      if (data) { setSlugStatus("taken"); setSlugError("Already taken"); }
+      else { setSlugStatus("available"); setSlugError(""); }
     }, 500);
     return () => clearTimeout(timer);
   }, [form.slug]);
 
-  const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const update = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
+
+  const onLogoPick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { setError("Logo max 2 MB"); return; }
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  };
+
+  const uploadLogo = async (): Promise<string | null> => {
+    if (!logoFile || !user) return null;
+    const ext = logoFile.name.split(".").pop();
+    const path = `${user.id}/${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("institution-logos").upload(path, logoFile, { upsert: true });
+    if (upErr) { setError(`Logo upload failed: ${upErr.message}`); return null; }
+    const { data } = supabase.storage.from("institution-logos").getPublicUrl(path);
+    return data.publicUrl;
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    if (slugStatus !== "available") {
-      setError("Please choose an available slug first");
-      return;
-    }
-    setLoading(true);
-    setError("");
+    if (slugStatus !== "available") { setError("Choose an available slug first"); return; }
+    setLoading(true); setError("");
 
-    const { data: inst, error: instErr } = await supabase
-      .from("institutions")
-      .insert({
-        name: form.name.trim(),
-        slug: form.slug,
-        type: form.type,
-        owner_email: user.email ?? "",
-      })
-      .select()
-      .single();
-
-    if (instErr) {
-      setError(instErr.message);
-      setLoading(false);
-      return;
+    let logo_url: string | null = null;
+    if (logoFile) {
+      logo_url = await uploadLogo();
+      if (!logo_url && logoFile) { setLoading(false); return; }
     }
+
+    const { data: inst, error: instErr } = await supabase.from("institutions").insert({
+      name: form.name.trim(),
+      slug: form.slug,
+      type: form.type,
+      owner_email: user.email ?? "",
+      logo_url,
+      emoji: form.emoji,
+      division: form.division,
+      city: form.city.trim() || null,
+      education_board: form.education_board,
+      contact_phone: form.contact_phone.trim() || null,
+      contact_email: form.contact_email.trim() || null,
+      description: form.description.trim() || null,
+      motto: form.motto.trim() || null,
+      established_year: form.established_year,
+    }).select().single();
+
+    if (instErr) { setError(instErr.message); setLoading(false); return; }
 
     const { error: memErr } = await supabase.from("memberships").insert({
-      institution_id: inst.id,
-      user_id: user.id,
-      role: "admin",
+      institution_id: inst.id, user_id: user.id, role: "admin",
     });
 
-    if (memErr) {
-      setError(memErr.message);
-      setLoading(false);
-      return;
-    }
+    if (memErr) { setError(memErr.message); setLoading(false); return; }
 
     window.location.href = "/skb-education-ecosystem/dashboard/";
   };
@@ -129,147 +160,290 @@ export default function NewInstitutionPage() {
     );
   }
 
+  const grouped = getGroupedTypes();
+  const meta = getInstitutionMeta(form.type);
   const finalUrl = `skb.edu.bd/${form.slug || "your-institution"}`;
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-lg rounded-3xl border shadow-xl p-8"
-        style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+    <main className="min-h-screen px-4 py-10">
+      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
 
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold shadow-lg">
-            +
-          </div>
-          <div>
-            <div className="text-[16px] font-semibold">Create Institution</div>
-            <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>
-              প্রতিষ্ঠান যোগ করুন
+        <div className="rounded-3xl border p-6 md:p-8 shadow-xl"
+          style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold shadow-lg">+</div>
+            <div>
+              <div className="text-[16px] font-semibold">Create Institution</div>
+              <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>প্রতিষ্ঠান যোগ করুন</div>
             </div>
+          </div>
+
+          <form onSubmit={submit} className="mt-6 space-y-5">
+
+            {/* Type — first & prominent */}
+            <div>
+              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
+                Institution Type *
+              </label>
+              <select value={form.type} onChange={(e) => update("type", e.target.value)}
+                className="mt-1 w-full rounded-xl border px-3.5 py-3 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
+                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+                {grouped.map((g) => (
+                  <optgroup key={g.category} label={`${g.meta.emoji} ${g.meta.label} · ${g.meta.bn}`}>
+                    {g.items.map((t) => (
+                      <option key={t.value} value={t.value}>
+                        {t.emoji} {t.label} · {t.bn}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
+                {grouped.length} categories • {INSTITUTION_TYPES.length} types
+              </p>
+            </div>
+
+            {/* Logo + Name */}
+            <div className="grid grid-cols-[100px_1fr] gap-4 items-start">
+              <div>
+                <label className="text-[12px] font-medium block mb-1" style={{ color: "var(--text-muted)" }}>Logo</label>
+                <button type="button" onClick={() => fileInputRef.current?.click()}
+                  className="flex h-[100px] w-[100px] items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed transition hover:border-emerald-500/50"
+                  style={{ borderColor: "var(--border-strong)", background: "var(--bg-soft)" }}>
+                  {logoPreview ? (
+                    <img src={logoPreview} alt="Logo" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="text-center px-2" style={{ color: "var(--text-muted)" }}>
+                      <div className="text-[28px]">{form.emoji}</div>
+                      <div className="mt-1 text-[10px]">Upload</div>
+                    </div>
+                  )}
+                </button>
+                <input ref={fileInputRef} type="file" accept="image/*" onChange={onLogoPick} className="hidden" />
+              </div>
+
+              <div>
+                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Institution Name *</label>
+                <input type="text" required value={form.name} onChange={(e) => update("name", e.target.value)}
+                  placeholder="Dhaka Polytechnic Institute"
+                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
+                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {EMOJIS.slice(0, 12).map((em) => (
+                    <button key={em} type="button" onClick={() => update("emoji", em)}
+                      className={`flex h-7 w-7 items-center justify-center rounded-lg text-[14px] transition ${
+                        form.emoji === em ? "bg-emerald-500/20 ring-2 ring-emerald-500/40" : "hover:bg-[var(--bg-soft)]"
+                      }`}>{em}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Slug */}
+            <div>
+              <div className="flex items-center justify-between">
+                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>URL slug *</label>
+                <SlugBadge status={slugStatus} />
+              </div>
+              <div className="mt-1 flex items-center gap-2 rounded-xl border px-3.5 py-2.5"
+                style={{
+                  borderColor: slugStatus === "taken" || slugStatus === "invalid" ? "rgba(244,63,94,0.5)"
+                    : slugStatus === "available" ? "rgba(16,185,129,0.5)" : "var(--border)",
+                  background: "var(--surface-3)",
+                }}>
+                <span className="text-[12px] font-mono" style={{ color: "var(--text-faint)" }}>skb.edu.bd/</span>
+                <input type="text" required value={form.slug}
+                  onChange={(e) => { setSlugTouched(true); update("slug", slugify(e.target.value)); }}
+                  placeholder="dhaka-polytechnic"
+                  className="flex-1 bg-transparent text-[14px] outline-none font-mono" />
+              </div>
+              {slugError ? (
+                <p className="mt-1 text-[11px] text-rose-600">{slugError}</p>
+              ) : (
+                <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>small letters, numbers, hyphen • 3-40 chars</p>
+              )}
+            </div>
+
+            {/* Division + City */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Division</label>
+                <select value={form.division} onChange={(e) => update("division", e.target.value)}
+                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+                  {DIVISIONS.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>City / Area</label>
+                <input type="text" value={form.city} onChange={(e) => update("city", e.target.value)}
+                  placeholder="Mirpur, Dhaka"
+                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
+                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+              </div>
+            </div>
+
+            {/* Board */}
+            <div>
+              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Education Board / Affiliation</label>
+              <select value={form.education_board} onChange={(e) => update("education_board", e.target.value)}
+                className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+                {BOARDS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
+              </select>
+            </div>
+
+            {/* Advanced toggle */}
+            <button type="button" onClick={() => setShowAdvanced(!showAdvanced)}
+              className="text-[12px] font-medium text-emerald-700 dark:text-emerald-300">
+              {showAdvanced ? "− Hide advanced fields" : "+ Add contact, description, motto"}
+            </button>
+
+            {showAdvanced && (
+              <div className="space-y-5 pt-2 border-t" style={{ borderColor: "var(--border)" }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Phone</label>
+                    <input type="tel" value={form.contact_phone} onChange={(e) => update("contact_phone", e.target.value)}
+                      placeholder="+880 1700-000000"
+                      className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                      style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+                  </div>
+                  <div>
+                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Email</label>
+                    <input type="email" value={form.contact_email} onChange={(e) => update("contact_email", e.target.value)}
+                      placeholder="info@institution.edu.bd"
+                      className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                      style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-[1fr_140px] gap-4">
+                  <div>
+                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Motto / Tagline</label>
+                    <input type="text" value={form.motto} onChange={(e) => update("motto", e.target.value)}
+                      placeholder="Education for Excellence"
+                      className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                      style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+                  </div>
+                  <div>
+                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Established</label>
+                    <input type="number" value={form.established_year}
+                      onChange={(e) => update("established_year", parseInt(e.target.value) || new Date().getFullYear())}
+                      min="1800" max={new Date().getFullYear()}
+                      className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                      style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
+                  <textarea value={form.description} onChange={(e) => update("description", e.target.value)}
+                    placeholder="প্রতিষ্ঠান সম্পর্কে সংক্ষিপ্ত বিবরণ..."
+                    rows={3}
+                    className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none resize-none"
+                    style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[13px] text-rose-700">{error}</div>
+            )}
+
+            <button type="submit" disabled={loading || slugStatus !== "available"}
+              className="w-full rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 py-3 text-[14px] font-semibold text-white shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
+              {loading ? "Creating..." : "Create Institution →"}
+            </button>
+          </form>
+
+          <div className="mt-5 text-center">
+            <Link href="/dashboard" className="text-[12px]" style={{ color: "var(--text-faint)" }}>← Back to dashboard</Link>
           </div>
         </div>
 
-        <form onSubmit={submit} className="mt-6 space-y-5">
-          {/* Institution Name */}
-          <div>
-            <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
-              Institution Name
-            </label>
-            <input
-              type="text"
-              required
-              value={form.name}
-              onChange={(e) => update("name", e.target.value)}
-              placeholder="Dhaka Ideal School"
-              className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
-              style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}
-            />
-            <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
-              আপনার প্রতিষ্ঠানের পুরো নাম • প্রতিষ্ঠানের নাম
-            </p>
+        {/* Preview */}
+        <div className="lg:sticky lg:top-8 self-start">
+          <div className="text-[11px] uppercase font-semibold tracking-widest mb-3" style={{ color: "var(--text-faint)" }}>
+            Live Preview
           </div>
 
-          {/* Slug with validation */}
-          <div>
-            <div className="flex items-center justify-between">
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
-                URL slug
-              </label>
-              <SlugBadge status={slugStatus} />
-            </div>
-            <div className="mt-1 flex items-center gap-2 rounded-xl border px-3.5 py-2.5"
-              style={{
-                borderColor:
-                  slugStatus === "taken" || slugStatus === "invalid"
-                    ? "rgba(244,63,94,0.5)"
-                    : slugStatus === "available"
-                    ? "rgba(16,185,129,0.5)"
-                    : "var(--border)",
-                background: "var(--surface-3)",
-              }}>
-              <span className="text-[12px] font-mono" style={{ color: "var(--text-faint)" }}>
-                skb.edu.bd/
-              </span>
-              <input
-                type="text"
-                required
-                value={form.slug}
-                onChange={(e) => {
-                  setSlugTouched(true);
-                  update("slug", slugify(e.target.value));
-                }}
-                placeholder="dhaka-ideal-school"
-                className="flex-1 bg-transparent text-[14px] outline-none font-mono"
-              />
-            </div>
-
-            {/* Hint / Error */}
-            {slugError ? (
-              <p className="mt-1 text-[11px] text-rose-600">{slugError}</p>
-            ) : (
-              <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
-                শুধু small letters, numbers, hyphen (-) • 3-40 characters
-              </p>
-            )}
-
-            {/* URL Preview */}
-            <div className="mt-3 rounded-xl border border-dashed p-3"
-              style={{ borderColor: "var(--border-strong)", background: "var(--bg-soft)" }}>
-              <div className="text-[10px] uppercase tracking-wide font-semibold"
-                style={{ color: "var(--text-faint)" }}>
-                Your institution URL
-              </div>
-              <div className="mt-1 font-mono text-[13px] text-emerald-700 dark:text-emerald-300 break-all">
-                {finalUrl}
+          <div className="overflow-hidden rounded-2xl border shadow-lg"
+            style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+            <div className="h-20 bg-gradient-to-br from-emerald-500 to-teal-600 relative">
+              <div className="absolute -bottom-8 left-5">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-4 text-[28px]"
+                  style={{ borderColor: "var(--surface-3)", background: "white" }}>
+                  {logoPreview ? <img src={logoPreview} alt="" className="h-full w-full rounded-xl object-cover" /> : form.emoji}
+                </div>
               </div>
             </div>
-
-            {/* Quick suggestions */}
-            {form.name && !slugTouched && (
-              <p className="mt-2 text-[11px]" style={{ color: "var(--text-faint)" }}>
-                💡 Auto-generated from name. চাইলে edit করতে পারেন।
-              </p>
-            )}
-          </div>
-
-          {/* Type */}
-          <div>
-            <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
-              Institution Type
-            </label>
-            <select
-              value={form.type}
-              onChange={(e) => update("type", e.target.value)}
-              className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
-              style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-              <option value="school">🏫 School</option>
-              <option value="college">🎓 College</option>
-              <option value="coaching">📚 Coaching Center</option>
-              <option value="madrasa">🕌 Madrasa</option>
-              <option value="other">🏛️ Other</option>
-            </select>
-          </div>
-
-          {error && (
-            <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[13px] text-rose-700">
-              {error}
+            <div className="px-5 pb-5 pt-12">
+              <div className="text-[17px] font-semibold">{form.name || "Your Institution Name"}</div>
+              {form.motto && (
+                <div className="text-[12px] italic mt-0.5" style={{ color: "var(--text-muted)" }}>"{form.motto}"</div>
+              )}
+              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px]">
+                <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-700 font-medium">
+                  {meta.emoji} {meta.label}
+                </span>
+                {form.division && (
+                  <span className="rounded-full px-2 py-0.5 font-medium" style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
+                    📍 {form.division}
+                  </span>
+                )}
+                {form.established_year && (
+                  <span className="rounded-full px-2 py-0.5 font-medium" style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
+                    Est. {form.established_year}
+                  </span>
+                )}
+              </div>
+              {form.description && (
+                <p className="mt-3 text-[12px] leading-relaxed line-clamp-2" style={{ color: "var(--text-muted)" }}>{form.description}</p>
+              )}
+              {(form.contact_phone || form.contact_email) && (
+                <div className="mt-3 pt-3 border-t text-[11px] space-y-0.5"
+                  style={{ borderColor: "var(--border)", color: "var(--text-muted)" }}>
+                  {form.contact_phone && <div>📞 {form.contact_phone}</div>}
+                  {form.contact_email && <div>✉️ {form.contact_email}</div>}
+                </div>
+              )}
             </div>
-          )}
+            <div className="border-t px-5 py-3 text-[11px] font-mono"
+              style={{ borderColor: "var(--border)", background: "var(--bg-soft)", color: "var(--text-faint)" }}>
+              {finalUrl}
+            </div>
+          </div>
 
-          <button
-            type="submit"
-            disabled={loading || slugStatus !== "available"}
-            className="w-full rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 py-3 text-[14px] font-semibold text-white shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
-            {loading ? "Creating..." : "Create Institution →"}
-          </button>
-        </form>
-
-        <div className="mt-5 text-center">
-          <Link href="/dashboard" className="text-[12px]" style={{ color: "var(--text-faint)" }}>
-            ← Back to dashboard
-          </Link>
+          <div className="mt-4 rounded-2xl border p-4"
+            style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+            <div className="text-[12px] font-semibold mb-2">Setup Checklist</div>
+            <div className="space-y-1.5 text-[12px]">
+              <Check ok={form.name.length > 2} label="Institution name" />
+              <Check ok={slugStatus === "available"} label="Unique URL slug" />
+              <Check ok={!!form.type} label="Type selected" />
+              <Check ok={!!logoPreview} label="Logo uploaded" optional />
+            </div>
+          </div>
         </div>
       </div>
     </main>
+  );
+}
+
+function Check({ ok, label, optional }: { ok: boolean; label: string; optional?: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold"
+        style={ok ? { background: "#10b981", color: "white" } : { border: "1px solid var(--border-strong)", color: "var(--text-faint)" }}>
+        {ok ? "✓" : ""}
+      </div>
+      <span style={ok ? {} : { color: "var(--text-muted)" }}>
+        {label} {optional && <span style={{ color: "var(--text-faint)" }}>(optional)</span>}
+      </span>
+    </div>
   );
 }
 
@@ -282,9 +456,5 @@ function SlugBadge({ status }: { status: SlugStatus }) {
     invalid: { text: "⚠ Invalid", cls: "bg-amber-500/15 text-amber-700" },
   };
   const v = map[status];
-  return (
-    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${v.cls}`}>
-      {v.text}
-    </span>
-  );
+  return <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${v.cls}`}>{v.text}</span>;
 }
