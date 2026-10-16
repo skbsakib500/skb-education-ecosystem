@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
 import AppShell from "@/components/AppShell";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "SKB Education Ecosystem",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AuthProvider>
           <AppShell>{children}</AppShell>
+          <Toaster position="top-right" richColors closeButton />
         </AuthProvider>
       </body>
     </html>
