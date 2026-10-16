@@ -32,6 +32,9 @@ import TransportTab from "@/components/institution/TransportTab";
 import HostelTab from "@/components/institution/HostelTab";
 import HealthTab from "@/components/institution/HealthTab";
 import AuditTab from "@/components/institution/AuditTab";
+import AdmissionsTab from "@/components/institution/AdmissionsTab";
+import LiveClassesTab from "@/components/institution/LiveClassesTab";
+import DocumentsTab from "@/components/institution/DocumentsTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
@@ -104,7 +107,10 @@ function InstitutionView() {
     { key: "classes",    label: "Classes",    bn: "শ্রেণি",        emoji: "📚" },
     { key: "subjects",   label: "Subjects",   bn: "বিষয়",         emoji: "📖" },
     { key: "timetable",  label: "Timetable",  bn: "সময়সূচি",      emoji: "🕐" },
+    { key: "live",       label: "Live Classes", bn: "লাইভ ক্লাস", emoji: "📹" },
     { key: "students",   label: "Students",   bn: "শিক্ষার্থী",   emoji: "👥" },
+    { key: "admissions", label: "Admissions", bn: "ভর্তি",         emoji: "📥" },
+    { key: "documents",  label: "Documents",  bn: "ডকুমেন্ট",     emoji: "📁" },
     { key: "teachers",   label: "Teachers",   bn: "শিক্ষক",       emoji: "👨‍🏫" },
     { key: "exams",      label: "Exams",      bn: "পরীক্ষা",      emoji: "📝" },
     { key: "attendance", label: "Attendance", bn: "উপস্থিতি",     emoji: "✅" },
@@ -204,6 +210,9 @@ function InstitutionView() {
         {tab === "teachers" && <TeachersTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "subjects" && <SubjectsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "timetable" && <TimetableTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "live" && <LiveClassesTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "admissions" && <AdmissionsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "documents" && <DocumentsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "exams" && <ExamsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "attendance" && <AttendanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "finance" && <FinanceTab institutionId={inst.id} isAdmin={isAdmin} />}
