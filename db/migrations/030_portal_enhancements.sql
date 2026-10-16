@@ -127,7 +127,7 @@ language sql security definer stable set search_path = public as $$
     union all
     select 'exam'::text, '📊 ' || e.title,
       'Score: ' || ea.score || '/' || ea.total_marks,
-      coalesce(ea.graded_at, ea.submitted_at),
+      ea.submitted_at,
       jsonb_build_object('score', ea.score, 'total', ea.total_marks, 'exam_id', e.id)
     from public.exam_attempts ea join public.exams e on e.id = ea.exam_id
     where ea.student_id = p_student_id and ea.status = 'graded'
