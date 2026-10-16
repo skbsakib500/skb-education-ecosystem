@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import FeeReceipt from "./FeeReceipt";
+import PaymentLinkButton from "./PaymentLinkButton";
 
 const PAYMENT_METHODS = [
   { value: "cash",   label: "Cash",   emoji: "💵" },
@@ -457,10 +458,19 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
                       style={{ borderColor: "var(--border)" }}>🧾</button>
                   )}
                   {isAdmin && p.status !== "paid" && p.status !== "waived" && (
-                    <button onClick={() => markPaid(p.id, Number(p.amount))}
-                      className="rounded-full bg-emerald-500/15 px-2 py-1 text-[11px] font-semibold text-emerald-700">
-                      Paid
-                    </button>
+                    <>
+                      <PaymentLinkButton
+                        institutionId={institutionId}
+                        studentId={p.student_id}
+                        feePaymentId={p.id}
+                        amount={Number(p.amount) - Number(p.paid_amount)}
+                        feeName={p.fee_name}
+                      />
+                      <button onClick={() => markPaid(p.id, Number(p.amount))}
+                        className="rounded-full bg-emerald-500/15 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+                        Paid
+                      </button>
+                    </>
                   )}
                 </div>
               </div>

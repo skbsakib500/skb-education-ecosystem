@@ -31,6 +31,7 @@ import LeaveTab from "@/components/institution/LeaveTab";
 import TransportTab from "@/components/institution/TransportTab";
 import HostelTab from "@/components/institution/HostelTab";
 import HealthTab from "@/components/institution/HealthTab";
+import AuditTab from "@/components/institution/AuditTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
@@ -113,6 +114,7 @@ function InstitutionView() {
     { key: "holidays",   label: "Holidays",   bn: "ছুটি",         emoji: "🎉" },
     { key: "promotion",  label: "Promotion",  bn: "প্রমোশন",      emoji: "🔄" },
     { key: "requests",   label: "Requests",   bn: "অনুরোধ",       emoji: "📥" },
+    { key: "audit",      label: "Audit Log",  bn: "লগ",           emoji: "📋" },
     { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
   ];
 
@@ -210,6 +212,7 @@ function InstitutionView() {
         {tab === "holidays" && <HolidaysTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "promotion" && <PromotionTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "requests" && <JoinRequestsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "audit" && <AuditTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "settings" && (
           <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <AcademicConfigurator
