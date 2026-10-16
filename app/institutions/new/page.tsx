@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { getGroupedTypes, getInstitutionMeta, INSTITUTION_TYPES } from "@/lib/institution-types";
 import { DIVISIONS, getDistricts, getDivisionMeta, getDistrictMeta } from "@/lib/bangladesh-data";
 import { getGroupedBoards, getBoardMeta, EDUCATION_BOARDS } from "@/lib/education-boards";
+import PremiumSelect from "@/components/PremiumSelect";
 
 const RESERVED = ["admin","api","app","login","signup","dashboard","www","new","edit"];
 const EMOJIS = ["🏫","🎓","🏛️","⚕️","⚙️","🕌","📚","🔧","🎨","🤝","⭐","🎯","💡","🔬","🌐"];
@@ -188,19 +189,8 @@ export default function NewInstitutionPage() {
               <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
                 Institution Type *
               </label>
-              <select value={form.type} onChange={(e) => update("type", e.target.value)}
-                className="mt-1 w-full rounded-xl border px-3.5 py-3 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
-                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                {groupedTypes.map((g) => (
-                  <optgroup key={g.category} label={`${g.meta.emoji} ${g.meta.label} · ${g.meta.bn}`}>
-                    {g.items.map((t) => (
-                      <option key={t.value} value={t.value}>
-                        {t.emoji} {t.label} · {t.bn}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+              <PremiumSelect value={form.type} onChange={(v) => update("type", v)}
+                  options={groupedTypes} placeholder="Select institution type" />
               <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
                 {groupedTypes.length} categories • {INSTITUTION_TYPES.length} types
               </p>
@@ -272,23 +262,15 @@ export default function NewInstitutionPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Division *</label>
-                <select value={form.division} onChange={(e) => onDivisionChange(e.target.value)}
-                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
-                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                  {DIVISIONS.map((d) => (
-                    <option key={d.value} value={d.value}>{d.label} · {d.bn}</option>
-                  ))}
-                </select>
+                <PremiumSelect value={form.division} onChange={onDivisionChange}
+                  options={DIVISIONS.map((d) => ({ value: d.value, label: d.label, bn: d.bn }))}
+                  placeholder="Select division" searchable={false} />
               </div>
               <div>
                 <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>District *</label>
-                <select value={form.district} onChange={(e) => update("district", e.target.value)}
-                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
-                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                  {districts.map((d) => (
-                    <option key={d.value} value={d.value}>{d.label} · {d.bn}</option>
-                  ))}
-                </select>
+                <PremiumSelect value={form.district} onChange={(v) => update("district", v)}
+                  options={districts.map((d) => ({ value: d.value, label: d.label, bn: d.bn }))}
+                  placeholder="Select district" />
               </div>
             </div>
 
@@ -309,19 +291,8 @@ export default function NewInstitutionPage() {
               <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
                 Education Board / Affiliation *
               </label>
-              <select value={form.education_board} onChange={(e) => update("education_board", e.target.value)}
-                className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
-                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                {groupedBoards.map((g) => (
-                  <optgroup key={g.category} label={`${g.meta.emoji} ${g.meta.label} · ${g.meta.bn}`}>
-                    {g.items.map((b) => (
-                      <option key={b.value} value={b.value}>
-                        {b.emoji} {b.label} · {b.bn}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+              <PremiumSelect value={form.education_board} onChange={(v) => update("education_board", v)}
+                  options={groupedBoards} placeholder="Select education board" />
               <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
                 {groupedBoards.length} categories • {EDUCATION_BOARDS.length} boards
               </p>
