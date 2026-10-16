@@ -5,6 +5,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
 import PointsBadge from "@/components/gamification/PointsBadge";
+import GlobalSearch from "@/components/GlobalSearch";
 
 export default function HubPage() {
   const { user, loading: authLoading, signOut } = useAuth();
@@ -108,6 +109,16 @@ export default function HubPage() {
       color: "#0ea5e9",
     },
     {
+      key: "journals",
+      href: "/journals",
+      emoji: "📔",
+      title: "Journals",
+      bn: "জার্নাল",
+      desc: "গবেষণা, প্রবন্ধ, ছাত্র-লেখা প্রকাশ",
+      show: true,
+      color: "#14b8a6",
+    },
+    {
       key: "marketplace",
       href: "/marketplace",
       emoji: "🛒",
@@ -188,6 +199,16 @@ export default function HubPage() {
       color: "#ec4899",
     },
     {
+      key: "platform-analytics",
+      href: "/super-admin/analytics",
+      emoji: "📊",
+      title: "Platform Analytics",
+      bn: "প্ল্যাটফর্ম এনালিটিক্স",
+      desc: "Growth, users, engagement trends",
+      show: stats.isPlatformAdmin,
+      color: "#a855f7",
+    },
+    {
       key: "pricing",
       href: "/pricing",
       emoji: "💰",
@@ -226,6 +247,7 @@ export default function HubPage() {
               <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>সব পোর্টাল এক জায়গায়</div>
             </div>
           </Link>
+          <GlobalSearch />
           <PointsBadge />
           <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]"
             style={{ borderColor: "var(--border)" }}>
