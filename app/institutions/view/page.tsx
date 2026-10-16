@@ -28,6 +28,9 @@ import EventsTab from "@/components/institution/EventsTab";
 import CertificatesTab from "@/components/institution/CertificatesTab";
 import AssignmentsTab from "@/components/institution/AssignmentsTab";
 import LeaveTab from "@/components/institution/LeaveTab";
+import TransportTab from "@/components/institution/TransportTab";
+import HostelTab from "@/components/institution/HostelTab";
+import HealthTab from "@/components/institution/HealthTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
