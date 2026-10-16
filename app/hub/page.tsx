@@ -21,6 +21,17 @@ export default function HubPage() {
     if (!authLoading && !user) router.push("/login/");
   }, [user, authLoading, router]);
 
+  // Check onboarding completion
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase.from("profiles").select("onboarding_complete").eq("id", user.id).maybeSingle();
+      if (!data?.onboarding_complete) {
+        router.push("/onboarding/");
+      }
+    })();
+  }, [user, router]);
+
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -104,6 +115,16 @@ export default function HubPage() {
       desc: "পুরো SKB নিয়ন্ত্রণ",
       show: stats.isPlatformAdmin,
       color: "#f59e0b",
+    },
+    {
+      key: "admin-requests",
+      href: "/super-admin/requests",
+      emoji: "📥",
+      title: "Institution Requests",
+      bn: "নতুন প্রতিষ্ঠান অনুরোধ",
+      desc: "নতুন প্রতিষ্ঠান যাচাই করুন",
+      show: stats.isPlatformAdmin,
+      color: "#ec4899",
     },
     {
       key: "pricing",

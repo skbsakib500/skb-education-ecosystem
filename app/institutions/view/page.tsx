@@ -22,6 +22,7 @@ import CommunicationTab from "@/components/institution/CommunicationTab";
 import QuickSearch from "@/components/institution/QuickSearch";
 import HolidaysTab from "@/components/institution/HolidaysTab";
 import PromotionTab from "@/components/institution/PromotionTab";
+import JoinRequestsTab from "@/components/institution/JoinRequestsTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
@@ -37,7 +38,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "holidays" | "promotion" | "settings";
+type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "holidays" | "promotion" | "requests" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -103,6 +104,7 @@ function InstitutionView() {
     { key: "communication", label: "Messages", bn: "বার্তা",  emoji: "✉️" },
     { key: "holidays",   label: "Holidays",   bn: "ছুটি",         emoji: "🎉" },
     { key: "promotion",  label: "Promotion",  bn: "প্রমোশন",      emoji: "🔄" },
+    { key: "requests",   label: "Requests",   bn: "অনুরোধ",       emoji: "📥" },
     { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
   ];
 
@@ -199,6 +201,7 @@ function InstitutionView() {
         {tab === "communication" && <CommunicationTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "holidays" && <HolidaysTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "promotion" && <PromotionTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "requests" && <JoinRequestsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "settings" && (
           <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <AcademicConfigurator
