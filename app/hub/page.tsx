@@ -77,6 +77,16 @@ export default function HubPage() {
       color: "#10b981",
     },
     {
+      key: "marketplace",
+      href: "/marketplace",
+      emoji: "🛒",
+      title: "Marketplace",
+      bn: "মার্কেটপ্লেস",
+      desc: "Tutor, Job, Discussions, Journal",
+      show: true,
+      color: "#6366f1",
+    },
+    {
       key: "explore",
       href: "/explore",
       emoji: "🔍",
