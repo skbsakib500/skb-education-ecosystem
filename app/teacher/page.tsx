@@ -123,6 +123,12 @@ export default function TeacherPortal() {
         </div>
 
         {/* My Classes */}
+        <div className="mt-6 flex justify-end">
+          <Link href="/teacher/analytics" className="rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 px-4 py-2 text-[12px] font-semibold text-white shadow">
+            📊 Class Analytics
+          </Link>
+        </div>
+
         <div className="mt-8">
           <h2 className="text-[16px] font-semibold mb-3">My Classes · <span className="bangla font-normal">আমার শ্রেণি</span></h2>
           {classes.length === 0 ? (

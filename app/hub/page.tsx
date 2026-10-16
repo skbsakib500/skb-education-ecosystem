@@ -229,6 +229,16 @@ export default function HubPage() {
       color: "#a855f7",
     },
     {
+      key: "notification-prefs",
+      href: "/settings/notifications",
+      emoji: "🔔",
+      title: "Notifications",
+      bn: "নোটিফিকেশন সেটিং",
+      desc: "কী কী নোটিফিকেশন পাবেন",
+      show: true,
+      color: "#f59e0b",
+    },
+    {
       key: "pricing",
       href: "/pricing",
       emoji: "💰",
