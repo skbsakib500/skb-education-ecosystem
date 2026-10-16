@@ -15,6 +15,9 @@ import StudentsTabV2 from "@/components/institution/StudentsTabV2";
 import AcademicConfigurator from "@/components/institution/AcademicConfigurator";
 import FinanceTab from "@/components/institution/FinanceTab";
 import AnalyticsTab from "@/components/institution/AnalyticsTab";
+import SubjectsTab from "@/components/institution/SubjectsTab";
+import TimetableTab from "@/components/institution/TimetableTab";
+import ReportCard from "@/components/institution/ReportCard";
 
 export default function Page() {
   return <Suspense fallback={<Loading />}><InstitutionView /></Suspense>;
@@ -28,7 +31,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "exams" | "attendance" | "finance" | "notices" | "settings";
+type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -41,6 +44,7 @@ function InstitutionView() {
   const [stats, setStats] = useState({ classes: 0, students: 0, teachers: 0, exams: 0 });
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("overview");
+  const [reportStudent, setReportStudent] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) router.push("/login/");
@@ -82,6 +86,8 @@ function InstitutionView() {
     { key: "overview",   label: "Overview",   bn: "সারসংক্ষেপ",   emoji: "📊" },
     { key: "analytics",  label: "Analytics",  bn: "বিশ্লেষণ",     emoji: "📈" },
     { key: "classes",    label: "Classes",    bn: "শ্রেণি",        emoji: "📚" },
+    { key: "subjects",   label: "Subjects",   bn: "বিষয়",         emoji: "📖" },
+    { key: "timetable",  label: "Timetable",  bn: "সময়সূচি",      emoji: "🕐" },
     { key: "students",   label: "Students",   bn: "শিক্ষার্থী",   emoji: "👥" },
     { key: "teachers",   label: "Teachers",   bn: "শিক্ষক",       emoji: "👨‍🏫" },
     { key: "exams",      label: "Exams",      bn: "পরীক্ষা",      emoji: "📝" },
@@ -167,6 +173,8 @@ function InstitutionView() {
         {tab === "classes" && <ClassesTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "students" && <StudentsTabV2 institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "teachers" && <TeachersTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "subjects" && <SubjectsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "timetable" && <TimetableTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "exams" && <ExamsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "attendance" && <AttendanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "finance" && <FinanceTab institutionId={inst.id} isAdmin={isAdmin} />}
@@ -183,6 +191,14 @@ function InstitutionView() {
           </div>
         )}
       </div>
+
+      {reportStudent && (
+        <ReportCard
+          institutionId={inst.id}
+          studentId={reportStudent}
+          onClose={() => setReportStudent(null)}
+        />
+      )}
     </div>
   );
 }
