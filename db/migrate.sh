@@ -36,5 +36,4 @@ echo ""
 echo "✅ All migrations complete!"
 echo ""
 echo "📊 Verify:"
-VERIFY='{"query":"select (select count(*) from information_schema.tables where table_schema=''"'"'public'"'"' and table_name in (''"'"'institutions'"'"',''"'"'profiles'"'"',''"'"'memberships'"'"',''"'"'classes'"'"',''"'"'students'"'"')) as tables, (select count(*) from pg_policies where schemaname=''"'"'public'"'"') as policies, (select count(*) from storage.buckets where id=''"'"'institution-logos'"'"') as buckets;"}'
-curl -s -X POST "$API" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d "$VERIFY" | jq .
+bash "$(dirname "$0")/verify.sh"
