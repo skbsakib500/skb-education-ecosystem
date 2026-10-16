@@ -34,7 +34,7 @@ export default function GlobalSearch() {
     return () => clearTimeout(t);
   }, [q]);
 
-  const total = results ? Object.values(results).reduce((s: number, arr: any) => s + (Array.isArray(arr) ? arr.length : 0), 0) : 0;
+  const total = results ? (Object.values(results as Record<string, unknown[]>).reduce((s: number, arr: any) => s + (Array.isArray(arr) ? arr.length : 0), 0) as number) : 0;
 
   return (
     <div ref={ref} className="relative">
