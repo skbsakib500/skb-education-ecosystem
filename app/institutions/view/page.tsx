@@ -26,6 +26,8 @@ import JoinRequestsTab from "@/components/institution/JoinRequestsTab";
 import LibraryTab from "@/components/institution/LibraryTab";
 import EventsTab from "@/components/institution/EventsTab";
 import CertificatesTab from "@/components/institution/CertificatesTab";
+import AssignmentsTab from "@/components/institution/AssignmentsTab";
+import LeaveTab from "@/components/institution/LeaveTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
