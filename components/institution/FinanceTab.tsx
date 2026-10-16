@@ -48,7 +48,6 @@ export default function FinanceTab({ institutionId, isAdmin }: { institutionId: 
       {view === "structures" && <FeeStructures institutionId={institutionId} isAdmin={isAdmin} />}
       {view === "payments" && <Payments institutionId={institutionId} isAdmin={isAdmin} onChange={load} />}
     
-      {receiptId && <FeeReceipt paymentId={receiptId} onClose={() => setReceiptId(null)} />}
     </div>
   );
 }
@@ -469,6 +468,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
           })}
         </div>
       )}
+      {receiptId && <FeeReceipt paymentId={receiptId} onClose={() => setReceiptId(null)} />}
     </div>
   );
 }
