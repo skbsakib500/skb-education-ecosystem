@@ -13,6 +13,8 @@ import AttendanceTab from "@/components/institution/AttendanceTab";
 import NoticesTab from "@/components/institution/NoticesTab";
 import StudentsTabV2 from "@/components/institution/StudentsTabV2";
 import AcademicConfigurator from "@/components/institution/AcademicConfigurator";
+import FinanceTab from "@/components/institution/FinanceTab";
+import AnalyticsTab from "@/components/institution/AnalyticsTab";
 
 export default function Page() {
   return <Suspense fallback={<Loading />}><InstitutionView /></Suspense>;
@@ -26,7 +28,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "classes" | "students" | "teachers" | "exams" | "attendance" | "notices" | "settings";
+type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "exams" | "attendance" | "finance" | "notices" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -78,11 +80,13 @@ function InstitutionView() {
 
   const tabs: { key: Tab; label: string; bn: string; emoji: string }[] = [
     { key: "overview",   label: "Overview",   bn: "সারসংক্ষেপ",   emoji: "📊" },
+    { key: "analytics",  label: "Analytics",  bn: "বিশ্লেষণ",     emoji: "📈" },
     { key: "classes",    label: "Classes",    bn: "শ্রেণি",        emoji: "📚" },
     { key: "students",   label: "Students",   bn: "শিক্ষার্থী",   emoji: "👥" },
     { key: "teachers",   label: "Teachers",   bn: "শিক্ষক",       emoji: "👨‍🏫" },
     { key: "exams",      label: "Exams",      bn: "পরীক্ষা",      emoji: "📝" },
     { key: "attendance", label: "Attendance", bn: "উপস্থিতি",     emoji: "✅" },
+    { key: "finance",    label: "Finance",    bn: "হিসাব",        emoji: "💵" },
     { key: "notices",    label: "Notices",    bn: "নোটিশ",        emoji: "📢" },
     { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
   ];
@@ -159,11 +163,13 @@ function InstitutionView() {
 
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
         {tab === "overview" && <OverviewTab inst={inst} stats={stats} isAdmin={isAdmin} />}
+        {tab === "analytics" && <AnalyticsTab institutionId={inst.id} />}
         {tab === "classes" && <ClassesTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "students" && <StudentsTabV2 institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "teachers" && <TeachersTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "exams" && <ExamsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "attendance" && <AttendanceTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "finance" && <FinanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "notices" && <NoticesTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "settings" && (
           <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
