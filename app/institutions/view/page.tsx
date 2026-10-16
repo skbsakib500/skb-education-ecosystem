@@ -51,7 +51,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "analytics" | "advanced" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "holidays" | "promotion" | "requests" | "settings";
+type Tab = string;
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
