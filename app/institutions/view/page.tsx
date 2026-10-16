@@ -18,6 +18,8 @@ import AnalyticsTab from "@/components/institution/AnalyticsTab";
 import SubjectsTab from "@/components/institution/SubjectsTab";
 import TimetableTab from "@/components/institution/TimetableTab";
 import ReportCard from "@/components/institution/ReportCard";
+import CommunicationTab from "@/components/institution/CommunicationTab";
+import NotificationCenter from "@/components/NotificationCenter";
 
 export default function Page() {
   return <Suspense fallback={<Loading />}><InstitutionView /></Suspense>;
@@ -31,7 +33,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "settings";
+type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -94,6 +96,7 @@ function InstitutionView() {
     { key: "attendance", label: "Attendance", bn: "উপস্থিতি",     emoji: "✅" },
     { key: "finance",    label: "Finance",    bn: "হিসাব",        emoji: "💵" },
     { key: "notices",    label: "Notices",    bn: "নোটিশ",        emoji: "📢" },
+    { key: "communication", label: "Messages", bn: "বার্তা",  emoji: "✉️" },
     { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
   ];
 
@@ -105,7 +108,8 @@ function InstitutionView() {
           <Link href="/dashboard" className="flex items-center gap-2 text-[13px]" style={{ color: "var(--text-muted)" }}>← Dashboard</Link>
           <div className="flex items-center gap-2">
             {isAdmin && <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-700">ADMIN</span>}
-            <span className="text-[11px] capitalize" style={{ color: "var(--text-muted)" }}>{membership?.role ?? "member"}</span>
+            <span className="text-[11px] capitalize hidden sm:inline" style={{ color: "var(--text-muted)" }}>{membership?.role ?? "member"}</span>
+            <NotificationCenter />
           </div>
         </div>
       </header>
@@ -179,6 +183,7 @@ function InstitutionView() {
         {tab === "attendance" && <AttendanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "finance" && <FinanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "notices" && <NoticesTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "communication" && <CommunicationTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "settings" && (
           <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <AcademicConfigurator

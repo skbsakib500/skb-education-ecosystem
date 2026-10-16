@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase, type Membership } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import NotificationCenter from "@/components/NotificationCenter";
 import { getInstitutionMeta } from "@/lib/institution-types";
 import { getBoardMeta } from "@/lib/education-boards";
 import { getDivisionMeta } from "@/lib/bangladesh-data";
@@ -135,6 +136,7 @@ function Header({ user, profile, onSignOut }: { user: any; profile: any; onSignO
           </div>
         </Link>
         <div className="flex items-center gap-2">
+          <NotificationCenter />
           <Link href="/institutions/new"
             className="hidden md:flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
             + New Institution
