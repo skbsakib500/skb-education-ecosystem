@@ -106,7 +106,16 @@ export default function SignupPage() {
         {step === 1 && (
           <form onSubmit={submitAccount} className="mt-6 space-y-4">
             <Field label="Full Name" value={form.full_name} onChange={(v) => update("full_name", v)} placeholder="Sakib Al Hasan" />
-            <Field label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} placeholder="you@school.edu.bd" />
+            <div>
+              <Field label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} placeholder="you@school.edu.bd" />
+              <p className="mt-2 text-[11px] flex items-start gap-1.5" style={{ color: "var(--text-faint)" }}>
+                <span>💡</span>
+                <span>
+                  Verify email আসবে <strong>SKB Education</strong>-এর পক্ষ থেকে। 
+                  Link-এ দেখবেন: <code className="px-1 py-0.5 rounded" style={{ background: "var(--bg-soft)" }}>skbsakib500.github.io/skb-education-ecosystem</code>
+                </span>
+              </p>
+            </div>
             <Field label="Password" type="password" value={form.password} onChange={(v) => update("password", v)} placeholder="•••••••• (min 6 chars)" />
 
             {error && (

@@ -52,6 +52,10 @@ export default function ForgotPasswordPage() {
                 placeholder="you@school.edu.bd"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+              <p className="mt-2 text-[11px] flex items-start gap-1.5" style={{ color: "var(--text-faint)" }}>
+                <span>💡</span>
+                <span>Email আসবে <strong>SKB Education</strong>-এর পক্ষ থেকে, subject: "Reset your password"</span>
+              </p>
             </div>
             {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[13px] text-rose-700">{error}</div>}
             <button type="submit" disabled={loading}
