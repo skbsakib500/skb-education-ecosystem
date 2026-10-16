@@ -52,6 +52,7 @@ function Loading() {
 }
 
 type Tab = string;
+type TabGroup = "academic" | "assessment" | "operations" | "community" | "admin";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -102,28 +103,44 @@ function InstitutionView() {
   const divisionMeta = getDivisionMeta(inst.division);
   const districtMeta = getDistrictMeta(inst.division, inst.district ?? "");
 
-  const tabs: { key: Tab; label: string; bn: string; emoji: string }[] = [
-    { key: "overview",   label: "Overview",   bn: "সারসংক্ষেপ",   emoji: "📊" },
-    { key: "analytics",  label: "Analytics",  bn: "বিশ্লেষণ",     emoji: "📈" },
-    { key: "advanced",   label: "AI Insights", bn: "AI বিশ্লেষণ", emoji: "🧠" },
-    { key: "classes",    label: "Classes",    bn: "শ্রেণি",        emoji: "📚" },
-    { key: "subjects",   label: "Subjects",   bn: "বিষয়",         emoji: "📖" },
-    { key: "timetable",  label: "Timetable",  bn: "সময়সূচি",      emoji: "🕐" },
-    { key: "live",       label: "Live Classes", bn: "লাইভ ক্লাস", emoji: "📹" },
-    { key: "students",   label: "Students",   bn: "শিক্ষার্থী",   emoji: "👥" },
-    { key: "admissions", label: "Admissions", bn: "ভর্তি",         emoji: "📥" },
-    { key: "documents",  label: "Documents",  bn: "ডকুমেন্ট",     emoji: "📁" },
-    { key: "teachers",   label: "Teachers",   bn: "শিক্ষক",       emoji: "👨‍🏫" },
-    { key: "exams",      label: "Exams",      bn: "পরীক্ষা",      emoji: "📝" },
-    { key: "attendance", label: "Attendance", bn: "উপস্থিতি",     emoji: "✅" },
-    { key: "finance",    label: "Finance",    bn: "হিসাব",        emoji: "💵" },
-    { key: "notices",    label: "Notices",    bn: "নোটিশ",        emoji: "📢" },
-    { key: "communication", label: "Messages", bn: "বার্তা",  emoji: "✉️" },
-    { key: "holidays",   label: "Holidays",   bn: "ছুটি",         emoji: "🎉" },
-    { key: "promotion",  label: "Promotion",  bn: "প্রমোশন",      emoji: "🔄" },
-    { key: "requests",   label: "Requests",   bn: "অনুরোধ",       emoji: "📥" },
-    { key: "audit",      label: "Audit Log",  bn: "লগ",           emoji: "📋" },
-    { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
+  const TAB_GROUPS: { key: TabGroup; label: string; bn: string; emoji: string }[] = [
+    { key: "academic",   label: "Academic",   bn: "একাডেমিক",  emoji: "📚" },
+    { key: "assessment", label: "Assessment", bn: "মূল্যায়ন",   emoji: "📝" },
+    { key: "operations", label: "Operations", bn: "পরিচালনা",   emoji: "🏗️" },
+    { key: "community",  label: "Community",  bn: "কমিউনিটি",   emoji: "💬" },
+    { key: "admin",      label: "Admin",      bn: "প্রশাসন",    emoji: "⚙️" },
+  ];
+
+  const tabs: { key: Tab; label: string; bn: string; emoji: string; group: TabGroup }[] = [
+    { key: "overview",   label: "Overview",    bn: "সারসংক্ষেপ",  emoji: "📊", group: "academic" },
+    { key: "classes",    label: "Classes",     bn: "শ্রেণি",        emoji: "📚", group: "academic" },
+    { key: "students",   label: "Students",    bn: "শিক্ষার্থী",   emoji: "👥", group: "academic" },
+    { key: "teachers",   label: "Teachers",    bn: "শিক্ষক",       emoji: "👨‍🏫", group: "academic" },
+    { key: "subjects",   label: "Subjects",    bn: "বিষয়",         emoji: "📖", group: "academic" },
+    { key: "timetable",  label: "Timetable",   bn: "সময়সূচি",      emoji: "🕐", group: "academic" },
+    { key: "live",       label: "Live Classes", bn: "লাইভ ক্লাস",  emoji: "📹", group: "academic" },
+    { key: "exams",       label: "Exams",       bn: "পরীক্ষা",       emoji: "📝", group: "assessment" },
+    { key: "assignments", label: "Assignments", bn: "অ্যাসাইনমেন্ট", emoji: "📄", group: "assessment" },
+    { key: "attendance",  label: "Attendance",  bn: "উপস্থিতি",      emoji: "✅", group: "assessment" },
+    { key: "promotion",   label: "Promotion",   bn: "প্রমোশন",       emoji: "🔄", group: "assessment" },
+    { key: "admissions", label: "Admissions", bn: "ভর্তি",        emoji: "📥", group: "operations" },
+    { key: "documents",  label: "Documents",  bn: "ডকুমেন্ট",     emoji: "📁", group: "operations" },
+    { key: "finance",    label: "Finance",    bn: "হিসাব",         emoji: "💵", group: "operations" },
+    { key: "library",    label: "Library",    bn: "লাইব্রেরি",     emoji: "📖", group: "operations" },
+    { key: "transport",  label: "Transport",  bn: "পরিবহন",        emoji: "🚌", group: "operations" },
+    { key: "hostel",     label: "Hostel",     bn: "হোস্টেল",       emoji: "🏠", group: "operations" },
+    { key: "health",     label: "Health",     bn: "স্বাস্থ্য",       emoji: "🏥", group: "operations" },
+    { key: "leave",      label: "Leave",      bn: "ছুটি",          emoji: "🌴", group: "operations" },
+    { key: "notices",       label: "Notices",      bn: "নোটিশ",        emoji: "📢", group: "community" },
+    { key: "communication", label: "Messages",     bn: "বার্তা",       emoji: "✉️", group: "community" },
+    { key: "events",        label: "Events",       bn: "ইভেন্ট",        emoji: "🎪", group: "community" },
+    { key: "certificates",  label: "Certificates", bn: "সার্টিফিকেট",   emoji: "🎓", group: "community" },
+    { key: "holidays",      label: "Holidays",     bn: "ছুটি",          emoji: "🎉", group: "community" },
+    { key: "requests",      label: "Requests",     bn: "অনুরোধ",        emoji: "📬", group: "community" },
+    { key: "analytics",  label: "Analytics",   bn: "বিশ্লেষন",     emoji: "📈", group: "admin" },
+    { key: "advanced",   label: "AI Insights", bn: "AI বিশ্লেষন",  emoji: "🧠", group: "admin" },
+    { key: "audit",      label: "Audit Log",   bn: "লগ",            emoji: "📋", group: "admin" },
+    { key: "settings",   label: "Settings",    bn: "সেটিংস",        emoji: "⚙️", group: "admin" },
   ];
 
   return (
@@ -190,18 +207,57 @@ function InstitutionView() {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
-        <div className="flex gap-1 overflow-x-auto rounded-2xl border p-1"
-          style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-          {tabs.map((t) => (
-            <button key={t.key} onClick={() => setTab(t.key)}
-              className={'flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-medium whitespace-nowrap transition ' +
-                (tab === t.key ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow" : "")}
-              style={tab !== t.key ? { color: "var(--text-muted)" } : {}}>
-              <span>{t.emoji}</span>
-              <span>{t.label}</span>
-            </button>
-          ))}
-        </div>
+        {(() => {
+          const currentGroup: TabGroup = tabs.find((t) => t.key === tab)?.group ?? "academic";
+          const visibleTabs = tabs.filter((t) => t.group === currentGroup);
+          return (
+            <div className="space-y-3">
+              <div className="flex gap-1 overflow-x-auto rounded-2xl border p-1"
+                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+                {TAB_GROUPS.map((g) => {
+                  const count = tabs.filter((t) => t.group === g.key).length;
+                  const active = currentGroup === g.key;
+                  return (
+                    <button
+                      key={g.key}
+                      onClick={() => {
+                        const first = tabs.find((t) => t.group === g.key);
+                        if (first) setTab(first.key);
+                      }}
+                      className={
+                        "flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold whitespace-nowrap transition " +
+                        (active
+                          ? "bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow"
+                          : "")
+                      }
+                      style={!active ? { color: "var(--text-muted)" } : {}}
+                    >
+                      <span>{g.emoji}</span>
+                      <span>{g.label}</span>
+                      <span className={"rounded-full px-1.5 text-[10px] " + (active ? "bg-white/20" : "bg-slate-200/50")}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex gap-1 overflow-x-auto">
+                {visibleTabs.map((t) => (
+                  <button key={t.key} onClick={() => setTab(t.key)}
+                    className={"flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-medium whitespace-nowrap transition " +
+                      (tab === t.key
+                        ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow"
+                        : "hover:bg-slate-100")}
+                    style={tab !== t.key ? { color: "var(--text-muted)" } : {}}>
+                    <span>{t.emoji}</span>
+                    <span>{t.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
@@ -224,6 +280,14 @@ function InstitutionView() {
         {tab === "holidays" && <HolidaysTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "promotion" && <PromotionTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "requests" && <JoinRequestsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "assignments" && <AssignmentsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "library" && <LibraryTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "events" && <EventsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "certificates" && <CertificatesTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "leave" && <LeaveTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "transport" && <TransportTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "hostel" && <HostelTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "health" && <HealthTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "audit" && <AuditTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "settings" && (
           <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
