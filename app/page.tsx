@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LandingNav from "@/components/LandingNav";
 
 export default function Home() {
   const features = [
