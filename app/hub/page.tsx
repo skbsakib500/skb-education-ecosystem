@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import PointsBadge from "@/components/gamification/PointsBadge";
 
 export default function HubPage() {
   const { user, loading: authLoading, signOut } = useAuth();
@@ -75,6 +76,26 @@ export default function HubPage() {
       desc: "সবার পোস্ট, প্রশ্ন, অর্জন দেখুন",
       show: true,
       color: "#10b981",
+    },
+    {
+      key: "achievements",
+      href: "/achievements",
+      emoji: "⭐",
+      title: "Achievements",
+      bn: "অর্জন",
+      desc: "Points, badges, streaks",
+      show: true,
+      color: "#f59e0b",
+    },
+    {
+      key: "leaderboard",
+      href: "/leaderboard",
+      emoji: "🏆",
+      title: "Leaderboard",
+      bn: "লিডারবোর্ড",
+      desc: "Global ranking দেখুন",
+      show: true,
+      color: "#ef4444",
     },
     {
       key: "messages",
@@ -205,6 +226,7 @@ export default function HubPage() {
               <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>সব পোর্টাল এক জায়গায়</div>
             </div>
           </Link>
+          <PointsBadge />
           <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]"
             style={{ borderColor: "var(--border)" }}>
             Sign out
