@@ -35,6 +35,7 @@ import AuditTab from "@/components/institution/AuditTab";
 import AdmissionsTab from "@/components/institution/AdmissionsTab";
 import LiveClassesTab from "@/components/institution/LiveClassesTab";
 import DocumentsTab from "@/components/institution/DocumentsTab";
+import AdvancedAnalyticsTab from "@/components/institution/AdvancedAnalyticsTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
@@ -50,7 +51,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "holidays" | "promotion" | "requests" | "settings";
+type Tab = "overview" | "analytics" | "advanced" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "holidays" | "promotion" | "requests" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -104,6 +105,7 @@ function InstitutionView() {
   const tabs: { key: Tab; label: string; bn: string; emoji: string }[] = [
     { key: "overview",   label: "Overview",   bn: "সারসংক্ষেপ",   emoji: "📊" },
     { key: "analytics",  label: "Analytics",  bn: "বিশ্লেষণ",     emoji: "📈" },
+    { key: "advanced",   label: "AI Insights", bn: "AI বিশ্লেষণ", emoji: "🧠" },
     { key: "classes",    label: "Classes",    bn: "শ্রেণি",        emoji: "📚" },
     { key: "subjects",   label: "Subjects",   bn: "বিষয়",         emoji: "📖" },
     { key: "timetable",  label: "Timetable",  bn: "সময়সূচি",      emoji: "🕐" },
@@ -205,6 +207,7 @@ function InstitutionView() {
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
         {tab === "overview" && <OverviewTab inst={inst} stats={stats} isAdmin={isAdmin} />}
         {tab === "analytics" && <AnalyticsTab institutionId={inst.id} />}
+        {tab === "advanced" && <AdvancedAnalyticsTab institutionId={inst.id} />}
         {tab === "classes" && <ClassesTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "students" && <StudentsTabV2 institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "teachers" && <TeachersTab institutionId={inst.id} isAdmin={isAdmin} />}

@@ -109,6 +109,16 @@ export default function HubPage() {
       color: "#0ea5e9",
     },
     {
+      key: "ai-tutor",
+      href: "/ai-tutor",
+      emoji: "🤖",
+      title: "AI Tutor",
+      bn: "এআই টিউটর",
+      desc: "যেকোনো প্রশ্নের উত্তর",
+      show: true,
+      color: "#8b5cf6",
+    },
+    {
       key: "materials",
       href: "/materials",
       emoji: "📚",
