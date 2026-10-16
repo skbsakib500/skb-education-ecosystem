@@ -23,6 +23,9 @@ import QuickSearch from "@/components/institution/QuickSearch";
 import HolidaysTab from "@/components/institution/HolidaysTab";
 import PromotionTab from "@/components/institution/PromotionTab";
 import JoinRequestsTab from "@/components/institution/JoinRequestsTab";
+import LibraryTab from "@/components/institution/LibraryTab";
+import EventsTab from "@/components/institution/EventsTab";
+import CertificatesTab from "@/components/institution/CertificatesTab";
 import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
