@@ -11,6 +11,8 @@ import TeachersTab from "@/components/institution/TeachersTab";
 import ExamsTab from "@/components/institution/ExamsTab";
 import AttendanceTab from "@/components/institution/AttendanceTab";
 import NoticesTab from "@/components/institution/NoticesTab";
+import StudentsTabV2 from "@/components/institution/StudentsTabV2";
+import AcademicConfigurator from "@/components/institution/AcademicConfigurator";
 
 export default function Page() {
   return <Suspense fallback={<Loading />}><InstitutionView /></Suspense>;
@@ -158,12 +160,22 @@ function InstitutionView() {
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
         {tab === "overview" && <OverviewTab inst={inst} stats={stats} isAdmin={isAdmin} />}
         {tab === "classes" && <ClassesTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
-        {tab === "students" && <StudentsTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
+        {tab === "students" && <StudentsTabV2 institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "teachers" && <TeachersTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "exams" && <ExamsTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "attendance" && <AttendanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "notices" && <NoticesTab institutionId={inst.id} isAdmin={isAdmin} />}
-        {tab === "settings" && <PlaceholderTab label="Settings" bn="সেটিংস" note="Institution settings coming soon" />}
+        {tab === "settings" && (
+          <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+            <AcademicConfigurator
+              institutionId={inst.id}
+              initialStream={(inst.academic_stream as any) ?? "general"}
+              initialLevels={Array.isArray(inst.levels) ? inst.levels : []}
+              isAdmin={isAdmin}
+              onSave={() => refreshStats(inst.id)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
