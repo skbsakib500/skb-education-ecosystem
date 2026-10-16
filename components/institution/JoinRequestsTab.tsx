@@ -78,14 +78,15 @@ export default function JoinRequestsTab({ institutionId, isAdmin }: { institutio
           {requests.map((r) => {
             const p = r.profiles;
             const meta = r.metadata || {};
-            const roleMeta: any = {
+            const roleMetaMap: Record<string, { emoji: string; color: string }> = {
               teacher: { emoji: "👨‍🏫", color: "#8b5cf6" },
               student: { emoji: "🎓", color: "#06b6d4" },
               parent: { emoji: "👪", color: "#14b8a6" },
               accountant: { emoji: "💰", color: "#f59e0b" },
               librarian: { emoji: "📚", color: "#f59e0b" },
               receptionist: { emoji: "☎️", color: "#f59e0b" },
-            }[r.requested_role] || { emoji: "👤", color: "#64748b" };
+            };
+            const roleMeta = roleMetaMap[r.requested_role] || { emoji: "👤", color: "#64748b" };
 
             return (
               <div key={r.id} className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
