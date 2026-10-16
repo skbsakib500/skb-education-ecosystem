@@ -67,6 +67,26 @@ export default function HubPage() {
 
   const portals = [
     {
+      key: "feed",
+      href: "/feed",
+      emoji: "📰",
+      title: "Social Feed",
+      bn: "নিউজফিড",
+      desc: "সবার পোস্ট, প্রশ্ন, অর্জন দেখুন",
+      show: true,
+      color: "#10b981",
+    },
+    {
+      key: "explore",
+      href: "/explore",
+      emoji: "🔍",
+      title: "Explore",
+      bn: "আবিষ্কার",
+      desc: "নতুন মানুষ, trending পোস্ট",
+      show: true,
+      color: "#8b5cf6",
+    },
+    {
       key: "dashboard",
       href: "/dashboard",
       emoji: "🎛️",
@@ -74,7 +94,7 @@ export default function HubPage() {
       bn: "প্রশাসনিক ড্যাশবোর্ড",
       desc: "আপনার সব প্রতিষ্ঠান পরিচালনা করুন",
       show: true,
-      color: "#10b981",
+      color: "#06b6d4",
     },
     {
       key: "student",
