@@ -1,8 +1,8 @@
 -- ============================================================
--- Phase 8: Communication Center
+-- Phase 8: Communication Center (IDEMPOTENT)
 -- ============================================================
 
--- Notifications (in-app)
+-- Notifications
 create table if not exists public.notifications (
   id uuid primary key default gen_random_uuid(),
   institution_id uuid not null references public.institutions(id) on delete cascade,
@@ -19,7 +19,7 @@ create table if not exists public.notifications (
 create index if not exists idx_notif_recipient on public.notifications(recipient_user_id, is_read);
 create index if not exists idx_notif_inst on public.notifications(institution_id, created_at desc);
 
--- Broadcasts (bulk messages from admin)
+-- Broadcasts
 create table if not exists public.broadcasts (
   id uuid primary key default gen_random_uuid(),
   institution_id uuid not null references public.institutions(id) on delete cascade,
@@ -55,19 +55,24 @@ alter table public.notifications enable row level security;
 alter table public.broadcasts enable row level security;
 alter table public.message_templates enable row level security;
 
--- Notifications: users see own
+-- Notifications policies (IDEMPOTENT)
 drop policy if exists "notif_own" on public.notifications;
+drop policy if exists "notif_update_own" on public.notifications;
 drop policy if exists "notif_admin_insert" on public.notifications;
-create policy "notif_own" on public.notifications
+drop policy if exists "notifications_read_own" on public.notifications;
+drop policy if exists "notifications_update_own" on public.notifications;
+drop policy if exists "notifications_admin_insert" on public.notifications;
+
+create policy "notifications_read_own" on public.notifications
   for select to authenticated using (recipient_user_id = auth.uid());
-create policy "notif_update_own" on public.notifications
+create policy "notifications_update_own" on public.notifications
   for update to authenticated
   using (recipient_user_id = auth.uid())
   with check (recipient_user_id = auth.uid());
-create policy "notif_admin_insert" on public.notifications
+create policy "notifications_admin_insert" on public.notifications
   for insert to authenticated with check (public.is_admin_of(institution_id));
 
--- Broadcasts: members read, admin write
+-- Broadcasts policies
 drop policy if exists "broadcasts_read" on public.broadcasts;
 drop policy if exists "broadcasts_admin" on public.broadcasts;
 create policy "broadcasts_read" on public.broadcasts
@@ -77,7 +82,7 @@ create policy "broadcasts_admin" on public.broadcasts
   using (public.is_admin_of(institution_id))
   with check (public.is_admin_of(institution_id));
 
--- Templates: members read, admin write
+-- Templates policies
 drop policy if exists "templates_read" on public.message_templates;
 drop policy if exists "templates_admin" on public.message_templates;
 create policy "templates_read" on public.message_templates
@@ -87,8 +92,7 @@ create policy "templates_admin" on public.message_templates
   using (public.is_admin_of(institution_id))
   with check (public.is_admin_of(institution_id));
 
--- ── BROADCAST FUNCTION ──
--- Creates notifications for all recipients
+-- BROADCAST FUNCTION
 create or replace function public.send_broadcast(
   p_institution_id uuid,
   p_subject text,
@@ -112,14 +116,12 @@ begin
     raise exception 'Admin access required';
   end if;
 
-  -- Insert broadcast record
   insert into public.broadcasts
     (institution_id, sender_id, subject, body, audience, class_id, channel, status)
   values
     (p_institution_id, v_sender, p_subject, p_body, p_audience, p_class_id, p_channel, 'sent')
   returning id into v_broadcast_id;
 
-  -- Determine recipients (user_ids) based on audience
   if p_audience = 'teachers' then
     insert into public.notifications
       (institution_id, recipient_user_id, title, body, category)
@@ -161,17 +163,14 @@ begin
       and s.linked_user_id is not null;
     get diagnostics v_count = row_count;
 
-    -- Also notify parents of that class
     insert into public.notifications
       (institution_id, recipient_user_id, title, body, category)
     select p_institution_id, psl.parent_user_id, p_subject, p_body, 'general'
     from public.parent_student_links psl
     join public.students s on s.id = psl.student_id
     where s.class_id = p_class_id;
-    v_count := v_count + 0;
 
   else
-    -- all
     insert into public.notifications
       (institution_id, recipient_user_id, title, body, category)
     select p_institution_id, m.user_id, p_subject, p_body, 'general'
@@ -192,7 +191,7 @@ $$;
 
 grant execute on function public.send_broadcast to authenticated;
 
--- ── UNREAD COUNT FUNCTION ──
+-- UNREAD COUNT
 create or replace function public.my_unread_notifications()
 returns int
 language sql security definer stable set search_path = public as $$
@@ -203,14 +202,12 @@ $$;
 
 grant execute on function public.my_unread_notifications to authenticated;
 
--- ── AUTO-NOTIFY TRIGGERS ──
--- On absence, notify parent
+-- TRIGGERS
 create or replace function public.notify_absence()
 returns trigger language plpgsql security definer as $$
 declare
   v_parent_id uuid;
   v_student_name text;
-  v_parent_email text;
 begin
   if new.status <> 'absent' then return new; end if;
 
@@ -242,7 +239,6 @@ create trigger trg_notify_absence
   after insert or update on public.attendance
   for each row execute function public.notify_absence();
 
--- On grade published, notify student + parent
 create or replace function public.notify_result()
 returns trigger language plpgsql security definer as $$
 declare
