@@ -1,6 +1,9 @@
 -- ============================================================
--- Migration 016: Complete Signup Architecture
+-- Migration 016: Complete Signup Architecture (FIXED)
 -- ============================================================
+
+-- Enable pg_trgm for fuzzy search
+create extension if not exists pg_trgm;
 
 -- Extend profiles
 alter table public.profiles add column if not exists primary_role text;
@@ -118,9 +121,9 @@ create policy "join_req_create" on public.join_requests
 create policy "join_req_admin" on public.join_requests
   for all to authenticated using (public.is_admin_of(institution_id)) with check (public.is_admin_of(institution_id));
 
--- ── FUNCTIONS ──
+-- ── FUZZY SEARCH FUNCTION (FIXED with similarity from pg_trgm) ──
+drop function if exists public.search_institutions_fuzzy(text, text, int);
 
--- Fuzzy institution search
 create or replace function public.search_institutions_fuzzy(
   p_query text,
   p_division text default null,
@@ -139,7 +142,7 @@ returns table (
   student_count bigint,
   match_score int
 )
-language sql security definer stable set search_path = public as $$
+language sql security definer stable set search_path = public, extensions as $$
   with normalized as (
     select
       i.id, i.name, i.slug, i.type, i.emoji, i.logo_url,
@@ -150,7 +153,7 @@ language sql security definer stable set search_path = public as $$
         when lower(i.name) like lower(p_query) || '%' then 90
         when lower(i.name) like '%' || lower(p_query) || '%' then 75
         when lower(i.slug) like lower(p_query) || '%' then 85
-        when word_similarity(p_query, i.name) > 0.4 then 50 + (word_similarity(p_query, i.name) * 40)::int
+        when similarity(p_query, i.name) > 0.3 then 50 + (similarity(p_query, i.name) * 40)::int
         else 0
       end as match_score
     from public.institutions i
@@ -159,7 +162,7 @@ language sql security definer stable set search_path = public as $$
       and (
         lower(i.name) like '%' || lower(p_query) || '%'
         or lower(i.slug) like '%' || lower(p_query) || '%'
-        or word_similarity(p_query, i.name) > 0.3
+        or similarity(p_query, i.name) > 0.2
       )
   )
   select id, name, slug, type, emoji, logo_url, division, null::text as district, city, student_count, match_score
@@ -169,6 +172,8 @@ language sql security definer stable set search_path = public as $$
   limit p_limit;
 $$;
 grant execute on function public.search_institutions_fuzzy to authenticated;
+
+-- ── REMAINING FUNCTIONS ──
 
 -- Record user intent
 create or replace function public.record_user_intent(
@@ -208,8 +213,7 @@ create or replace function public.request_institution(
 )
 returns jsonb
 language plpgsql security definer set search_path = public as $$
-declare
-  v_id uuid;
+declare v_id uuid;
 begin
   if auth.uid() is null then raise exception 'Auth required'; end if;
   if length(trim(p_name)) < 2 then raise exception 'Name too short'; end if;
@@ -227,7 +231,7 @@ end;
 $$;
 grant execute on function public.request_institution to authenticated;
 
--- Approve institution request (SKB admin)
+-- Approve institution request
 create or replace function public.approve_institution_request(
   p_request_id uuid,
   p_notes text default null
@@ -240,7 +244,6 @@ declare
   v_slug text;
   v_base_slug text;
   v_counter int := 0;
-  v_requester uuid;
 begin
   if not public.is_platform_admin() then raise exception 'Platform admin required'; end if;
 
@@ -248,7 +251,6 @@ begin
   if v_req is null then raise exception 'Request not found'; end if;
   if v_req.status <> 'pending' then raise exception 'Already processed'; end if;
 
-  -- Generate unique slug
   v_base_slug := lower(regexp_replace(v_req.name, '[^a-zA-Z0-9]+', '-', 'g'));
   v_base_slug := trim(both '-' from v_base_slug);
   v_slug := v_base_slug;
@@ -257,7 +259,6 @@ begin
     v_slug := v_base_slug || '-' || v_counter;
   end loop;
 
-  -- Create institution
   insert into public.institutions (
     name, slug, type, division, city, education_board,
     contact_email, contact_phone, description,
@@ -270,21 +271,15 @@ begin
     'active'
   ) returning id into v_inst_id;
 
-  -- Give requester admin role
   insert into public.memberships (institution_id, user_id, role)
   values (v_inst_id, v_req.requested_by, 'admin')
   on conflict do nothing;
 
-  -- Update request
   update public.institution_requests
-    set status = 'approved',
-        institution_id = v_inst_id,
-        reviewed_by = auth.uid(),
-        reviewed_at = now(),
-        review_notes = p_notes
+    set status = 'approved', institution_id = v_inst_id,
+        reviewed_by = auth.uid(), reviewed_at = now(), review_notes = p_notes
     where id = p_request_id;
 
-  -- Notify requester
   insert into public.notifications (institution_id, recipient_user_id, title, body, category)
   values (v_inst_id, v_req.requested_by, '🎉 Institution approved!',
     v_req.name || ' অনুমোদিত হয়েছে। এখন admin হিসেবে কাজ শুরু করুন।', 'general');
@@ -304,7 +299,6 @@ language plpgsql security definer set search_path = public as $$
 declare v_req record;
 begin
   if not public.is_platform_admin() then raise exception 'Platform admin required'; end if;
-
   select * into v_req from public.institution_requests where id = p_request_id;
   if v_req is null then raise exception 'Not found'; end if;
 
@@ -314,12 +308,12 @@ begin
 
   insert into public.notifications (institution_id, recipient_user_id, title, body, category)
   values (null, v_req.requested_by, 'Institution request update',
-    'আপনার request টি currently অনুমোদিত হয়নি: ' || p_reason, 'general');
+    'আপনার request টি অনুমোদিত হয়নি: ' || p_reason, 'general');
 end;
 $$;
 grant execute on function public.reject_institution_request to authenticated;
 
--- Request to join existing institution
+-- Request to join
 create or replace function public.request_to_join(
   p_institution_id uuid,
   p_role text,
@@ -334,12 +328,10 @@ declare
 begin
   if auth.uid() is null then raise exception 'Auth required'; end if;
 
-  -- Already a member?
   if exists (select 1 from public.memberships where institution_id = p_institution_id and user_id = auth.uid() and role = p_role) then
     return jsonb_build_object('status', 'already_member');
   end if;
 
-  -- Already requested?
   if exists (select 1 from public.join_requests where institution_id = p_institution_id and user_id = auth.uid() and requested_role = p_role and status = 'pending') then
     return jsonb_build_object('status', 'already_pending');
   end if;
@@ -351,7 +343,6 @@ begin
   values (p_institution_id, auth.uid(), p_role, p_metadata)
   returning id into v_id;
 
-  -- Notify institution admins
   select array_agg(user_id) into v_admin_ids
   from public.memberships where institution_id = p_institution_id and role = 'admin';
 
@@ -359,8 +350,7 @@ begin
     insert into public.notifications (institution_id, recipient_user_id, title, body, category)
     select p_institution_id, unnest(v_admin_ids),
       'New ' || p_role || ' join request',
-      coalesce((select full_name from public.profiles where id = auth.uid()), 'A user') ||
-        ' wants to join as ' || p_role,
+      coalesce((select full_name from public.profiles where id = auth.uid()), 'A user') || ' wants to join as ' || p_role,
       'general';
   end if;
 
@@ -389,7 +379,6 @@ begin
   values (v_req.institution_id, v_req.user_id, v_req.requested_role)
   on conflict do nothing;
 
-  -- Link student record if student
   if v_req.requested_role = 'student' then
     update public.students set linked_user_id = v_req.user_id
     where institution_id = v_req.institution_id
@@ -397,7 +386,6 @@ begin
       and linked_user_id is null;
   end if;
 
-  -- Link parent children
   if v_req.requested_role = 'parent' then
     insert into public.parent_student_links (parent_user_id, student_id, institution_id, relationship)
     select v_req.user_id, s.id, v_req.institution_id, 'guardian'
@@ -430,7 +418,6 @@ language plpgsql security definer set search_path = public as $$
 declare v_req record;
 begin
   if auth.uid() is null then raise exception 'Auth required'; end if;
-
   select * into v_req from public.join_requests where id = p_request_id;
   if v_req is null then raise exception 'Not found'; end if;
   if not public.is_admin_of(v_req.institution_id) then raise exception 'Admin required'; end if;
@@ -459,21 +446,17 @@ begin
   if auth.uid() is null then raise exception 'Auth required'; end if;
 
   update public.profiles
-    set primary_role = p_primary_role,
-        sub_role = p_sub_role,
-        interests = p_interests,
-        preferences = p_preferences,
+    set primary_role = p_primary_role, sub_role = p_sub_role,
+        interests = p_interests, preferences = p_preferences,
         onboarding_complete = true
     where id = auth.uid();
 
-  update public.user_intents
-    set completed = true, updated_at = now()
-    where user_id = auth.uid();
+  update public.user_intents set completed = true, updated_at = now() where user_id = auth.uid();
 end;
 $$;
 grant execute on function public.complete_onboarding to authenticated;
 
--- Get my pending requests
+-- My pending requests
 create or replace function public.my_pending_requests()
 returns table (
   request_type text,
