@@ -20,6 +20,9 @@ import TimetableTab from "@/components/institution/TimetableTab";
 import ReportCard from "@/components/institution/ReportCard";
 import CommunicationTab from "@/components/institution/CommunicationTab";
 import QuickSearch from "@/components/institution/QuickSearch";
+import HolidaysTab from "@/components/institution/HolidaysTab";
+import PromotionTab from "@/components/institution/PromotionTab";
+import BulkImportModal from "@/components/institution/BulkImportModal";
 import NotificationCenter from "@/components/NotificationCenter";
 
 export default function Page() {
@@ -34,7 +37,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "settings";
+type Tab = "overview" | "analytics" | "classes" | "students" | "teachers" | "subjects" | "timetable" | "exams" | "attendance" | "finance" | "notices" | "communication" | "holidays" | "promotion" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -98,6 +101,8 @@ function InstitutionView() {
     { key: "finance",    label: "Finance",    bn: "হিসাব",        emoji: "💵" },
     { key: "notices",    label: "Notices",    bn: "নোটিশ",        emoji: "📢" },
     { key: "communication", label: "Messages", bn: "বার্তা",  emoji: "✉️" },
+    { key: "holidays",   label: "Holidays",   bn: "ছুটি",         emoji: "🎉" },
+    { key: "promotion",  label: "Promotion",  bn: "প্রমোশন",      emoji: "🔄" },
     { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
   ];
 
@@ -192,6 +197,8 @@ function InstitutionView() {
         {tab === "finance" && <FinanceTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "notices" && <NoticesTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "communication" && <CommunicationTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "holidays" && <HolidaysTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "promotion" && <PromotionTab institutionId={inst.id} isAdmin={isAdmin} />}
         {tab === "settings" && (
           <div className="rounded-2xl border p-6" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <AcademicConfigurator

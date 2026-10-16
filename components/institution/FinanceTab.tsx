@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import FeeReceipt from "./FeeReceipt";
 
 const PAYMENT_METHODS = [
   { value: "cash",   label: "Cash",   emoji: "💵" },
@@ -46,6 +47,8 @@ export default function FinanceTab({ institutionId, isAdmin }: { institutionId: 
       {view === "overview" && <Overview stats={stats} loading={loading} />}
       {view === "structures" && <FeeStructures institutionId={institutionId} isAdmin={isAdmin} />}
       {view === "payments" && <Payments institutionId={institutionId} isAdmin={isAdmin} onChange={load} />}
+    
+      {receiptId && <FeeReceipt paymentId={receiptId} onClose={() => setReceiptId(null)} />}
     </div>
   );
 }
@@ -255,6 +258,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
     amount: 0, paid_amount: 0, payment_method: "cash",
     transaction_id: "", month: "", year: new Date().getFullYear(), note: "",
   });
+  const [receiptId, setReceiptId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -447,12 +451,19 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
                   <div className="text-[13px] font-bold">৳{Number(p.paid_amount).toLocaleString()}<span className="text-[11px] font-normal" style={{ color: "var(--text-muted)" }}>/{Number(p.amount).toLocaleString()}</span></div>
                   <span className={"inline-block mt-1 rounded-full px-2 py-0.5 text-[10px] font-semibold " + sm.cls}>{sm.label}</span>
                 </div>
-                {isAdmin && p.status !== "paid" && p.status !== "waived" && (
-                  <button onClick={() => markPaid(p.id, Number(p.amount))}
-                    className="rounded-full bg-emerald-500/15 px-2 py-1 text-[11px] font-semibold text-emerald-700">
-                    Mark Paid
-                  </button>
-                )}
+                <div className="flex gap-1">
+                  {(p.status === "paid" || p.status === "partial") && (
+                    <button onClick={() => setReceiptId(p.id)}
+                      className="rounded-full border px-2 py-1 text-[11px] font-medium"
+                      style={{ borderColor: "var(--border)" }}>🧾</button>
+                  )}
+                  {isAdmin && p.status !== "paid" && p.status !== "waived" && (
+                    <button onClick={() => markPaid(p.id, Number(p.amount))}
+                      className="rounded-full bg-emerald-500/15 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+                      Paid
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}

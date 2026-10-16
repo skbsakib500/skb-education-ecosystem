@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import BulkImportModal from "./BulkImportModal";
 
 const CLASS_ROLES = [
   { value: "student",           label: "Student",        bn: "ছাত্র",           emoji: "👤" },
@@ -22,6 +23,7 @@ export default function StudentsTabV2({
   const [err, setErr] = useState("");
   const [previewId, setPreviewId] = useState("");
   const [filter, setFilter] = useState("");
+  const [showBulkImport, setShowBulkImport] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -98,10 +100,17 @@ export default function StudentsTabV2({
             {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           {isAdmin && (
-            <button onClick={() => setShowForm(!showForm)}
-              className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
-              {showForm ? "Cancel" : "+ Add Student"}
-            </button>
+            <div className="flex gap-2">
+              <button onClick={() => setShowBulkImport(true)}
+                className="rounded-full border px-3 py-1.5 text-[12px] font-semibold"
+                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+                📥 Bulk Import
+              </button>
+              <button onClick={() => setShowForm(!showForm)}
+                className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
+                {showForm ? "Cancel" : "+ Add Student"}
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -238,6 +247,14 @@ export default function StudentsTabV2({
             );
           })}
         </div>
+      )}
+
+      {showBulkImport && (
+        <BulkImportModal
+          institutionId={institutionId}
+          onClose={() => setShowBulkImport(false)}
+          onComplete={async () => { await load(); onChange(); }}
+        />
       )}
     </div>
   );
