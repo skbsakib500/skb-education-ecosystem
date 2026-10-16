@@ -111,34 +111,29 @@ export default function NewInstitutionPage() {
     if (slugStatus !== "available") { setError("Choose an available slug first"); return; }
     setLoading(true); setError("");
 
-    // Step 1: Create institution (без logo)
-    const { data: inst, error: instErr } = await supabase.from("institutions").insert({
-      name: form.name.trim(),
-      slug: form.slug,
-      type: form.type,
-      owner_email: user.email ?? "",
-      logo_url: null,
-      emoji: form.emoji,
-      division: form.division,
-      city: form.city.trim() || form.district,
-      education_board: form.education_board,
-      contact_phone: form.contact_phone.trim() || null,
-      contact_email: form.contact_email.trim() || null,
-      description: form.description.trim() || null,
-      motto: form.motto.trim() || null,
-      established_year: form.established_year,
-    }).select().single();
-
-    if (instErr) { setError(instErr.message); setLoading(false); return; }
-
-    // Step 2: Membership (admin role)
-    const { error: memErr } = await supabase.from("memberships").insert({
-      institution_id: inst.id, user_id: user.id, role: "admin",
+    // Atomic create via SECURITY DEFINER function
+    const { data: inst, error: instErr } = await supabase.rpc("create_institution_with_admin", {
+      p_name: form.name.trim(),
+      p_slug: form.slug,
+      p_type: form.type,
+      p_emoji: form.emoji,
+      p_division: form.division,
+      p_city: form.city.trim() || form.district,
+      p_education_board: form.education_board,
+      p_contact_phone: form.contact_phone.trim() || null,
+      p_contact_email: form.contact_email.trim() || null,
+      p_description: form.description.trim() || null,
+      p_motto: form.motto.trim() || null,
+      p_established_year: form.established_year,
     });
 
-    if (memErr) { setError(memErr.message); setLoading(false); return; }
+    if (instErr || !inst) {
+      setError(instErr?.message ?? "Failed to create institution");
+      setLoading(false);
+      return;
+    }
 
-    // Step 3: Logo upload (now user is admin → is_admin_of() passes)
+    // Logo upload (user is now admin → is_admin_of() passes)
     if (logoFile) {
       const logo_url = await uploadLogo(inst.id);
       if (logo_url) {
