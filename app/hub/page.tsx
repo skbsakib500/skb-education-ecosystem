@@ -109,6 +109,16 @@ export default function HubPage() {
       color: "#0ea5e9",
     },
     {
+      key: "materials",
+      href: "/materials",
+      emoji: "📚",
+      title: "Study Materials",
+      bn: "পাঠ্য সামগ্রী",
+      desc: "PDF, Video, Note, Link — সব",
+      show: true,
+      color: "#06b6d4",
+    },
+    {
       key: "journals",
       href: "/journals",
       emoji: "📔",

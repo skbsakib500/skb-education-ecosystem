@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import { useRealtimeMessages } from "@/lib/useRealtime";
 
 export default function Page() {
   return <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" /></div>}><ChatView /></Suspense>;
@@ -42,10 +43,19 @@ function ChatView() {
     if (user && convId) load();
   }, [user, convId, authLoading, router]);
 
-  // Poll for new messages
+  // Real-time subscription
+  useRealtimeMessages(convId, async () => {
+    if (convId) {
+      const { data } = await supabase.from("messages").select("id, content, sender_id, created_at")
+        .eq("conversation_id", convId).order("created_at", { ascending: true }).limit(200);
+      setMessages(data ?? []);
+    }
+  });
+
+  // Fallback poll every 30s
   useEffect(() => {
     if (!convId || !user) return;
-    const t = setInterval(load, 5000);
+    const t = setInterval(load, 30000);
     return () => clearInterval(t);
   }, [convId, user]);
 
