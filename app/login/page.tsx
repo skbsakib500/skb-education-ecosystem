@@ -86,6 +86,12 @@ export default function LoginPage() {
           </button>
         </form>
 
+        <div className="mt-3 text-center text-[13px]">
+          <Link href="/forgot-password" className="font-medium text-emerald-700 dark:text-emerald-300">
+            Forgot password? • পাসওয়ার্ড ভুলে গেছেন?
+          </Link>
+        </div>
+
         <div className="mt-5 text-center text-[13px]" style={{ color: "var(--text-muted)" }}>
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="font-medium text-emerald-700 dark:text-emerald-300">

@@ -19,6 +19,7 @@ import SubjectsTab from "@/components/institution/SubjectsTab";
 import TimetableTab from "@/components/institution/TimetableTab";
 import ReportCard from "@/components/institution/ReportCard";
 import CommunicationTab from "@/components/institution/CommunicationTab";
+import QuickSearch from "@/components/institution/QuickSearch";
 import NotificationCenter from "@/components/NotificationCenter";
 
 export default function Page() {
@@ -109,6 +110,7 @@ function InstitutionView() {
           <div className="flex items-center gap-2">
             {isAdmin && <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-700">ADMIN</span>}
             <span className="text-[11px] capitalize hidden sm:inline" style={{ color: "var(--text-muted)" }}>{membership?.role ?? "member"}</span>
+            <QuickSearch institutionId={inst.id} />
             <NotificationCenter />
           </div>
         </div>
@@ -140,6 +142,12 @@ function InstitutionView() {
                 </span>
                 {inst.established_year && (
                   <span className="rounded-full bg-white/15 px-2.5 py-1 backdrop-blur">Est. {inst.established_year}</span>
+                )}
+                {isAdmin && (
+                  <Link href={"/institutions/edit/?slug=" + inst.slug}
+                    className="rounded-full bg-white/20 px-2.5 py-1 backdrop-blur hover:bg-white/30 font-semibold">
+                    ✏️ Edit
+                  </Link>
                 )}
               </div>
             </div>

@@ -115,6 +115,16 @@ export default function HubPage() {
       show: true,
       color: "#f43f5e",
     },
+    {
+      key: "profile",
+      href: "/profile",
+      emoji: "👤",
+      title: "My Profile",
+      bn: "আমার প্রোফাইল",
+      desc: "নাম, ফোন, ছবি পরিবর্তন করুন",
+      show: true,
+      color: "#06b6d4",
+    },
   ];
 
   const visiblePortals = portals.filter((p) => p.show);
