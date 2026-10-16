@@ -77,6 +77,16 @@ export default function HubPage() {
       color: "#10b981",
     },
     {
+      key: "messages",
+      href: "/messages",
+      emoji: "💬",
+      title: "Messages",
+      bn: "বার্তা",
+      desc: "সরাসরি চ্যাট করুন",
+      show: true,
+      color: "#0ea5e9",
+    },
+    {
       key: "marketplace",
       href: "/marketplace",
       emoji: "🛒",

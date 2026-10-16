@@ -78,11 +78,21 @@ function ProfileView() {
                   ✏️ Edit Profile
                 </Link>
               ) : (
-                <button onClick={toggleFollow}
-                  className={"rounded-full px-6 py-2 text-[13px] font-semibold shadow " + (following ? "border" : "bg-gradient-to-br from-emerald-500 to-teal-600 text-white")}
-                  style={following ? { borderColor: "var(--border)" } : {}}>
-                  {following ? "✓ Following" : "+ Follow"}
-                </button>
+                <div className="flex gap-2">
+                  <button onClick={toggleFollow}
+                    className={"rounded-full px-5 py-2 text-[13px] font-semibold shadow " + (following ? "border" : "bg-gradient-to-br from-emerald-500 to-teal-600 text-white")}
+                    style={following ? { borderColor: "var(--border)" } : {}}>
+                    {following ? "✓ Following" : "+ Follow"}
+                  </button>
+                  <button onClick={async () => {
+                    const { data: cid } = await supabase.rpc("start_direct_conversation", { p_other_user_id: p.id });
+                    if (cid) router.push("/messages/view/?id=" + cid);
+                  }}
+                    className="rounded-full border px-5 py-2 text-[13px] font-medium"
+                    style={{ borderColor: "var(--border)" }}>
+                    💬 Message
+                  </button>
+                </div>
               )}
             </div>
 
