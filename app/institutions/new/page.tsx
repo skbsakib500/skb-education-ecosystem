@@ -1,30 +1,15 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
 import { getGroupedTypes, getInstitutionMeta, INSTITUTION_TYPES } from "@/lib/institution-types";
+import { DIVISIONS, getDistricts, getDivisionMeta, getDistrictMeta } from "@/lib/bangladesh-data";
+import { getGroupedBoards, getBoardMeta, EDUCATION_BOARDS } from "@/lib/education-boards";
 
 const RESERVED = ["admin","api","app","login","signup","dashboard","www","new","edit"];
 const EMOJIS = ["🏫","🎓","🏛️","⚕️","⚙️","🕌","📚","🔧","🎨","🤝","⭐","🎯","💡","🔬","🌐"];
-
-const DIVISIONS = ["Dhaka","Chittagong","Rajshahi","Khulna","Barishal","Sylhet","Rangpur","Mymensingh"];
-
-const BOARDS = [
-  { value: "dhaka", label: "Dhaka Board" },
-  { value: "chittagong", label: "Chittagong Board" },
-  { value: "rajshahi", label: "Rajshahi Board" },
-  { value: "khulna", label: "Khulna Board" },
-  { value: "barishal", label: "Barishal Board" },
-  { value: "sylhet", label: "Sylhet Board" },
-  { value: "dinajpur", label: "Dinajpur Board" },
-  { value: "mymensingh", label: "Mymensingh Board" },
-  { value: "madrasah", label: "Madrasah Board" },
-  { value: "technical", label: "Technical Board" },
-  { value: "university", label: "University Grants Commission" },
-  { value: "none", label: "None / Independent" },
-];
 
 function slugify(input: string): string {
   return input.toLowerCase().trim()
@@ -44,9 +29,10 @@ export default function NewInstitutionPage() {
     slug: "",
     type: "high_school",
     emoji: "🏫",
-    division: "Dhaka",
+    division: "dhaka",
+    district: "dhaka",
     city: "",
-    education_board: "dhaka",
+    education_board: "dhaka_board",
     contact_phone: "",
     contact_email: "",
     description: "",
@@ -72,7 +58,6 @@ export default function NewInstitutionPage() {
     }
   }, [form.name, slugTouched]);
 
-  // Auto-set emoji when type changes
   useEffect(() => {
     const meta = getInstitutionMeta(form.type);
     if (meta.emoji) setForm((f) => ({ ...f, emoji: meta.emoji }));
@@ -82,7 +67,7 @@ export default function NewInstitutionPage() {
     const slug = form.slug;
     if (!slug) { setSlugStatus("idle"); setSlugError(""); return; }
     if (slug.length < 3) { setSlugStatus("invalid"); setSlugError("Must be at least 3 characters"); return; }
-    if (RESERVED.includes(slug)) { setSlugStatus("invalid"); setSlugError(`"${slug}" reserved`); return; }
+    if (RESERVED.includes(slug)) { setSlugStatus("invalid"); setSlugError(`"${slug}" is reserved`); return; }
     setSlugStatus("checking");
     const timer = setTimeout(async () => {
       const { data } = await supabase.from("institutions").select("id").eq("slug", slug).maybeSingle();
@@ -93,6 +78,11 @@ export default function NewInstitutionPage() {
   }, [form.slug]);
 
   const update = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
+
+  const onDivisionChange = (div: string) => {
+    const districts = getDistricts(div);
+    setForm((f) => ({ ...f, division: div, district: districts[0]?.value ?? "" }));
+  };
 
   const onLogoPick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -120,7 +110,7 @@ export default function NewInstitutionPage() {
     if (slugStatus !== "available") { setError("Choose an available slug first"); return; }
     setLoading(true); setError("");
 
-    // Step 1: Institution create (без logo)
+    // Step 1: Create institution (без logo)
     const { data: inst, error: instErr } = await supabase.from("institutions").insert({
       name: form.name.trim(),
       slug: form.slug,
@@ -129,7 +119,7 @@ export default function NewInstitutionPage() {
       logo_url: null,
       emoji: form.emoji,
       division: form.division,
-      city: form.city.trim() || null,
+      city: form.city.trim() || form.district,
       education_board: form.education_board,
       contact_phone: form.contact_phone.trim() || null,
       contact_email: form.contact_email.trim() || null,
@@ -140,14 +130,14 @@ export default function NewInstitutionPage() {
 
     if (instErr) { setError(instErr.message); setLoading(false); return; }
 
-    // Step 2: Membership create (admin role)
+    // Step 2: Membership (admin role)
     const { error: memErr } = await supabase.from("memberships").insert({
       institution_id: inst.id, user_id: user.id, role: "admin",
     });
 
     if (memErr) { setError(memErr.message); setLoading(false); return; }
 
-    // Step 3: NOW upload logo (user is admin, is_admin_of() passes)
+    // Step 3: Logo upload (now user is admin → is_admin_of() passes)
     if (logoFile) {
       const logo_url = await uploadLogo(inst.id);
       if (logo_url) {
@@ -166,14 +156,20 @@ export default function NewInstitutionPage() {
     );
   }
 
-  const grouped = getGroupedTypes();
+  const groupedTypes = getGroupedTypes();
+  const groupedBoards = getGroupedBoards();
+  const districts = getDistricts(form.division);
   const meta = getInstitutionMeta(form.type);
+  const boardMeta = getBoardMeta(form.education_board);
+  const divisionMeta = getDivisionMeta(form.division);
+  const districtMeta = getDistrictMeta(form.division, form.district);
   const finalUrl = `skb.edu.bd/${form.slug || "your-institution"}`;
 
   return (
     <main className="min-h-screen px-4 py-10">
       <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
 
+        {/* ── FORM ── */}
         <div className="rounded-3xl border p-6 md:p-8 shadow-xl"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
 
@@ -187,7 +183,7 @@ export default function NewInstitutionPage() {
 
           <form onSubmit={submit} className="mt-6 space-y-5">
 
-            {/* Type — first & prominent */}
+            {/* Type — categorized */}
             <div>
               <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
                 Institution Type *
@@ -195,7 +191,7 @@ export default function NewInstitutionPage() {
               <select value={form.type} onChange={(e) => update("type", e.target.value)}
                 className="mt-1 w-full rounded-xl border px-3.5 py-3 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                {grouped.map((g) => (
+                {groupedTypes.map((g) => (
                   <optgroup key={g.category} label={`${g.meta.emoji} ${g.meta.label} · ${g.meta.bn}`}>
                     {g.items.map((t) => (
                       <option key={t.value} value={t.value}>
@@ -206,7 +202,7 @@ export default function NewInstitutionPage() {
                 ))}
               </select>
               <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
-                {grouped.length} categories • {INSTITUTION_TYPES.length} types
+                {groupedTypes.length} categories • {INSTITUTION_TYPES.length} types
               </p>
             </div>
 
@@ -272,33 +268,63 @@ export default function NewInstitutionPage() {
               )}
             </div>
 
-            {/* Division + City */}
+            {/* Division → District (cascading) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Division</label>
-                <select value={form.division} onChange={(e) => update("division", e.target.value)}
+                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Division *</label>
+                <select value={form.division} onChange={(e) => onDivisionChange(e.target.value)}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                  {DIVISIONS.map((d) => <option key={d} value={d}>{d}</option>)}
+                  {DIVISIONS.map((d) => (
+                    <option key={d.value} value={d.value}>{d.label} · {d.bn}</option>
+                  ))}
                 </select>
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>City / Area</label>
-                <input type="text" value={form.city} onChange={(e) => update("city", e.target.value)}
-                  placeholder="Mirpur, Dhaka"
-                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
-                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>District *</label>
+                <select value={form.district} onChange={(e) => update("district", e.target.value)}
+                  className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
+                  style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+                  {districts.map((d) => (
+                    <option key={d.value} value={d.value}>{d.label} · {d.bn}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            {/* Board */}
+            {/* City / Area */}
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Education Board / Affiliation</label>
+              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>City / Area (optional)</label>
+              <input type="text" value={form.city} onChange={(e) => update("city", e.target.value)}
+                placeholder="Mirpur, Dhanmondi, Banani..."
+                className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
+                style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
+              <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
+                খালি রাখলে district-এর নাম দেখাবে
+              </p>
+            </div>
+
+            {/* Education Board — categorized */}
+            <div>
+              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>
+                Education Board / Affiliation *
+              </label>
               <select value={form.education_board} onChange={(e) => update("education_board", e.target.value)}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-                {BOARDS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
+                {groupedBoards.map((g) => (
+                  <optgroup key={g.category} label={`${g.meta.emoji} ${g.meta.label} · ${g.meta.bn}`}>
+                    {g.items.map((b) => (
+                      <option key={b.value} value={b.value}>
+                        {b.emoji} {b.label} · {b.bn}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
               </select>
+              <p className="mt-1 text-[11px]" style={{ color: "var(--text-faint)" }}>
+                {groupedBoards.length} categories • {EDUCATION_BOARDS.length} boards
+              </p>
             </div>
 
             {/* Advanced toggle */}
@@ -370,7 +396,7 @@ export default function NewInstitutionPage() {
           </div>
         </div>
 
-        {/* Preview */}
+        {/* ── PREVIEW ── */}
         <div className="lg:sticky lg:top-8 self-start">
           <div className="text-[11px] uppercase font-semibold tracking-widest mb-3" style={{ color: "var(--text-faint)" }}>
             Live Preview
@@ -395,9 +421,9 @@ export default function NewInstitutionPage() {
                 <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-700 font-medium">
                   {meta.emoji} {meta.label}
                 </span>
-                {form.division && (
+                {districtMeta && (
                   <span className="rounded-full px-2 py-0.5 font-medium" style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
-                    📍 {form.division}
+                    📍 {districtMeta.label}, {divisionMeta?.label}
                   </span>
                 )}
                 {form.established_year && (
@@ -405,6 +431,12 @@ export default function NewInstitutionPage() {
                     Est. {form.established_year}
                   </span>
                 )}
+              </div>
+              <div className="mt-2">
+                <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium"
+                  style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
+                  {boardMeta.emoji} {boardMeta.label}
+                </span>
               </div>
               {form.description && (
                 <p className="mt-3 text-[12px] leading-relaxed line-clamp-2" style={{ color: "var(--text-muted)" }}>{form.description}</p>
@@ -430,6 +462,8 @@ export default function NewInstitutionPage() {
               <Check ok={form.name.length > 2} label="Institution name" />
               <Check ok={slugStatus === "available"} label="Unique URL slug" />
               <Check ok={!!form.type} label="Type selected" />
+              <Check ok={!!form.division && !!form.district} label="Division & district" />
+              <Check ok={!!form.education_board} label="Board selected" />
               <Check ok={!!logoPreview} label="Logo uploaded" optional />
             </div>
           </div>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { DIVISIONS, getDistricts } from "@/lib/bangladesh-data";
 
 export default function SignupPage() {
   const [step, setStep] = useState<1 | 2>(1);
