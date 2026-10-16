@@ -77,7 +77,7 @@ export default function DashboardPage() {
                 className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-emerald-700 shadow">
                 + Create Institution
               </Link>
-              <Link href="/" className="rounded-full bg-white/15 px-4 py-2 text-[13px] font-medium backdrop-blur hover:bg-white/20">
+              <Link href="/hub" className="rounded-full bg-white/15 px-4 py-2 text-[13px] font-medium backdrop-blur hover:bg-white/20">
                 View Public Site
               </Link>
             </div>
@@ -126,7 +126,7 @@ function Header({ user, profile, onSignOut }: { user: any; profile: any; onSignO
     <header className="sticky top-0 z-30 border-b"
       style={{ borderColor: "var(--border)", background: "var(--surface)", backdropFilter: "blur(24px)" }}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-8">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/hub" className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-[13px] shadow-lg">
             SKB
           </div>
@@ -136,6 +136,7 @@ function Header({ user, profile, onSignOut }: { user: any; profile: any; onSignO
           </div>
         </Link>
         <div className="flex items-center gap-2">
+          <Link href="/hub" className="hidden md:flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium" style={{ borderColor: "var(--border)" }}>🏠 Hub</Link>
           <NotificationCenter />
           <Link href="/institutions/new"
             className="hidden md:flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">

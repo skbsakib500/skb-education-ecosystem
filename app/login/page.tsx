@@ -22,7 +22,7 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/skb-education-ecosystem/dashboard/";
+    window.location.href = "/skb-education-ecosystem/hub/";
   };
 
   return (

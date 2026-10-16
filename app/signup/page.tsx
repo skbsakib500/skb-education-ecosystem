@@ -81,7 +81,7 @@ export default function SignupPage() {
       return;
     }
 
-    window.location.href = "/skb-education-ecosystem/dashboard/";
+    window.location.href = "/skb-education-ecosystem/hub/";
   };
 
   return (

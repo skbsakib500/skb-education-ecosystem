@@ -45,7 +45,7 @@ function JoinView() {
 
       setInviteInfo(data);
       setStatus("success");
-      setTimeout(() => router.push("/dashboard/"), 2500);
+      setTimeout(() => router.push("/hub/"), 2500);
     })();
   }, [user, authLoading, token, router]);
 
