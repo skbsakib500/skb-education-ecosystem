@@ -102,11 +102,13 @@ export default function NewInstitutionPage() {
     setLogoPreview(URL.createObjectURL(file));
   };
 
-  const uploadLogo = async (): Promise<string | null> => {
-    if (!logoFile || !user) return null;
-    const ext = logoFile.name.split(".").pop();
-    const path = `${user.id}/${Date.now()}.${ext}`;
-    const { error: upErr } = await supabase.storage.from("institution-logos").upload(path, logoFile, { upsert: true });
+  const uploadLogo = async (institutionId: string): Promise<string | null> => {
+    if (!logoFile) return null;
+    const ext = (logoFile.name.split(".").pop() || "png").toLowerCase();
+    const path = `${institutionId}/logo.${ext}`;
+    const { error: upErr } = await supabase.storage
+      .from("institution-logos")
+      .upload(path, logoFile, { upsert: true, contentType: logoFile.type });
     if (upErr) { setError(`Logo upload failed: ${upErr.message}`); return null; }
     const { data } = supabase.storage.from("institution-logos").getPublicUrl(path);
     return data.publicUrl;
@@ -118,18 +120,13 @@ export default function NewInstitutionPage() {
     if (slugStatus !== "available") { setError("Choose an available slug first"); return; }
     setLoading(true); setError("");
 
-    let logo_url: string | null = null;
-    if (logoFile) {
-      logo_url = await uploadLogo();
-      if (!logo_url && logoFile) { setLoading(false); return; }
-    }
-
+    // Step 1: Institution create (без logo)
     const { data: inst, error: instErr } = await supabase.from("institutions").insert({
       name: form.name.trim(),
       slug: form.slug,
       type: form.type,
       owner_email: user.email ?? "",
-      logo_url,
+      logo_url: null,
       emoji: form.emoji,
       division: form.division,
       city: form.city.trim() || null,
@@ -143,11 +140,20 @@ export default function NewInstitutionPage() {
 
     if (instErr) { setError(instErr.message); setLoading(false); return; }
 
+    // Step 2: Membership create (admin role)
     const { error: memErr } = await supabase.from("memberships").insert({
       institution_id: inst.id, user_id: user.id, role: "admin",
     });
 
     if (memErr) { setError(memErr.message); setLoading(false); return; }
+
+    // Step 3: NOW upload logo (user is admin, is_admin_of() passes)
+    if (logoFile) {
+      const logo_url = await uploadLogo(inst.id);
+      if (logo_url) {
+        await supabase.from("institutions").update({ logo_url }).eq("id", inst.id);
+      }
+    }
 
     window.location.href = "/skb-education-ecosystem/dashboard/";
   };
