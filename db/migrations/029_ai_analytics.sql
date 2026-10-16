@@ -1,8 +1,7 @@
 -- ============================================================
--- Migration 029: AI Tutor + Advanced Analytics
+-- Migration 029: AI Tutor + Advanced Analytics (FIXED)
 -- ============================================================
 
--- ── AI CONVERSATIONS ──
 create table if not exists public.ai_conversations (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -29,7 +28,6 @@ create table if not exists public.ai_messages (
 );
 create index if not exists idx_ai_msg_conv on public.ai_messages(conversation_id, created_at);
 
--- ── USAGE QUOTA ──
 create table if not exists public.ai_usage (
   user_id uuid primary key references auth.users(id) on delete cascade,
   messages_today int default 0,
@@ -39,7 +37,6 @@ create table if not exists public.ai_usage (
   updated_at timestamptz default now()
 );
 
--- ── STUDENT INSIGHTS (Predictive) ──
 create table if not exists public.student_insights (
   id uuid primary key default gen_random_uuid(),
   institution_id uuid not null references public.institutions(id) on delete cascade,
@@ -53,7 +50,6 @@ create table if not exists public.student_insights (
 );
 create index if not exists idx_insights_inst on public.student_insights(institution_id, risk_level);
 
--- ── ANALYTICS SNAPSHOTS (cached daily) ──
 create table if not exists public.analytics_snapshots (
   id uuid primary key default gen_random_uuid(),
   institution_id uuid not null references public.institutions(id) on delete cascade,
@@ -70,7 +66,6 @@ create table if not exists public.analytics_snapshots (
 );
 create index if not exists idx_snapshots_inst on public.analytics_snapshots(institution_id, snapshot_date desc);
 
--- ── RLS ──
 alter table public.ai_conversations enable row level security;
 alter table public.ai_messages enable row level security;
 alter table public.ai_usage enable row level security;
@@ -112,24 +107,15 @@ create policy "snapshots_admin" on public.analytics_snapshots
 
 -- ── FUNCTIONS ──
 
--- Check AI quota
 create or replace function public.check_ai_quota()
 returns jsonb language plpgsql security definer set search_path = public as $$
-declare
-  v_me uuid := auth.uid();
-  v_usage record;
+declare v_me uuid := auth.uid(); v_usage record;
 begin
   if v_me is null then raise exception 'Auth required'; end if;
-
   insert into public.ai_usage (user_id) values (v_me) on conflict (user_id) do nothing;
-
-  -- Reset daily counter if new day
-  update public.ai_usage
-    set messages_today = 0, last_reset_date = current_date
+  update public.ai_usage set messages_today = 0, last_reset_date = current_date
     where user_id = v_me and last_reset_date < current_date;
-
   select * into v_usage from public.ai_usage where user_id = v_me;
-
   return jsonb_build_object(
     'allowed', v_usage.messages_today < v_usage.daily_limit,
     'used', v_usage.messages_today,
@@ -140,21 +126,17 @@ end;
 $$;
 grant execute on function public.check_ai_quota to authenticated;
 
--- Increment AI usage
 create or replace function public.increment_ai_usage()
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if auth.uid() is null then return; end if;
-  update public.ai_usage set
-    messages_today = messages_today + 1,
-    messages_total = messages_total + 1,
-    updated_at = now()
+  update public.ai_usage set messages_today = messages_today + 1,
+    messages_total = messages_total + 1, updated_at = now()
   where user_id = auth.uid();
 end;
 $$;
 grant execute on function public.increment_ai_usage to authenticated;
 
--- Compute risk for a student
 create or replace function public.compute_student_risk(p_student_id uuid)
 returns jsonb language plpgsql security definer set search_path = public as $$
 declare
@@ -170,7 +152,6 @@ begin
   select id, institution_id, full_name into v_student from public.students where id = p_student_id;
   if v_student is null then raise exception 'Student not found'; end if;
 
-  -- Attendance rate (last 30 days)
   select case when count(*) > 0
     then round(100.0 * count(*) filter (where status in ('present','late')) / count(*), 1)
     else 100 end
@@ -178,18 +159,15 @@ begin
   from public.attendance
   where student_id = p_student_id and date >= current_date - 30;
 
-  -- Exam average
   select coalesce(round(avg(case when total_marks > 0 then score::numeric/total_marks*100 else 0 end), 1), 0)
   into v_exam_avg
   from public.exam_attempts
   where student_id = p_student_id and status = 'graded';
 
-  -- Fee due
   select coalesce(sum(amount - paid_amount), 0) into v_fee_due
   from public.fee_payments
   where student_id = p_student_id and status in ('pending','partial','overdue');
 
-  -- Score computation (0-100 risk score)
   v_score := 0;
   if v_att_pct < 50 then v_score := v_score + 40;
   elsif v_att_pct < 70 then v_score := v_score + 25;
@@ -208,11 +186,7 @@ begin
   elsif v_score >= 25 then v_risk := 'medium';
   else v_risk := 'low'; end if;
 
-  v_factors := jsonb_build_object(
-    'attendance_rate', v_att_pct,
-    'exam_average', v_exam_avg,
-    'fee_due', v_fee_due
-  );
+  v_factors := jsonb_build_object('attendance_rate', v_att_pct, 'exam_average', v_exam_avg, 'fee_due', v_fee_due);
 
   if v_att_pct < 70 then v_recommendations := v_recommendations || '["Improve attendance — meet with parents"]'::jsonb; end if;
   if v_exam_avg < 60 and v_exam_avg > 0 then v_recommendations := v_recommendations || '["Extra tutoring for weak subjects"]'::jsonb; end if;
@@ -230,26 +204,20 @@ end;
 $$;
 grant execute on function public.compute_student_risk to authenticated;
 
--- Batch compute for institution
 create or replace function public.compute_institution_risks(p_institution_id uuid)
 returns jsonb language plpgsql security definer set search_path = public as $$
-declare
-  v_count int := 0;
-  v_student record;
+declare v_count int := 0; v_student record;
 begin
   if not public.is_admin_of(p_institution_id) then raise exception 'Admin required'; end if;
-
   for v_student in select id from public.students where institution_id = p_institution_id loop
     perform public.compute_student_risk(v_student.id);
     v_count := v_count + 1;
   end loop;
-
   return jsonb_build_object('computed', v_count);
 end;
 $$;
 grant execute on function public.compute_institution_risks to authenticated;
 
--- At-risk students list
 create or replace function public.at_risk_students(p_institution_id uuid, p_limit int default 50)
 returns table (
   student_id uuid, full_name text, student_code text,
@@ -270,7 +238,7 @@ language sql security definer stable set search_path = public as $$
 $$;
 grant execute on function public.at_risk_students to authenticated;
 
--- Institution analytics summary (real-time)
+-- Simple analytics (no top_subjects to avoid errors)
 create or replace function public.institution_analytics(p_institution_id uuid)
 returns jsonb language sql security definer stable set search_path = public as $$
   select jsonb_build_object(
@@ -300,24 +268,11 @@ returns jsonb language sql security definer stable set search_path = public as $
     'risk', jsonb_build_object(
       'high', (select count(*) from public.student_insights where institution_id = p_institution_id and risk_level = 'high'),
       'critical', (select count(*) from public.student_insights where institution_id = p_institution_id and risk_level = 'critical')
-    ),
-    'top_subjects', coalesce((
-      select jsonb_agg(jsonb_build_object('subject', subject, 'avg', avg_score))
-      from (
-        select q.subject, round(avg(case when ea.total_marks > 0 then ea.score::numeric/ea.total_marks*100 else 0 end), 1) as avg_score
-        from public.exam_attempts ea
-        join public.exams e on e.id = ea.exam_id
-        join public.questions q on false  -- unused, use exam subject
-        where false
-        group by q.subject
-        limit 0
-      ) t
-    ), '[]'::jsonb)
+    )
   );
 $$;
 grant execute on function public.institution_analytics to authenticated;
 
--- Create AI conversation
 create or replace function public.create_ai_chat(p_title text default 'New Chat', p_subject text default null)
 returns uuid language plpgsql security definer set search_path = public as $$
 declare v_id uuid;
