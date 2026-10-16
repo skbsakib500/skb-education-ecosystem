@@ -7,13 +7,13 @@ import { useAuth } from "@/lib/auth";
 import { getInstitutionMeta } from "@/lib/institution-types";
 import { getBoardMeta } from "@/lib/education-boards";
 import { getDivisionMeta, getDistrictMeta } from "@/lib/bangladesh-data";
+import TeachersTab from "@/components/institution/TeachersTab";
+import ExamsTab from "@/components/institution/ExamsTab";
+import AttendanceTab from "@/components/institution/AttendanceTab";
+import NoticesTab from "@/components/institution/NoticesTab";
 
 export default function Page() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <InstitutionView />
-    </Suspense>
-  );
+  return <Suspense fallback={<Loading />}><InstitutionView /></Suspense>;
 }
 
 function Loading() {
@@ -24,7 +24,7 @@ function Loading() {
   );
 }
 
-type Tab = "overview" | "classes" | "students" | "teachers" | "settings";
+type Tab = "overview" | "classes" | "students" | "teachers" | "exams" | "attendance" | "notices" | "settings";
 
 function InstitutionView() {
   const { user, loading: authLoading } = useAuth();
@@ -34,7 +34,7 @@ function InstitutionView() {
 
   const [inst, setInst] = useState<any>(null);
   const [membership, setMembership] = useState<any>(null);
-  const [stats, setStats] = useState({ classes: 0, students: 0, teachers: 0 });
+  const [stats, setStats] = useState({ classes: 0, students: 0, teachers: 0, exams: 0 });
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("overview");
 
@@ -45,14 +45,10 @@ function InstitutionView() {
   useEffect(() => {
     if (!user || !slug) return;
     (async () => {
-      const { data: instData } = await supabase
-        .from("institutions").select("*").eq("slug", slug).maybeSingle();
+      const { data: instData } = await supabase.from("institutions").select("*").eq("slug", slug).maybeSingle();
       if (!instData) { router.push("/dashboard/"); return; }
-
-      const { data: memData } = await supabase
-        .from("memberships").select("*")
+      const { data: memData } = await supabase.from("memberships").select("*")
         .eq("institution_id", instData.id).eq("user_id", user.id).maybeSingle();
-
       setInst(instData);
       setMembership(memData);
       await refreshStats(instData.id);
@@ -61,12 +57,13 @@ function InstitutionView() {
   }, [user, slug, router]);
 
   const refreshStats = async (institutionId: string) => {
-    const [c, s, t] = await Promise.all([
+    const [c, s, t, e] = await Promise.all([
       supabase.from("classes").select("id", { count: "exact", head: true }).eq("institution_id", institutionId),
       supabase.from("students").select("id", { count: "exact", head: true }).eq("institution_id", institutionId),
       supabase.from("memberships").select("id", { count: "exact", head: true }).eq("institution_id", institutionId).eq("role", "teacher"),
+      supabase.from("exams").select("id", { count: "exact", head: true }).eq("institution_id", institutionId),
     ]);
-    setStats({ classes: c.count ?? 0, students: s.count ?? 0, teachers: t.count ?? 0 });
+    setStats({ classes: c.count ?? 0, students: s.count ?? 0, teachers: t.count ?? 0, exams: e.count ?? 0 });
   };
 
   if (authLoading || loading || !inst) return <Loading />;
@@ -78,22 +75,22 @@ function InstitutionView() {
   const districtMeta = getDistrictMeta(inst.division, inst.district ?? "");
 
   const tabs: { key: Tab; label: string; bn: string; emoji: string }[] = [
-    { key: "overview", label: "Overview", bn: "সারসংক্ষেপ", emoji: "📊" },
-    { key: "classes", label: "Classes", bn: "শ্রেণি", emoji: "📚" },
-    { key: "students", label: "Students", bn: "শিক্ষার্থী", emoji: "👥" },
-    { key: "teachers", label: "Teachers", bn: "শিক্ষক", emoji: "👨‍🏫" },
-    { key: "settings", label: "Settings", bn: "সেটিংস", emoji: "⚙️" },
+    { key: "overview",   label: "Overview",   bn: "সারসংক্ষেপ",   emoji: "📊" },
+    { key: "classes",    label: "Classes",    bn: "শ্রেণি",        emoji: "📚" },
+    { key: "students",   label: "Students",   bn: "শিক্ষার্থী",   emoji: "👥" },
+    { key: "teachers",   label: "Teachers",   bn: "শিক্ষক",       emoji: "👨‍🏫" },
+    { key: "exams",      label: "Exams",      bn: "পরীক্ষা",      emoji: "📝" },
+    { key: "attendance", label: "Attendance", bn: "উপস্থিতি",     emoji: "✅" },
+    { key: "notices",    label: "Notices",    bn: "নোটিশ",        emoji: "📢" },
+    { key: "settings",   label: "Settings",   bn: "সেটিংস",       emoji: "⚙️" },
   ];
 
   return (
     <div className="min-h-screen pb-16">
-      {/* Top nav */}
       <header className="sticky top-0 z-30 border-b"
         style={{ borderColor: "var(--border)", background: "var(--surface)", backdropFilter: "blur(24px)" }}>
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-8">
-          <Link href="/dashboard" className="flex items-center gap-2 text-[13px]" style={{ color: "var(--text-muted)" }}>
-            ← Dashboard
-          </Link>
+          <Link href="/dashboard" className="flex items-center gap-2 text-[13px]" style={{ color: "var(--text-muted)" }}>← Dashboard</Link>
           <div className="flex items-center gap-2">
             {isAdmin && <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-700">ADMIN</span>}
             <span className="text-[11px] capitalize" style={{ color: "var(--text-muted)" }}>{membership?.role ?? "member"}</span>
@@ -101,7 +98,6 @@ function InstitutionView() {
         </div>
       </header>
 
-      {/* Hero */}
       <div className="mx-auto max-w-6xl px-4 md:px-8 pt-6">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 p-6 md:p-8 text-white">
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
@@ -135,16 +131,15 @@ function InstitutionView() {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <MiniStat icon="📚" value={stats.classes} label="Classes" bn="শ্রেণি" />
           <MiniStat icon="👥" value={stats.students} label="Students" bn="শিক্ষার্থী" />
           <MiniStat icon="👨‍🏫" value={stats.teachers} label="Teachers" bn="শিক্ষক" />
+          <MiniStat icon="📝" value={stats.exams} label="Exams" bn="পরীক্ষা" />
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
         <div className="flex gap-1 overflow-x-auto rounded-2xl border p-1"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -160,13 +155,15 @@ function InstitutionView() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="mx-auto max-w-6xl px-4 md:px-8 mt-6">
         {tab === "overview" && <OverviewTab inst={inst} stats={stats} isAdmin={isAdmin} />}
         {tab === "classes" && <ClassesTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
         {tab === "students" && <StudentsTab institutionId={inst.id} isAdmin={isAdmin} onChange={() => refreshStats(inst.id)} />}
-        {tab === "teachers" && <PlaceholderTab label="Teachers" bn="শিক্ষক" note="Teacher invite system coming soon — Phase 3.2" />}
-        {tab === "settings" && <PlaceholderTab label="Settings" bn="সেটিংস" note="Institution settings coming soon — Phase 3.3" />}
+        {tab === "teachers" && <TeachersTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "exams" && <ExamsTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "attendance" && <AttendanceTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "notices" && <NoticesTab institutionId={inst.id} isAdmin={isAdmin} />}
+        {tab === "settings" && <PlaceholderTab label="Settings" bn="সেটিংস" note="Institution settings coming soon" />}
       </div>
     </div>
   );
@@ -207,20 +204,14 @@ function OverviewTab({ inst, stats, isAdmin }: { inst: any; stats: any; isAdmin:
           </div>
         )}
       </Card>
-      <Card title="Quick Actions" bn="দ্রুত কাজ">
-        <div className="space-y-2">
-          {isAdmin && (
-            <>
-              <ActionLink href="/institutions/new" label="+ Add another institution" />
-            </>
-          )}
-          <div className="text-[12px]" style={{ color: "var(--text-muted)" }}>
-            Classes, students, exams — সব নিচের tabs থেকে পরিচালনা করুন।
-          </div>
-        </div>
+      <Card title="Quick Stats" bn="দ্রুত হিসাব">
+        <Row label="Classes" value={String(stats.classes)} />
+        <Row label="Students" value={String(stats.students)} />
+        <Row label="Teachers" value={String(stats.teachers)} />
+        <Row label="Exams" value={String(stats.exams)} />
       </Card>
       <Card title="Platform Status" bn="প্ল্যাটফর্ম">
-        <Row label="Phase" value="Phase 3 — Institution Management" />
+        <Row label="Phase" value="Phase 3 — Full Management" />
         <Row label="Storage" value="Supabase · institution-logos" />
         <Row label="Security" value="Row-Level Security · Active" />
       </Card>
@@ -240,8 +231,7 @@ function ClassesTab({ institutionId, isAdmin, onChange }: { institutionId: strin
   const load = async () => {
     setLoading(true);
     const { data } = await supabase.from("classes").select("*").eq("institution_id", institutionId).order("name");
-    setClasses(data ?? []);
-    setLoading(false);
+    setClasses(data ?? []); setLoading(false);
   };
   useEffect(() => { load(); }, [institutionId]);
 
@@ -274,7 +264,6 @@ function ClassesTab({ institutionId, isAdmin, onChange }: { institutionId: strin
           </button>
         )}
       </div>
-
       {showForm && isAdmin && (
         <form onSubmit={add} className="mb-4 rounded-2xl border p-4 space-y-3"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -282,7 +271,7 @@ function ClassesTab({ institutionId, isAdmin, onChange }: { institutionId: strin
             <div>
               <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Class Name *</label>
               <input type="text" required value={name} onChange={(e) => setName(e.target.value)}
-                placeholder="Class 10 / HSC-1 / Batch A"
+                placeholder="Class 10 / HSC-1"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
@@ -301,7 +290,6 @@ function ClassesTab({ institutionId, isAdmin, onChange }: { institutionId: strin
           </button>
         </form>
       )}
-
       {loading ? (
         <div className="text-[13px] text-center py-10" style={{ color: "var(--text-muted)" }}>Loading...</div>
       ) : classes.length === 0 ? (
@@ -314,7 +302,6 @@ function ClassesTab({ institutionId, isAdmin, onChange }: { institutionId: strin
               <div className="min-w-0">
                 <div className="text-[14px] font-semibold truncate">{c.name}</div>
                 {c.section && <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>Section {c.section}</div>}
-                <div className="text-[10px] font-mono mt-1" style={{ color: "var(--text-faint)" }}>{c.id.slice(0, 8)}</div>
               </div>
               {isAdmin && (
                 <button onClick={() => remove(c.id)}
@@ -345,9 +332,7 @@ function StudentsTab({ institutionId, isAdmin, onChange }: { institutionId: stri
       supabase.from("students").select("*").eq("institution_id", institutionId).order("created_at", { ascending: false }),
       supabase.from("classes").select("*").eq("institution_id", institutionId).order("name"),
     ]);
-    setStudents(sRes.data ?? []);
-    setClasses(cRes.data ?? []);
-    setLoading(false);
+    setStudents(sRes.data ?? []); setClasses(cRes.data ?? []); setLoading(false);
   };
   useEffect(() => { load(); }, [institutionId]);
 
@@ -386,7 +371,6 @@ function StudentsTab({ institutionId, isAdmin, onChange }: { institutionId: stri
           </button>
         )}
       </div>
-
       {showForm && isAdmin && (
         <form onSubmit={add} className="mb-4 rounded-2xl border p-4 space-y-3"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -416,9 +400,6 @@ function StudentsTab({ institutionId, isAdmin, onChange }: { institutionId: stri
               <option value="">— Select class —</option>
               {classes.map((c) => <option key={c.id} value={c.id}>{c.name}{c.section ? " · " + c.section : ""}</option>)}
             </select>
-            {classes.length === 0 && (
-              <div className="mt-1 text-[11px] text-amber-600">⚠️ প্রথমে Classes tab থেকে একটা class যোগ করুন</div>
-            )}
           </div>
           {err && <div className="text-[12px] text-rose-600">{err}</div>}
           <button type="submit" disabled={saving}
@@ -427,7 +408,6 @@ function StudentsTab({ institutionId, isAdmin, onChange }: { institutionId: stri
           </button>
         </form>
       )}
-
       {loading ? (
         <div className="text-[13px] text-center py-10" style={{ color: "var(--text-muted)" }}>Loading...</div>
       ) : students.length === 0 ? (
@@ -437,9 +417,9 @@ function StudentsTab({ institutionId, isAdmin, onChange }: { institutionId: stri
           <table className="w-full text-[13px]">
             <thead>
               <tr style={{ background: "var(--bg-soft)" }}>
-                <th className="text-left p-3 text-[11px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Name</th>
-                <th className="text-left p-3 text-[11px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Roll</th>
-                <th className="text-left p-3 text-[11px] font-medium uppercase tracking-wide hidden sm:table-cell" style={{ color: "var(--text-muted)" }}>Class</th>
+                <th className="text-left p-3 text-[11px] font-medium uppercase" style={{ color: "var(--text-muted)" }}>Name</th>
+                <th className="text-left p-3 text-[11px] font-medium uppercase" style={{ color: "var(--text-muted)" }}>Roll</th>
+                <th className="text-left p-3 text-[11px] font-medium uppercase hidden sm:table-cell" style={{ color: "var(--text-muted)" }}>Class</th>
                 {isAdmin && <th className="p-3 w-20"></th>}
               </tr>
             </thead>
@@ -469,8 +449,7 @@ function StudentsTab({ institutionId, isAdmin, onChange }: { institutionId: stri
 
 function PlaceholderTab({ label, bn, note }: { label: string; bn: string; note: string }) {
   return (
-    <div className="rounded-2xl border p-10 text-center"
-      style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
+    <div className="rounded-2xl border p-10 text-center" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[36px]">🚧</div>
       <div className="mt-3 text-[16px] font-semibold">{label} · <span className="bangla font-normal">{bn}</span></div>
       <div className="mt-1 text-[12px]" style={{ color: "var(--text-muted)" }}>{note}</div>
@@ -495,13 +474,6 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
       <div className="text-[12px]" style={{ color: "var(--text-muted)" }}>{label}</div>
       <div className={'text-[12px] text-right ' + (mono ? "font-mono" : "")}>{value}</div>
     </div>
-  );
-}
-
-function ActionLink({ href, label }: { href: string; label: string }) {
-  return (
-    <Link href={href} className="block rounded-xl border px-3 py-2 text-[13px] font-medium hover:bg-[var(--bg-soft)]"
-      style={{ borderColor: "var(--border)" }}>{label}</Link>
   );
 }
 
