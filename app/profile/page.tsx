@@ -11,7 +11,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
-import { Card, Badge, Input } from "@/components/ui";
+import { Button, Card, Badge, Input } from "@/components/ui";
 import { INTERESTS } from "@/lib/onboarding";
 
 const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
