@@ -26,7 +26,7 @@ export default function IndependentOnboarding() {
     <main className="min-h-screen px-4 py-10">
       <div className="mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
-          <Link href="/onboarding" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
+          <Link href="/onboarding/?pick=1" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
         </div>
 
         <div className="rounded-3xl border p-6 md:p-8" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>

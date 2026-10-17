@@ -12,7 +12,7 @@
 - Type: Multi-Tenant EdTech SaaS Platform
 - Vision: একটি সফটওয়্যার — অসংখ্য স্কুল/কলেজ/কোচিং নিজের admin দিয়ে পরিচালনা করবে
 - Business Model: B2B SaaS (institution subscription)
-- Target: Bangladesh (NCTB Class 8-12), পরে international
+- Target: Bangladesh Full Education System, পরে International
 
 ---
 

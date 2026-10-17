@@ -87,6 +87,8 @@ export const BOTTOM_NAV: NavItem[] = [
 ];
 
 export const PUBLIC_ROUTES: string[] = [
+  "/get-started/",
+  "/auth/callback/",
   "/login/",
   "/signup/",
   "/forgot-password/",

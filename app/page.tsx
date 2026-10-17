@@ -42,7 +42,7 @@ export default function Home() {
               style={{ borderColor: "var(--border)" }}>
               Sign in
             </Link>
-            <Link href="/signup"
+            <Link href="/get-started/"
               className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[13px] font-semibold text-white shadow-lg">
               Get Started →
             </Link>
@@ -76,7 +76,7 @@ export default function Home() {
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/signup"
+            <Link href="/get-started/"
               className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-3 text-[14px] font-semibold text-white shadow-lg">
               Register Institution →
             </Link>
@@ -172,7 +172,7 @@ export default function Home() {
               আজই শুরু করুন। সম্পূর্ণ ফ্রি ট্রায়াল। কোনো ক্রেডিট কার্ড লাগবে না।
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link href="/signup"
+              <Link href="/get-started/"
                 className="rounded-full bg-white px-6 py-3 text-[14px] font-semibold text-emerald-700 shadow">
                 Create Free Account →
               </Link>

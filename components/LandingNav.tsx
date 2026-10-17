@@ -84,7 +84,7 @@ export default function LandingNav() {
                 Sign in
               </Link>
               <Link
-                href="/signup/"
+                href="/get-started/"
                 className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[13px] font-semibold text-white shadow-lg"
               >
                 Get Started →
@@ -144,7 +144,7 @@ export default function LandingNav() {
                   Sign in
                 </Link>
                 <Link
-                  href="/signup/"
+                  href="/get-started/"
                   className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-2.5 text-sm font-semibold text-white text-center"
                 >
                   Get Started →
