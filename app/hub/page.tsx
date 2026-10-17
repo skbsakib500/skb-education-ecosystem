@@ -126,7 +126,7 @@ export default function HubPage() {
 
       const instList: Institution[] = [];
       const seen = new Set<string>();
-      ((memRes.data || []) as MembershipRow[]).forEach((m) => {
+      ((memRes.data || []) as unknown as MembershipRow[]).forEach((m) => {
         const inst = m.institutions;
         if (inst && !seen.has(inst.id)) {
           seen.add(inst.id);
