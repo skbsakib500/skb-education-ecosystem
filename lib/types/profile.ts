@@ -48,6 +48,7 @@ export interface ProfileRow {
   social_links: Record<string, string> | null;
   followers_count: number | null;
   following_count: number | null;
+  // Migration 001 additions:
   profile_visibility: ProfileVisibility;
   role_specific: Record<string, unknown>;
   age_bracket: AgeBracket;
@@ -86,6 +87,14 @@ export interface ConsentRecord {
   granted_at: string;
   withdrawn_at: string | null;
   metadata: Record<string, unknown>;
+}
+
+export interface ProfileViewLogRow {
+  id: number;
+  viewer_id: string | null;
+  target_id: string;
+  view_type: "profile" | "portfolio" | "credential";
+  viewed_at: string;
 }
 
 export interface PublicProfileResponse {
