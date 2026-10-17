@@ -9,6 +9,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import {
   SIDEBAR_SECTIONS, BOTTOM_NAV, isPublicRoute, canShowItem, isActivePath,
+  type NavItem,
 } from "@/lib/nav";
 
 type Profile = {
@@ -116,9 +117,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-canvas">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex md:flex-col fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-100 z-40">
+      <aside className="hidden md:flex md:flex-col fixed inset-y-0 left-0 w-64 bg-slate-950 text-slate-100 z-40 border-r border-slate-800">
         <SidebarContent
           pathname={pathname}
           sections={visibleSections}
@@ -133,7 +134,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             className="fixed inset-0 bg-black/60 z-40 md:hidden"
             onClick={() => setSidebarOpen(false)}
           />
-          <aside className="fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-100 z-50 md:hidden flex flex-col">
+          <aside className="fixed inset-y-0 left-0 w-64 bg-slate-950 text-slate-100 z-50 md:hidden flex flex-col">
             <SidebarContent
               pathname={pathname}
               sections={visibleSections}
@@ -145,44 +146,45 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Topbar */}
-      <header className="fixed top-0 left-0 right-0 md:left-64 h-14 bg-white border-b border-slate-200 z-30 flex items-center px-3 md:px-6 gap-3">
+      <header className="fixed top-0 left-0 right-0 md:left-64 h-14 bg-surface-solid border-b border-border z-30 flex items-center px-3 md:px-6 gap-2 md:gap-3">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="md:hidden p-2 rounded-lg hover:bg-slate-100"
+          className="md:hidden p-2 rounded-lg hover:bg-surface-hover text-fg transition-colors duration-fast"
           aria-label="Open menu"
         >
           <Menu size={20} />
         </button>
 
-        <Link href="/hub/" className="md:hidden font-bold text-slate-900">
+        <Link href="/hub/" className="md:hidden font-bold text-fg">
           SKB
         </Link>
 
+        {/* Institution switcher */}
         <div className="relative">
           <button
             onClick={() => setInstMenuOpen((v) => !v)}
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 text-sm"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-hover text-fluid-body-sm text-fg transition-colors duration-fast"
           >
-            <Building2 size={16} className="text-slate-500" />
-            <span className="max-w-[140px] truncate font-medium text-slate-800">
+            <Building2 size={16} className="text-fg-muted" />
+            <span className="max-w-[140px] truncate font-medium">
               {currentMembership?.institutions?.name || "No institution"}
             </span>
-            <ChevronDown size={14} className="text-slate-500" />
+            <ChevronDown size={14} className="text-fg-muted" />
           </button>
 
           {instMenuOpen && memberships.length > 0 && (
-            <div className="absolute top-full mt-1 left-0 w-64 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
+            <div className="absolute top-full mt-1 left-0 w-64 bg-surface-solid border border-border rounded-xl shadow-elevation-3 py-1 z-50">
               {memberships.map((m) => (
                 <button
                   key={m.institution_id}
                   onClick={() =>
                     switchInstitution(m.institution_id, m.institutions?.slug || "")
                   }
-                  className="w-full text-left px-3 py-2 hover:bg-slate-50 text-sm flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 hover:bg-surface-hover text-fluid-body-sm flex items-center gap-2 transition-colors duration-fast"
                 >
                   <span className="text-lg">{m.institutions?.emoji || "🏫"}</span>
-                  <span className="flex-1 truncate">{m.institutions?.name}</span>
-                  <span className="text-xs text-slate-500">{m.role}</span>
+                  <span className="flex-1 truncate text-fg">{m.institutions?.name}</span>
+                  <span className="text-fluid-caption text-fg-muted capitalize">{m.role}</span>
                 </button>
               ))}
             </div>
@@ -193,7 +195,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
         <Link
           href="/achievements/"
-          className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 text-sm text-amber-600 font-medium"
+          className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-surface-hover text-fluid-body-sm text-amber-600 dark:text-amber-400 font-medium transition-colors duration-fast"
         >
           <Sparkles size={15} />
           <span>Points</span>
@@ -201,12 +203,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
         <Link
           href="/settings/notifications/"
-          className="relative p-2 rounded-lg hover:bg-slate-100"
+          className="relative p-2 rounded-lg hover:bg-surface-hover text-fg transition-colors duration-fast"
           aria-label="Notifications"
         >
           <Bell size={19} />
           {unread > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+            <span className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 px-1 rounded-full bg-danger text-white text-fluid-micro font-bold flex items-center justify-center leading-none">
               {unread > 99 ? "99+" : unread}
             </span>
           )}
@@ -215,7 +217,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="relative">
           <button
             onClick={() => setUserMenuOpen((v) => !v)}
-            className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100"
+            className="flex items-center gap-2 p-1 rounded-full hover:bg-surface-hover transition-colors duration-fast"
+            aria-label="User menu"
           >
             {profile?.avatar_url ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -225,34 +228,34 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-sm font-semibold">
+              <div className="w-8 h-8 rounded-full bg-accent text-accent-fg flex items-center justify-center text-fluid-body-sm font-semibold">
                 {(profile?.full_name || "U").charAt(0).toUpperCase()}
               </div>
             )}
           </button>
 
           {userMenuOpen && (
-            <div className="absolute top-full right-0 mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
-              <div className="px-3 py-2 border-b border-slate-100">
-                <div className="text-sm font-semibold text-slate-900 truncate">
+            <div className="absolute top-full right-0 mt-1 w-56 bg-surface-solid border border-border rounded-xl shadow-elevation-3 py-1 z-50">
+              <div className="px-3 py-2 border-b border-border">
+                <div className="text-fluid-body-sm font-semibold text-fg truncate">
                   {profile?.full_name || "User"}
                 </div>
-                <div className="text-xs text-slate-500 capitalize">
+                <div className="text-fluid-caption text-fg-muted capitalize">
                   {role || "member"}
                 </div>
               </div>
-              <Link href="/profile/" className="block px-3 py-2 text-sm hover:bg-slate-50">
+              <Link href="/profile/" className="block px-3 py-2 text-fluid-body-sm text-fg hover:bg-surface-hover transition-colors duration-fast">
                 My Profile
               </Link>
-              <Link href="/settings/notifications/" className="block px-3 py-2 text-sm hover:bg-slate-50">
+              <Link href="/settings/notifications/" className="block px-3 py-2 text-fluid-body-sm text-fg hover:bg-surface-hover transition-colors duration-fast">
                 Settings
               </Link>
-              <Link href="/dashboard/" className="block px-3 py-2 text-sm hover:bg-slate-50">
+              <Link href="/dashboard/" className="block px-3 py-2 text-fluid-body-sm text-fg hover:bg-surface-hover transition-colors duration-fast">
                 Dashboard
               </Link>
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-slate-50 text-red-600 flex items-center gap-2 border-t border-slate-100 mt-1"
+                className="w-full text-left px-3 py-2 text-fluid-body-sm text-danger hover:bg-surface-hover flex items-center gap-2 border-t border-border mt-1 transition-colors duration-fast"
               >
                 <LogOut size={14} /> Sign out
               </button>
@@ -264,7 +267,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Main */}
       <main className="md:pl-64 pt-14 pb-20 md:pb-4 min-h-screen">
         {loading ? (
-          <div className="flex items-center justify-center py-20 text-slate-500 text-sm">
+          <div className="flex items-center justify-center py-20 text-fg-muted text-fluid-body-sm">
             Loading…
           </div>
         ) : (
@@ -273,7 +276,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-30 grid grid-cols-5">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-solid border-t border-border z-30 grid grid-cols-5">
         {BOTTOM_NAV.map((item) => {
           const Icon = item.icon;
           const active = isActivePath(pathname, item.href);
@@ -281,8 +284,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center gap-0.5 text-[11px] ${
-                active ? "text-blue-600" : "text-slate-500"
+              className={`flex flex-col items-center justify-center gap-0.5 text-fluid-micro transition-colors duration-fast ${
+                active ? "text-accent font-semibold" : "text-fg-muted"
               }`}
             >
               <Icon size={20} />
@@ -299,25 +302,25 @@ function SidebarContent({
   pathname, sections, profile, onNavigate,
 }: {
   pathname: string;
-  sections: { title: string; items: { label: string; href: string; icon: any }[] }[];
+  sections: { title: string; items: NavItem[] }[];
   profile: Profile | null;
   onNavigate?: () => void;
 }) {
   return (
     <>
       <div className="h-14 flex items-center px-4 border-b border-slate-800 shrink-0">
-        <Link href="/hub/" className="flex items-center gap-2" onClick={onNavigate}>
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
-            S
+        <Link href="/hub/" className="flex items-center gap-2.5" onClick={onNavigate}>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-fluid-body-sm shadow-elevation-1">
+            SKB
           </div>
-          <span className="font-bold text-base">SKB</span>
+          <span className="font-bold text-fluid-body">SKB Education</span>
         </Link>
       </div>
 
       <div className="flex-1 overflow-y-auto py-3">
         {sections.map((section) => (
-          <div key={section.title} className="mb-3">
-            <div className="px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+          <div key={section.title} className="mb-4">
+            <div className="px-4 py-1.5 text-fluid-micro font-semibold uppercase tracking-wider text-slate-400">
               {section.title}
             </div>
             {section.items.map((item) => {
@@ -328,9 +331,9 @@ function SidebarContent({
                   key={item.href}
                   href={item.href}
                   onClick={onNavigate}
-                  className={`mx-2 px-3 py-2 rounded-lg flex items-center gap-3 text-sm transition-colors ${
+                  className={`mx-2 px-3 py-2 rounded-lg flex items-center gap-3 text-fluid-body-sm transition-colors duration-fast ${
                     active
-                      ? "bg-slate-800 text-white"
+                      ? "bg-emerald-600/20 text-emerald-300"
                       : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
                   }`}
                 >
@@ -354,15 +357,15 @@ function SidebarContent({
                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-200 text-sm font-semibold">
+              <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-fluid-body-sm font-semibold">
                 {(profile.full_name || "U").charAt(0).toUpperCase()}
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate">
+              <div className="text-fluid-body-sm font-medium truncate text-slate-100">
                 {profile.full_name || "User"}
               </div>
-              <div className="text-xs text-slate-500 capitalize">
+              <div className="text-fluid-caption text-slate-400 capitalize">
                 {profile.primary_role || "member"}
               </div>
             </div>
