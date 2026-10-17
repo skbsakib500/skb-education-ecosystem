@@ -41,6 +41,7 @@ export default function ModerationPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [tab, setTab] = useState("pending");
   const [working, setWorking] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) router.push("/login/");
@@ -57,7 +58,18 @@ export default function ModerationPage() {
     setLoading(false);
   };
 
-  useEffect(() => { if (user) load(); }, [user]);
+  useEffect(() => {
+    if (!user) return;
+    supabase.rpc("is_platform_admin").then(({ data }) => {
+      const ok = data === true;
+      setIsAdmin(ok);
+      if (!ok) router.replace("/hub/");
+    });
+  }, [user, router]);
+
+  useEffect(() => {
+    if (isAdmin === true) load();
+  }, [isAdmin]);
 
   const act = async (reportId: string, action: "dismiss" | "hide" | "ban_user") => {
     setWorking(reportId);
@@ -81,7 +93,24 @@ export default function ModerationPage() {
     await load();
   };
 
-  if (authLoading || loading) {
+  if (isAdmin === false) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-sm">
+          <div className="text-4xl mb-3">🔒</div>
+          <h1 className="text-lg font-semibold text-slate-900">Access restricted</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            This page is only for platform administrators.
+          </p>
+          <a href="/hub/" className="mt-4 inline-block rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
+            Back to Hub
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (authLoading || loading || isAdmin === null) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-24 text-center text-slate-500 text-sm flex items-center justify-center gap-2">
         <Loader2 size={18} className="animate-spin" /> Loading moderation queue…
