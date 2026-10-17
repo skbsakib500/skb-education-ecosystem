@@ -46,12 +46,12 @@ export function ConfirmDialog({
   const confirmClass =
     variant === "danger"
       ? "bg-red-600 hover:bg-red-700 text-white"
-      : "bg-slate-900 hover:bg-slate-800 text-white";
+      : "bg-accent hover:bg-accent-hover text-white";
 
   const iconClass =
     variant === "danger"
       ? "bg-red-100 text-red-600"
-      : "bg-slate-100 text-slate-600";
+      : "bg-canvas-soft text-fg-muted";
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -63,7 +63,7 @@ export function ConfirmDialog({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl animate-in fade-in zoom-in-95"
+        className="relative w-full max-w-md rounded-2xl bg-surface-solid shadow-2xl animate-in fade-in zoom-in-95"
       >
         <div className="flex items-start gap-3 p-5">
           <div
@@ -75,22 +75,22 @@ export function ConfirmDialog({
             <AlertTriangle size={20} />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-base font-semibold text-slate-900">{title}</h3>
-            {message && <p className="mt-1 text-sm text-slate-500">{message}</p>}
+            <h3 className="text-fluid-h3 font-semibold text-fg">{title}</h3>
+            {message && <p className="mt-1 text-fluid-body-sm text-fg-muted">{message}</p>}
           </div>
           <button
             onClick={onCancel}
-            className="p-1 rounded-lg hover:bg-slate-100"
+            className="p-1 rounded-lg hover:bg-surface-hover"
             aria-label="Close"
           >
             <X size={18} />
           </button>
         </div>
-        <div className="flex justify-end gap-2 px-5 py-4 border-t border-slate-100 bg-slate-50/60 rounded-b-2xl">
+        <div className="flex justify-end gap-2 px-5 py-4 border-t border-border bg-canvas-soft rounded-b-2xl">
           <button
             onClick={onCancel}
             disabled={loading}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg text-fluid-body-sm font-medium text-fg hover:bg-surface-hover disabled:opacity-50"
           >
             {cancelLabel}
           </button>
@@ -98,7 +98,7 @@ export function ConfirmDialog({
             onClick={onConfirm}
             disabled={loading}
             className={cn(
-              "px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50",
+              "px-4 py-2 rounded-lg text-fluid-body-sm font-semibold disabled:opacity-50",
               confirmClass
             )}
           >
