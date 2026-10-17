@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import { Card, Badge, Button } from "@/components/ui";
 
 type Institution = {
   id: string;
@@ -20,6 +21,12 @@ type Institution = {
   slug: string;
   emoji: string | null;
   type: string | null;
+};
+
+type MembershipRow = {
+  institution_id: string;
+  role: string;
+  institutions: Institution | null;
 };
 
 type Stats = {
@@ -119,7 +126,7 @@ export default function HubPage() {
 
       const instList: Institution[] = [];
       const seen = new Set<string>();
-      (memRes.data || []).forEach((m: any) => {
+      ((memRes.data || []) as MembershipRow[]).forEach((m) => {
         const inst = m.institutions;
         if (inst && !seen.has(inst.id)) {
           seen.add(inst.id);
@@ -146,7 +153,7 @@ export default function HubPage() {
 
   if (loading || authLoading) {
     return (
-      <div className="flex items-center justify-center py-20 text-slate-500 text-sm">
+      <div className="flex items-center justify-center py-20 text-fg-muted text-fluid-body-sm">
         Loading…
       </div>
     );
@@ -259,21 +266,21 @@ export default function HubPage() {
   const greetingName = fullName ? fullName.split(" ")[0] : "there";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-8">
-      {/* ============ Hero ============ */}
-      <section className="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-6 md:p-8 relative overflow-hidden">
-        <div className="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl" />
-        <div className="absolute -right-24 top-20 w-52 h-52 bg-purple-500/20 rounded-full blur-3xl" />
+    <div className="max-w-7xl mx-auto px-5 md:px-6 py-6 space-y-8">
+      {/* ═══════════ Hero ═══════════ */}
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 md:p-8 border border-slate-800">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 top-20 h-52 w-52 rounded-full bg-teal-500/15 blur-3xl" />
 
         <div className="relative flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="text-xs uppercase tracking-wider text-slate-300 mb-1">
+            <Badge variant="success" size="sm" className="mb-2">
               Super Hub
-            </div>
-            <h1 className="text-2xl md:text-3xl font-bold">
+            </Badge>
+            <h1 className="text-fluid-h1">
               👋 Welcome, {greetingName}!
             </h1>
-            <p className="text-slate-200 text-sm mt-2 max-w-xl">
+            <p className="text-fluid-body text-slate-300 mt-2 max-w-xl">
               Everything in one place — your institution, portals, community, and AI tools.
             </p>
           </div>
@@ -301,65 +308,41 @@ export default function HubPage() {
         </div>
       </section>
 
-      {/* ============ Your Institutions ============ */}
+      {/* ═══════════ Your Institutions ═══════════ */}
       <section>
         <SectionHeader emoji="🏛️" title="Your Institution" count={institutions.length} />
+
         {institutions.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center">
-            <Building2 className="mx-auto text-slate-500 mb-2" size={32} />
-            <p className="text-sm text-slate-600 mb-3">
-              You're not part of any institution yet.
+          <Card
+            variant="surface"
+            padding="lg"
+            className="border-dashed border-border-strong text-center"
+          >
+            <Building2 className="mx-auto text-fg-muted mb-3" size={32} />
+            <p className="text-fluid-body-sm text-fg-muted mb-4">
+              You&apos;re not part of any institution yet.
             </p>
             <div className="flex gap-2 justify-center flex-wrap">
-              <Link
-                href="/dashboard/"
-                className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800"
-              >
-                Browse Institutions
+              <Link href="/dashboard/">
+                <Button size="md">Browse Institutions</Button>
               </Link>
-              <Link
-                href="/institutions/new/"
-                className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50"
-              >
-                Create One
+              <Link href="/institutions/new/">
+                <Button size="md" variant="outline">
+                  Create One
+                </Button>
               </Link>
             </div>
-          </div>
+          </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {institutions.map((inst) => (
-              <Link
-                key={inst.id}
-                href={`/institutions/view/?slug=${inst.slug}`}
-                className="group rounded-2xl bg-white border border-slate-200 p-5 hover:border-slate-400 hover:shadow-lg transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-2xl shrink-0">
-                    {inst.emoji || "🏫"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-slate-900 truncate group-hover:text-blue-600">
-                      {inst.name}
-                    </div>
-                    <div className="text-xs text-slate-500 capitalize">
-                      {inst.type || "Institution"}
-                    </div>
-                  </div>
-                  <ArrowRight
-                    size={18}
-                    className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
-                  />
-                </div>
-                <div className="mt-4 text-xs font-medium text-blue-600">
-                  Open Hub →
-                </div>
-              </Link>
+              <InstitutionCard key={inst.id} inst={inst} />
             ))}
           </div>
         )}
       </section>
 
-      {/* ============ Feature sections ============ */}
+      {/* ═══════════ Feature sections ═══════════ */}
       {sections.map((section) => (
         <section key={section.title}>
           <SectionHeader
@@ -375,15 +358,15 @@ export default function HubPage() {
         </section>
       ))}
 
-      {/* ============ Footer note ============ */}
-      <div className="text-center text-xs text-slate-500 pt-4 pb-2">
+      {/* ═══════════ Footer note ═══════════ */}
+      <div className="text-center text-fluid-caption text-fg-subtle pt-4 pb-2">
         SKB Education Ecosystem · Multi-Tenant EdTech SaaS
       </div>
     </div>
   );
 }
 
-/* ---------- Sub-components ---------- */
+/* ═══════════ Sub-components ═══════════ */
 
 function SectionHeader({
   emoji,
@@ -395,11 +378,13 @@ function SectionHeader({
   count?: number;
 }) {
   return (
-    <div className="flex items-center gap-2 mb-3">
+    <div className="flex items-center gap-2 mb-4">
       <span className="text-lg">{emoji}</span>
-      <h2 className="text-base md:text-lg font-bold text-slate-900">{title}</h2>
+      <h2 className="text-fluid-h3 text-fg">{title}</h2>
       {typeof count === "number" && (
-        <span className="text-xs text-slate-500 font-medium">({count})</span>
+        <Badge variant="muted" size="sm">
+          {count}
+        </Badge>
       )}
     </div>
   );
@@ -417,7 +402,7 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur border border-white/10 text-sm font-medium transition-colors"
+      className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur border border-white/10 text-fluid-body-sm font-medium transition-colors duration-fast"
     >
       <Icon size={16} />
       <span className="truncate">{label}</span>
@@ -425,26 +410,58 @@ function QuickAction({
   );
 }
 
+function InstitutionCard({ inst }: { inst: Institution }) {
+  return (
+    <Link href={`/institutions/view/?slug=${inst.slug}`} className="block">
+      <Card interactive padding="md" className="h-full">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-950 dark:to-teal-950 flex items-center justify-center text-2xl shrink-0">
+            {inst.emoji || "🏫"}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="font-semibold text-fg truncate group-hover:text-accent transition-colors">
+              {inst.name}
+            </div>
+            <div className="text-fluid-caption text-fg-muted capitalize">
+              {inst.type || "Institution"}
+            </div>
+          </div>
+          <ArrowRight
+            size={18}
+            className="text-fg-muted shrink-0"
+          />
+        </div>
+        <div className="mt-4 text-fluid-caption font-medium text-accent">
+          Open Hub →
+        </div>
+      </Card>
+    </Link>
+  );
+}
+
 function FeatureTile({ item }: { item: FeatureCard }) {
   const Icon = item.icon;
   return (
-    <Link
-      href={item.href}
-      className="group rounded-2xl bg-white border border-slate-200 p-4 hover:border-slate-400 hover:shadow-md transition-all flex flex-col gap-3"
-    >
-      <div
-        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shrink-0`}
+    <Link href={item.href} className="block group">
+      <Card
+        interactive
+        padding="md"
+        className="flex flex-col gap-3 h-full"
       >
-        <Icon size={18} />
-      </div>
-      <div>
-        <div className="font-semibold text-slate-900 text-sm group-hover:text-blue-600">
-          {item.label}
+        <div
+          className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shrink-0`}
+        >
+          <Icon size={18} />
         </div>
-        <div className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-          {item.description}
+        <div>
+          <div className="font-semibold text-fg text-fluid-body-sm group-hover:text-accent transition-colors">
+            {item.label}
+          </div>
+          <div className="text-fluid-caption text-fg-muted mt-1 leading-relaxed">
+            {item.description}
+          </div>
         </div>
-      </div>
+      </Card>
     </Link>
   );
 }
