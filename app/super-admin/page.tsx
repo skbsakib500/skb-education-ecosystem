@@ -105,13 +105,13 @@ export default function SuperAdmin() {
             </div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">SKB Super Admin</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>প্ল্যাটফর্ম কনসোল</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>প্ল্যাটফর্ম কনসোল</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/dashboard" className="rounded-full border px-3.5 py-1.5 text-[12px]"
+            <Link href="/dashboard" className="rounded-full border px-3.5 py-1.5 text-fluid-caption"
               style={{ borderColor: "var(--border)" }}>Institution View</Link>
-            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]"
+            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-fluid-caption"
               style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function SuperAdmin() {
         <div className="rounded-3xl bg-gradient-to-br from-violet-600 via-indigo-600 to-violet-700 p-6 md:p-8 text-white relative overflow-hidden">
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-violet-200 animate-pulse" />
               Owner Console
             </div>
@@ -190,9 +190,9 @@ function Overview({ stats }: { stats: any }) {
           <div key={k.label} className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <div className="text-[22px]">{k.icon}</div>
             <div className="mt-2 text-[26px] font-bold" style={{ color: k.color }}>{k.value}</div>
-            <div className="text-[11px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{k.label}</div>
-            <div className="bangla text-[10px]" style={{ color: "var(--text-faint)" }}>{k.bn}</div>
-            {k.sub && <div className="text-[10px] mt-1" style={{ color: "var(--text-faint)" }}>{k.sub}</div>}
+            <div className="text-fluid-micro font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{k.label}</div>
+            <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{k.bn}</div>
+            {k.sub && <div className="text-fluid-micro mt-1" style={{ color: "var(--text-faint)" }}>{k.sub}</div>}
           </div>
         ))}
       </div>
@@ -200,9 +200,9 @@ function Overview({ stats }: { stats: any }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {revenue.map((r) => (
           <div key={r.label} className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-            <div className="text-[11px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{r.label}</div>
+            <div className="text-fluid-micro font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{r.label}</div>
             <div className="mt-1 text-[24px] font-bold" style={{ color: r.color }}>{r.value}</div>
-            <div className="bangla text-[11px]" style={{ color: "var(--text-faint)" }}>{r.bn}</div>
+            <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{r.bn}</div>
           </div>
         ))}
       </div>
@@ -217,7 +217,7 @@ function Overview({ stats }: { stats: any }) {
               const colors = ["#10b981", "#14b8a6", "#8b5cf6", "#f59e0b"];
               return (
                 <div key={i}>
-                  <div className="flex justify-between text-[12px] mb-1">
+                  <div className="flex justify-between text-fluid-caption mb-1">
                     <span className="font-medium capitalize">{p.name}</span>
                     <span style={{ color: "var(--text-muted)" }}>{p.count} ({pct}%)</span>
                   </div>
@@ -264,11 +264,11 @@ function InstitutionsTable({
           <table className="w-full text-[13px]">
             <thead>
               <tr style={{ background: "var(--bg-soft)" }}>
-                <th className="text-left p-3 text-[11px] font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Institution</th>
-                <th className="text-left p-3 text-[11px] font-semibold uppercase hidden md:table-cell" style={{ color: "var(--text-muted)" }}>Type</th>
-                <th className="text-left p-3 text-[11px] font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Plan</th>
-                <th className="text-left p-3 text-[11px] font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Status</th>
-                <th className="text-right p-3 text-[11px] font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Actions</th>
+                <th className="text-left p-3 text-fluid-micro font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Institution</th>
+                <th className="text-left p-3 text-fluid-micro font-semibold uppercase hidden md:table-cell" style={{ color: "var(--text-muted)" }}>Type</th>
+                <th className="text-left p-3 text-fluid-micro font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Plan</th>
+                <th className="text-left p-3 text-fluid-micro font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Status</th>
+                <th className="text-right p-3 text-fluid-micro font-semibold uppercase" style={{ color: "var(--text-muted)" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -279,39 +279,39 @@ function InstitutionsTable({
                   <tr key={i.id} className="border-t" style={{ borderColor: "var(--border)" }}>
                     <td className="p-3">
                       <div className="font-semibold">{i.name}</div>
-                      <div className="text-[11px] font-mono" style={{ color: "var(--text-muted)" }}>/{i.slug}</div>
+                      <div className="text-fluid-micro font-mono" style={{ color: "var(--text-muted)" }}>/{i.slug}</div>
                       {i.suspended_reason && (
-                        <div className="text-[10px] text-rose-600 mt-0.5">⚠️ {i.suspended_reason}</div>
+                        <div className="text-fluid-micro text-rose-600 mt-0.5">⚠️ {i.suspended_reason}</div>
                       )}
                     </td>
                     <td className="p-3 hidden md:table-cell capitalize" style={{ color: "var(--text-muted)" }}>{i.type?.replace("_", " ")}</td>
                     <td className="p-3">
-                      <span className="rounded-full bg-violet-500/15 px-2 py-0.5 text-[10px] font-semibold text-violet-700">
+                      <span className="rounded-full bg-violet-500/15 px-2 py-0.5 text-fluid-micro font-semibold text-violet-700">
                         {plan?.name || "Free"}
                       </span>
                     </td>
                     <td className="p-3">
-                      <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold " +
+                      <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold " +
                         (i.suspended_at ? "bg-rose-500/15 text-rose-700" :
                          sub?.status === "active" ? "bg-emerald-500/15 text-emerald-700" :
                          sub?.status === "trial" ? "bg-amber-500/15 text-amber-700" :
-                         "bg-slate-500/10 text-slate-600")}>
+                         "bg-slate-500/10 text-fg-muted")}>
                         {i.suspended_at ? "suspended" : (sub?.status || "active")}
                       </span>
                     </td>
                     <td className="p-3 text-right">
                       <div className="flex gap-1 justify-end">
                         <Link href={"/institutions/view/?slug=" + i.slug}
-                          className="rounded-full border px-2 py-1 text-[10px] font-medium"
+                          className="rounded-full border px-2 py-1 text-fluid-micro font-medium"
                           style={{ borderColor: "var(--border)" }}>View</Link>
                         {i.suspended_at ? (
                           <button onClick={() => onReactivate(i.id)}
-                            className="rounded-full bg-emerald-500/15 px-2 py-1 text-[10px] font-semibold text-emerald-700">
+                            className="rounded-full bg-emerald-500/15 px-2 py-1 text-fluid-micro font-semibold text-emerald-700">
                             Reactivate
                           </button>
                         ) : (
                           <button onClick={() => onSuspend(i.id)}
-                            className="rounded-full bg-rose-500/15 px-2 py-1 text-[10px] font-semibold text-rose-700">
+                            className="rounded-full bg-rose-500/15 px-2 py-1 text-fluid-micro font-semibold text-rose-700">
                             Suspend
                           </button>
                         )}
@@ -352,14 +352,14 @@ function PlansView() {
           <div key={p.id} className="rounded-2xl border p-5 relative overflow-hidden"
             style={{ borderColor: color + "40", background: "var(--surface-3)" }}>
             <div className="absolute top-0 inset-x-0 h-1" style={{ background: color }} />
-            <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color }}>{p.code}</div>
+            <div className="text-fluid-micro font-bold uppercase tracking-widest" style={{ color }}>{p.code}</div>
             <div className="mt-2 text-[20px] font-bold">{p.name}</div>
-            <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>{p.name_bn}</div>
+            <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>{p.name_bn}</div>
             <div className="mt-3 text-[28px] font-bold" style={{ color }}>
               ৳{Number(p.price_bdt).toLocaleString()}
-              <span className="text-[12px] font-normal" style={{ color: "var(--text-muted)" }}>/month</span>
+              <span className="text-fluid-caption font-normal" style={{ color: "var(--text-muted)" }}>/month</span>
             </div>
-            <div className="mt-4 space-y-1.5 text-[12px]">
+            <div className="mt-4 space-y-1.5 text-fluid-caption">
               <div className="flex justify-between"><span style={{ color: "var(--text-muted)" }}>Students</span><span className="font-semibold">{p.max_students?.toLocaleString()}</span></div>
               <div className="flex justify-between"><span style={{ color: "var(--text-muted)" }}>Teachers</span><span className="font-semibold">{p.max_teachers?.toLocaleString()}</span></div>
               <div className="flex justify-between"><span style={{ color: "var(--text-muted)" }}>Classes</span><span className="font-semibold">{p.max_classes?.toLocaleString()}</span></div>
@@ -367,7 +367,7 @@ function PlansView() {
             </div>
             <div className="mt-4 pt-3 border-t space-y-1" style={{ borderColor: "var(--border)" }}>
               {Object.entries(p.features || {}).map(([k, v]: any) => (
-                <div key={k} className="flex items-center gap-2 text-[11px]">
+                <div key={k} className="flex items-center gap-2 text-fluid-micro">
                   <span style={{ color: v ? "#10b981" : "#94a3b8" }}>{v ? "✓" : "✕"}</span>
                   <span style={{ color: v ? "var(--text)" : "var(--text-muted)" }} className="capitalize">
                     {k.replace("_", " ")}

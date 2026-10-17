@@ -66,7 +66,7 @@ export default function AdminRequestsPage() {
         <div className="mt-5 flex gap-2 overflow-x-auto">
           {(["pending","approved","rejected","all"] as const).map((f) => (
             <button key={f} onClick={() => setFilter(f)}
-              className={"rounded-full border px-4 py-1.5 text-[12px] font-medium capitalize whitespace-nowrap " + (filter === f ? "bg-[var(--text)] text-[var(--bg)]" : "")}
+              className={"rounded-full border px-4 py-1.5 text-fluid-caption font-medium capitalize whitespace-nowrap " + (filter === f ? "bg-[var(--text)] text-[var(--bg)]" : "")}
               style={filter !== f ? { borderColor: "var(--border)" } : {}}>
               {f}
             </button>
@@ -88,20 +88,20 @@ export default function AdminRequestsPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <div className="text-[16px] font-semibold">{r.name}</div>
-                      <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize " +
+                      <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold capitalize " +
                         (r.status === "pending" ? "bg-amber-500/15 text-amber-700" :
                          r.status === "approved" ? "bg-emerald-500/15 text-emerald-700" :
                          "bg-rose-500/15 text-rose-700")}>{r.status}</span>
                     </div>
-                    <div className="flex flex-wrap gap-3 mt-2 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    <div className="flex flex-wrap gap-3 mt-2 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                       <span>🏷️ {r.type}</span>
                       {r.division && <span>📍 {r.city || r.district}, {r.division}</span>}
                       {r.contact_email && <span>✉️ {r.contact_email}</span>}
                       {r.contact_phone && <span>📞 {r.contact_phone}</span>}
                       <span>👤 {r.requester?.email}</span>
                     </div>
-                    {r.description && <div className="mt-2 text-[12px] italic" style={{ color: "var(--text-muted)" }}>"{r.description}"</div>}
-                    <div className="mt-2 text-[10px]" style={{ color: "var(--text-faint)" }}>
+                    {r.description && <div className="mt-2 text-fluid-caption italic" style={{ color: "var(--text-muted)" }}>"{r.description}"</div>}
+                    <div className="mt-2 text-fluid-micro" style={{ color: "var(--text-faint)" }}>
                       Requested {new Date(r.created_at).toLocaleString()}
                     </div>
                   </div>
@@ -109,11 +109,11 @@ export default function AdminRequestsPage() {
                   {r.status === "pending" && (
                     <div className="flex flex-col gap-2 shrink-0">
                       <button onClick={() => approve(r.id)} disabled={actionId === r.id}
-                        className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-2 text-[12px] font-semibold text-white shadow disabled:opacity-50">
+                        className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-2 text-fluid-caption font-semibold text-white shadow disabled:opacity-50">
                         {actionId === r.id ? "..." : "✓ Approve"}
                       </button>
                       <button onClick={() => reject(r.id)} disabled={actionId === r.id}
-                        className="rounded-full border border-rose-500/30 px-4 py-2 text-[12px] font-semibold text-rose-600 disabled:opacity-50">
+                        className="rounded-full border border-rose-500/30 px-4 py-2 text-fluid-caption font-semibold text-rose-600 disabled:opacity-50">
                         ✕ Reject
                       </button>
                     </div>

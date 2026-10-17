@@ -43,7 +43,7 @@ export default function AnalyticsPage() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-8">
           <Link href="/super-admin" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Super Admin</Link>
           <select value={days} onChange={(e) => setDays(parseInt(e.target.value))}
-            className="rounded-full border px-3 py-1.5 text-[12px] outline-none"
+            className="rounded-full border px-3 py-1.5 text-fluid-caption outline-none"
             style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <option value="7">Last 7 days</option>
             <option value="30">Last 30 days</option>
@@ -100,12 +100,12 @@ export default function AnalyticsPage() {
           <Card title="Top Institutions" bn="শীর্ষ প্রতিষ্ঠান">
             {(data.top_institutions || []).map((i: any, idx: number) => (
               <div key={idx} className="flex items-center justify-between py-1.5 border-b last:border-b-0" style={{ borderColor: "var(--border)" }}>
-                <div className="text-[12px] font-medium truncate">{i.emoji || "🏫"} {i.name}</div>
-                <div className="text-[11px] shrink-0" style={{ color: "var(--text-muted)" }}>👥 {i.students}</div>
+                <div className="text-fluid-caption font-medium truncate">{i.emoji || "🏫"} {i.name}</div>
+                <div className="text-fluid-micro shrink-0" style={{ color: "var(--text-muted)" }}>👥 {i.students}</div>
               </div>
             ))}
             {(!data.top_institutions || data.top_institutions.length === 0) && (
-              <div className="text-[12px]" style={{ color: "var(--text-muted)" }}>No institutions yet</div>
+              <div className="text-fluid-caption" style={{ color: "var(--text-muted)" }}>No institutions yet</div>
             )}
           </Card>
         </div>
@@ -118,8 +118,8 @@ function KPI({ label, value, bn, color }: any) {
   return (
     <div className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[24px] font-bold" style={{ color }}>{value}</div>
-      <div className="text-[11px] font-medium mt-1" style={{ color: "var(--text-muted)" }}>{label}</div>
-      <div className="bangla text-[10px]" style={{ color: "var(--text-faint)" }}>{bn}</div>
+      <div className="text-fluid-micro font-medium mt-1" style={{ color: "var(--text-muted)" }}>{label}</div>
+      <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{bn}</div>
     </div>
   );
 }
@@ -127,7 +127,7 @@ function KPI({ label, value, bn, color }: any) {
 function Card({ title, bn, children }: any) {
   return (
     <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-      <div className="text-[13px] font-semibold mb-3">{title} <span className="bangla font-normal text-[11px]" style={{ color: "var(--text-muted)" }}>· {bn}</span></div>
+      <div className="text-[13px] font-semibold mb-3">{title} <span className="bangla font-normal text-fluid-micro" style={{ color: "var(--text-muted)" }}>· {bn}</span></div>
       {children}
     </div>
   );
@@ -135,7 +135,7 @@ function Card({ title, bn, children }: any) {
 
 function Row({ label, value }: any) {
   return (
-    <div className="flex justify-between py-1.5 border-b last:border-b-0 text-[12px]" style={{ borderColor: "var(--border)" }}>
+    <div className="flex justify-between py-1.5 border-b last:border-b-0 text-fluid-caption" style={{ borderColor: "var(--border)" }}>
       <span style={{ color: "var(--text-muted)" }}>{label}</span>
       <span className="font-semibold">{value}</span>
     </div>

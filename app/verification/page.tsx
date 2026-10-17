@@ -90,7 +90,7 @@ export default function VerificationPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-24 text-center text-slate-500 text-sm flex items-center justify-center gap-2">
+      <div className="max-w-4xl mx-auto px-4 py-24 text-center text-fg-muted text-fluid-body-sm flex items-center justify-center gap-2">
         <Loader2 size={18} className="animate-spin" /> Loading…
       </div>
     );
@@ -116,30 +116,30 @@ export default function VerificationPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
       <div>
-        <Link href="/hub/" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700">
+        <Link href="/hub/" className="inline-flex items-center gap-1 text-fluid-body-sm text-fg-muted hover:text-fg">
           <ArrowLeft size={14} /> Back to Hub
         </Link>
-        <h1 className="mt-2 text-2xl font-bold text-slate-900">Verify Members</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="mt-2 text-2xl font-bold text-fg">Verify Members</h1>
+        <p className="text-fluid-body-sm text-fg-muted mt-1">
           Verify teachers & staff in your institutions — adds a trusted badge to their profile.
         </p>
       </div>
 
       <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by name, username or institution…"
-          className="w-full rounded-xl border border-slate-300 pl-10 pr-3 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+          className="w-full rounded-xl border border-border-strong pl-10 pr-3 py-2.5 text-fluid-body-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
         />
       </div>
 
       {Object.keys(grouped).length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <ShieldCheck size={32} className="mx-auto text-slate-400 mb-2" />
-          <h2 className="text-base font-semibold text-slate-900">No members to verify</h2>
-          <p className="mt-1 text-sm text-slate-500 max-w-sm mx-auto">
+        <div className="rounded-2xl border border-dashed border-border-strong bg-white p-10 text-center">
+          <ShieldCheck size={32} className="mx-auto text-fg-subtle mb-2" />
+          <h2 className="text-base font-semibold text-fg">No members to verify</h2>
+          <p className="mt-1 text-fluid-body-sm text-fg-muted max-w-sm mx-auto">
             আপনি কোনো প্রতিষ্ঠানের admin না হলে, অথবা সেই প্রতিষ্ঠানে কোনো teacher/staff না থাকলে এখানে কিছু দেখাবে না।
           </p>
         </div>
@@ -148,37 +148,37 @@ export default function VerificationPage() {
           {Object.entries(grouped).map(([key, group]) => {
             const [name, slug] = key.split("||");
             return (
-              <section key={key} className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
-                <div className="px-5 py-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
-                  <Building2 size={15} className="text-slate-500" />
-                  <Link href={`/institutions/view/?slug=${slug}`} className="text-sm font-semibold text-slate-900 hover:text-emerald-600">
+              <section key={key} className="rounded-2xl border border-border bg-white overflow-hidden">
+                <div className="px-5 py-3 bg-canvas-soft border-b border-border flex items-center gap-2">
+                  <Building2 size={15} className="text-fg-muted" />
+                  <Link href={`/institutions/view/?slug=${slug}`} className="text-fluid-body-sm font-semibold text-fg hover:text-emerald-600">
                     {name}
                   </Link>
-                  <span className="ml-auto text-xs text-slate-500">{group.length} member{group.length > 1 ? "s" : ""}</span>
+                  <span className="ml-auto text-fluid-caption text-fg-muted">{group.length} member{group.length > 1 ? "s" : ""}</span>
                 </div>
                 <div className="divide-y divide-slate-100">
                   {group.map((m) => {
                     const initials = (m.full_name || "U").charAt(0).toUpperCase();
                     return (
                       <div key={m.user_id} className="px-5 py-3 flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-surface-hover flex items-center justify-center overflow-hidden shrink-0">
                           {m.avatar_url ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={m.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="text-xs font-semibold text-slate-600">{initials}</span>
+                            <span className="text-fluid-caption font-semibold text-fg-muted">{initials}</span>
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-slate-900 truncate">{m.full_name || "Unnamed"}</span>
+                            <span className="text-fluid-body-sm font-medium text-fg truncate">{m.full_name || "Unnamed"}</span>
                             {m.is_verified && (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-fluid-micro font-semibold text-emerald-700">
                                 <ShieldCheck size={10} /> Verified
                               </span>
                             )}
                           </div>
-                          <div className="text-xs text-slate-500 capitalize">
+                          <div className="text-fluid-caption text-fg-muted capitalize">
                             {m.primary_role || "member"}
                             {m.username && <> · @{m.username}</>}
                           </div>
@@ -187,7 +187,7 @@ export default function VerificationPage() {
                           <button
                             onClick={() => revoke(m)}
                             disabled={working === m.user_id}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-red-300 bg-white px-3 py-1.5 text-fluid-caption font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
                           >
                             {working === m.user_id ? <Loader2 size={12} className="animate-spin" /> : <ShieldOff size={12} />}
                             Revoke
@@ -196,7 +196,7 @@ export default function VerificationPage() {
                           <button
                             onClick={() => grant(m)}
                             disabled={working === m.user_id}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-fluid-caption font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
                           >
                             {working === m.user_id ? <Loader2 size={12} className="animate-spin" /> : <ShieldCheck size={12} />}
                             Verify
