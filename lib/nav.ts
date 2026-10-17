@@ -23,6 +23,7 @@ export const SIDEBAR_SECTIONS: NavSection[] = [
   {
     title: "Main",
     items: [
+      { label: "Home",        href: "/",           icon: Home },
       { label: "Super Hub",   href: "/hub/",       icon: Home },
       { label: "Dashboard",   href: "/dashboard/", icon: LayoutDashboard },
       { label: "Feed",        href: "/feed/",      icon: Newspaper },
