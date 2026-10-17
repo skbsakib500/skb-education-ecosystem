@@ -84,16 +84,3 @@ export const profileSchema = z.object({
 
 export type ProfileInput = z.infer<typeof profileSchema>;
 
-/* ---------- Signup Step 2 ---------- */
-
-export const signupInstitutionStepSchema = z.object({
-  name: z.string().min(2, "Institution name is required").max(120),
-  slug: z
-    .string()
-    .min(2, "Slug is required")
-    .max(60)
-    .regex(/^[a-z0-9-]+$/, "Only lowercase letters, numbers and hyphens"),
-  type: z.string().min(1, "Select a type"),
-});
-
-export type SignupInstitutionStepInput = z.infer<typeof signupInstitutionStepSchema>;
