@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Shield } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
 
@@ -112,6 +113,11 @@ export default function ProfilePage() {
         style={{ borderColor: "var(--border)", background: "var(--surface)", backdropFilter: "blur(24px)" }}>
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 md:px-8">
           <Link href="/hub" className="flex items-center gap-2 text-[13px]" style={{ color: "var(--text-muted)" }}>← Hub</Link>
+          <Link href="/settings/privacy/"
+            className="inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12px] font-medium"
+            style={{ borderColor: "var(--border)" }}>
+            <Shield size={13} /> Privacy
+          </Link>
           <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]"
             style={{ borderColor: "var(--border)" }}>Sign out</button>
         </div>

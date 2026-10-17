@@ -72,6 +72,7 @@ export const SIDEBAR_SECTIONS: NavSection[] = [
     title: "Settings",
     items: [
       { label: "Profile",       href: "/profile/",               icon: User },
+      { label: "Privacy",       href: "/settings/privacy/",       icon: Shield },
       { label: "Notifications", href: "/settings/notifications/", icon: Bell },
       { label: "Pricing",       href: "/pricing/",               icon: CreditCard },
     ],
