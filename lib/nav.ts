@@ -3,7 +3,7 @@ import {
   GraduationCap, BookOpen, Users, MessageCircle,
   BookMarked, FolderOpen, UserCheck, Briefcase,
   ShoppingBag, Trophy, BarChart3, Sparkles,
-  User, Bell, CreditCard, Compass, Shield,
+  User, Bell, CreditCard, Compass, Shield, ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -59,6 +59,7 @@ export const SIDEBAR_SECTIONS: NavSection[] = [
     title: "Progress",
     items: [
       { label: "Achievements", href: "/achievements/", icon: Trophy },
+      { label: "Verification", href: "/verification/", icon: ShieldCheck },
       { label: "Leaderboard",  href: "/leaderboard/",  icon: BarChart3 },
     ],
   },

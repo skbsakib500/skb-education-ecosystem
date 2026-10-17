@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Lock, MessageSquare, UserPlus, Check, Pencil, ArrowLeft } from "lucide-react";
+import { Lock, MessageSquare, UserPlus, Check, Pencil, ArrowLeft, ShieldCheck } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
 import PostCard from "@/components/social/PostCard";
@@ -47,6 +47,7 @@ type PublicProfile = {
   locked?: boolean;
   recent_institutions?: { name: string; slug: string; emoji: string | null; role: string }[];
   posts?: any[];
+  verification_badges?: { id: string; type: string; verified_at: string; issuer_id: string | null }[];
 };
 
 function ProfileView() {
@@ -180,7 +181,14 @@ function ProfileView() {
             </div>
 
             <div className="mt-4">
-              <h1 className="text-xl md:text-2xl font-bold text-slate-900">{data.full_name || "User"}</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">{data.full_name || "User"}</h1>
+                {Array.isArray(data.verification_badges) && data.verification_badges.length > 0 && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700" title="Verified">
+                    <ShieldCheck size={13} /> Verified
+                  </span>
+                )}
+              </div>
               {data.username && <div className="text-sm text-slate-500">@{data.username}</div>}
               {data.headline && <div className="mt-2 text-sm text-slate-700">{data.headline}</div>}
               {data.bio && <p className="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{data.bio}</p>}

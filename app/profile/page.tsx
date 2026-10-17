@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Loader2, Mail, Phone, MapPin, Calendar, Droplet, Globe,
   Facebook, Linkedin, Twitter, Instagram, Youtube,
-  Camera, Pencil, X, Save, AlertCircle, Shield, Sparkles, Trophy, Users,
+  Camera, Pencil, X, Save, AlertCircle, Shield, ShieldCheck, Sparkles, Trophy, Users,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
@@ -91,6 +91,7 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState("");
   const [points, setPoints] = useState(0);
   const [badgeCount, setBadgeCount] = useState(0);
+  const [verificationBadges, setVerificationBadges] = useState<{ id: string; type: string; verified_at: string }[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -100,9 +101,10 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [profRes, gamRes] = await Promise.all([
+      const [profRes, gamRes, badgesRes] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
         supabase.rpc("my_gamification"),
+        supabase.rpc("get_verification_badges", { p_user_id: user.id }),
       ]);
 
       const p = profRes.data as ProfileRow | null;
@@ -137,6 +139,9 @@ export default function ProfilePage() {
       if (g) {
         setPoints(g.points || g.total_points || 0);
         setBadgeCount((g.badges || []).length);
+      }
+      if (Array.isArray(badgesRes.data)) {
+        setVerificationBadges(badgesRes.data);
       }
       setLoading(false);
     })();
@@ -329,6 +334,11 @@ export default function ProfilePage() {
             <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-slate-600">
               <Users size={12} /> {profile.followers_count || 0} followers · {profile.following_count || 0} following
             </span>
+            {verificationBadges.map((b) => (
+              <span key={b.id} className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800 font-semibold capitalize" title={`Verified ${new Date(b.verified_at).toLocaleDateString()}`}>
+                <ShieldCheck size={12} /> {b.type} verified
+              </span>
+            ))}
           </div>
         </div>
       </div>
