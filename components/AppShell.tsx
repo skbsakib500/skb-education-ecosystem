@@ -167,7 +167,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <span className="max-w-[140px] truncate font-medium text-slate-800">
               {currentMembership?.institutions?.name || "No institution"}
             </span>
-            <ChevronDown size={14} className="text-slate-400" />
+            <ChevronDown size={14} className="text-slate-500" />
           </button>
 
           {instMenuOpen && memberships.length > 0 && (
@@ -182,7 +182,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 >
                   <span className="text-lg">{m.institutions?.emoji || "🏫"}</span>
                   <span className="flex-1 truncate">{m.institutions?.name}</span>
-                  <span className="text-xs text-slate-400">{m.role}</span>
+                  <span className="text-xs text-slate-500">{m.role}</span>
                 </button>
               ))}
             </div>
@@ -264,7 +264,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Main */}
       <main className="md:pl-64 pt-14 pb-20 md:pb-4 min-h-screen">
         {loading ? (
-          <div className="flex items-center justify-center py-20 text-slate-400 text-sm">
+          <div className="flex items-center justify-center py-20 text-slate-500 text-sm">
             Loading…
           </div>
         ) : (

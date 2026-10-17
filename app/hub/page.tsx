@@ -146,7 +146,7 @@ export default function HubPage() {
 
   if (loading || authLoading) {
     return (
-      <div className="flex items-center justify-center py-20 text-slate-400 text-sm">
+      <div className="flex items-center justify-center py-20 text-slate-500 text-sm">
         Loading…
       </div>
     );
@@ -267,13 +267,13 @@ export default function HubPage() {
 
         <div className="relative flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="text-xs uppercase tracking-wider text-slate-400 mb-1">
+            <div className="text-xs uppercase tracking-wider text-slate-300 mb-1">
               Super Hub
             </div>
             <h1 className="text-2xl md:text-3xl font-bold">
               👋 Welcome, {greetingName}!
             </h1>
-            <p className="text-slate-300 text-sm mt-2 max-w-xl">
+            <p className="text-slate-200 text-sm mt-2 max-w-xl">
               Everything in one place — your institution, portals, community, and AI tools.
             </p>
           </div>
@@ -306,7 +306,7 @@ export default function HubPage() {
         <SectionHeader emoji="🏛️" title="Your Institution" count={institutions.length} />
         {institutions.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center">
-            <Building2 className="mx-auto text-slate-400 mb-2" size={32} />
+            <Building2 className="mx-auto text-slate-500 mb-2" size={32} />
             <p className="text-sm text-slate-600 mb-3">
               You're not part of any institution yet.
             </p>
@@ -347,7 +347,7 @@ export default function HubPage() {
                   </div>
                   <ArrowRight
                     size={18}
-                    className="text-slate-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
+                    className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
                   />
                 </div>
                 <div className="mt-4 text-xs font-medium text-blue-600">
@@ -376,7 +376,7 @@ export default function HubPage() {
       ))}
 
       {/* ============ Footer note ============ */}
-      <div className="text-center text-xs text-slate-400 pt-4 pb-2">
+      <div className="text-center text-xs text-slate-500 pt-4 pb-2">
         SKB Education Ecosystem · Multi-Tenant EdTech SaaS
       </div>
     </div>
@@ -399,7 +399,7 @@ function SectionHeader({
       <span className="text-lg">{emoji}</span>
       <h2 className="text-base md:text-lg font-bold text-slate-900">{title}</h2>
       {typeof count === "number" && (
-        <span className="text-xs text-slate-400 font-medium">({count})</span>
+        <span className="text-xs text-slate-500 font-medium">({count})</span>
       )}
     </div>
   );
