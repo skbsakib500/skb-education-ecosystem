@@ -86,13 +86,13 @@ function ChatView() {
         style={{ borderColor: "var(--border)", background: "var(--surface)", backdropFilter: "blur(24px)" }}>
         <div className="mx-auto flex h-16 max-w-3xl items-center gap-3 px-4">
           <Link href="/messages" className="text-[13px]" style={{ color: "var(--text-muted)" }}>←</Link>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full text-[12px] font-bold text-white"
+          <div className="flex h-10 w-10 items-center justify-center rounded-full text-fluid-caption font-bold text-white"
             style={{ background: "linear-gradient(135deg,#10b981,#14b8a6)" }}>
             {other?.avatar_url ? <img src={other.avatar_url} alt="" className="h-full w-full object-cover rounded-full" /> : otherInit}
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-[14px] font-semibold truncate">{other?.full_name || "Conversation"}</div>
-            {other?.username && <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>@{other.username}</div>}
+            {other?.username && <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>@{other.username}</div>}
           </div>
         </div>
       </header>
@@ -108,7 +108,7 @@ function ChatView() {
                     ? { background: "linear-gradient(135deg,#10b981,#14b8a6)" }
                     : { background: "var(--surface-3)", borderColor: "var(--border)", border: "1px solid var(--border)" }}>
                   <div className="whitespace-pre-wrap break-words">{m.content}</div>
-                  <div className={"text-[10px] mt-1 " + (mine ? "text-white/70" : "")}
+                  <div className={"text-fluid-micro mt-1 " + (mine ? "text-white/70" : "")}
                     style={!mine ? { color: "var(--text-faint)" } : {}}>
                     {new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>

@@ -53,8 +53,8 @@ export default function LeaderboardPage() {
                     {p.avatar_url ? <img src={p.avatar_url} alt="" className="h-full w-full object-cover rounded-full" /> : initials}
                   </div>
                 </div>
-                <div className="text-[12px] font-semibold truncate">{p.full_name}</div>
-                <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>⭐ {p.total_points}</div>
+                <div className="text-fluid-caption font-semibold truncate">{p.full_name}</div>
+                <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>⭐ {p.total_points}</div>
                 <div className={"mt-2 rounded-t-xl flex items-end justify-center pb-1 " + heights[idx]}
                   style={{ background: colors[idx] }}>
                   <span className="text-[20px]">{medals[idx]}</span>
@@ -74,15 +74,15 @@ export default function LeaderboardPage() {
                 className={"flex items-center gap-3 rounded-2xl border p-3 transition hover:bg-[var(--bg-soft)] " + (isMe ? "ring-2 ring-emerald-500/40" : "")}
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                 <div className="w-8 text-center text-[13px] font-bold" style={{ color: "var(--text-muted)" }}>#{Number(r.rank)}</div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full text-[12px] font-bold text-white shrink-0"
+                <div className="flex h-10 w-10 items-center justify-center rounded-full text-fluid-caption font-bold text-white shrink-0"
                   style={{ background: "linear-gradient(135deg,#10b981,#14b8a6)" }}>
                   {r.avatar_url ? <img src={r.avatar_url} alt="" className="h-full w-full object-cover rounded-full" /> : initials}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[13px] font-semibold truncate">
-                    {r.full_name} {isMe && <span className="text-[10px] text-emerald-600">(You)</span>}
+                    {r.full_name} {isMe && <span className="text-fluid-micro text-emerald-600">(You)</span>}
                   </div>
-                  <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                  <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                     LV {r.level} · 🏅 {r.badges_count} · 🔥 {r.current_streak}
                   </div>
                 </div>

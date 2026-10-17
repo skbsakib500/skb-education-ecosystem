@@ -312,7 +312,7 @@ Topic বললে sample essay লিখে দিতে পারি। 📚`;
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white text-[16px] shadow-lg">🤖</div>
               <div>
                 <div className="text-[13px] font-semibold">AI Tutor</div>
-                <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>skb-tutor-v1</div>
+                <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>skb-tutor-v1</div>
               </div>
             </Link>
             <button onClick={() => setShowSidebar(false)} className="md:hidden text-[18px]">✕</button>
@@ -320,7 +320,7 @@ Topic বললে sample essay লিখে দিতে পারি। 📚`;
 
           {quota && (
             <div className="mt-3 rounded-xl bg-[var(--bg-soft)] p-2.5">
-              <div className="flex items-center justify-between text-[11px]">
+              <div className="flex items-center justify-between text-fluid-micro">
                 <span style={{ color: "var(--text-muted)" }}>Today's quota</span>
                 <span className="font-semibold">{quota.used}/{quota.limit}</span>
               </div>
@@ -341,19 +341,19 @@ Topic বললে sample essay লিখে দিতে পারি। 📚`;
 
         <div className="overflow-y-auto" style={{ maxHeight: "calc(100vh - 200px)" }}>
           {convs.length === 0 ? (
-            <div className="p-4 text-center text-[12px]" style={{ color: "var(--text-muted)" }}>No conversations yet</div>
+            <div className="p-4 text-center text-fluid-caption" style={{ color: "var(--text-muted)" }}>No conversations yet</div>
           ) : convs.map((c) => (
             <button key={c.id} onClick={() => { setActiveConv(c); setShowSidebar(false); }}
-              className={"w-full text-left px-4 py-3 border-b text-[12px] hover:bg-[var(--bg-soft)] " + (activeConv?.id === c.id ? "bg-violet-500/10" : "")}
+              className={"w-full text-left px-4 py-3 border-b text-fluid-caption hover:bg-[var(--bg-soft)] " + (activeConv?.id === c.id ? "bg-violet-500/10" : "")}
               style={{ borderColor: "var(--border)" }}>
               <div className="font-medium truncate">{c.title}</div>
-              <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>{c.total_messages} messages</div>
+              <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>{c.total_messages} messages</div>
             </button>
           ))}
         </div>
 
         <div className="border-t p-3" style={{ borderColor: "var(--border)" }}>
-          <button onClick={signOut} className="w-full rounded-full border py-2 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+          <button onClick={signOut} className="w-full rounded-full border py-2 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
         </div>
       </aside>
 
@@ -364,10 +364,10 @@ Topic বললে sample essay লিখে দিতে পারি। 📚`;
           <button onClick={() => setShowSidebar(true)} className="md:hidden text-[20px]">☰</button>
           <div className="flex-1 min-w-0">
             <div className="text-[14px] font-semibold truncate">{activeConv?.title || "AI Tutor"}</div>
-            <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>Ask anything about your studies</div>
+            <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>Ask anything about your studies</div>
           </div>
           {quota && (
-            <div className="rounded-full bg-violet-500/15 px-3 py-1 text-[11px] font-semibold text-violet-700">
+            <div className="rounded-full bg-violet-500/15 px-3 py-1 text-fluid-micro font-semibold text-violet-700">
               {quota.remaining} left today
             </div>
           )}
@@ -389,8 +389,8 @@ Topic বললে sample essay লিখে দিতে পারি। 📚`;
                       className="rounded-xl border p-3 text-left hover:-translate-y-0.5 hover:shadow-md transition"
                       style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                       <div className="text-[20px]">{p.e}</div>
-                      <div className="text-[12px] font-medium mt-1">{p.t}</div>
-                      <div className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>{p.s}</div>
+                      <div className="text-fluid-caption font-medium mt-1">{p.t}</div>
+                      <div className="text-fluid-micro mt-0.5" style={{ color: "var(--text-muted)" }}>{p.s}</div>
                     </button>
                   ))}
                 </div>

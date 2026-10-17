@@ -47,8 +47,8 @@ export default function AchievementsPage() {
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4">
           <Link href="/hub" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Hub</Link>
           <div className="flex gap-2">
-            <Link href="/leaderboard" className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>🏆 Leaderboard</Link>
-            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+            <Link href="/leaderboard" className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>🏆 Leaderboard</Link>
+            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
       </header>
@@ -58,13 +58,13 @@ export default function AchievementsPage() {
         <div className="rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-6 md:p-8 text-white relative overflow-hidden">
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-amber-200 animate-pulse" />
               Level {stats.level} · Rank #{stats.rank_global}
             </div>
             <h1 className="mt-4 text-[32px] md:text-[40px] font-bold">⭐ {stats.total_points} Points</h1>
             <div className="mt-4 max-w-md">
-              <div className="flex justify-between text-[12px] mb-1.5">
+              <div className="flex justify-between text-fluid-caption mb-1.5">
                 <span>Progress to Level {stats.level + 1}</span>
                 <span>{progress}/500</span>
               </div>
@@ -97,8 +97,8 @@ export default function AchievementsPage() {
                   }}>
                   <div className={"text-[36px] " + (!has ? "grayscale" : "")}>{b.emoji}</div>
                   <div className="mt-2 text-[13px] font-semibold">{b.name}</div>
-                  <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>{b.name_bn}</div>
-                  <div className="mt-1 text-[10px]" style={{ color: "var(--text-faint)" }}>{b.description}</div>
+                  <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>{b.name_bn}</div>
+                  <div className="mt-1 text-fluid-micro" style={{ color: "var(--text-faint)" }}>{b.description}</div>
                   {has && <div className="mt-2 text-[9px] font-bold uppercase" style={{ color: b.color }}>✓ Unlocked</div>}
                 </div>
               );
@@ -120,7 +120,7 @@ export default function AchievementsPage() {
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                   <div className="min-w-0">
                     <div className="text-[13px] font-medium capitalize">{h.action.replace(/_/g, " ")}</div>
-                    <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                       {h.description || ""} · {new Date(h.created_at).toLocaleDateString()}
                     </div>
                   </div>
@@ -140,8 +140,8 @@ function StatBox({ emoji, value, label, bn }: any) {
     <div className="rounded-2xl border p-4 text-center" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[24px]">{emoji}</div>
       <div className="text-[22px] font-bold mt-1">{value}</div>
-      <div className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{label}</div>
-      <div className="bangla text-[10px]" style={{ color: "var(--text-faint)" }}>{bn}</div>
+      <div className="text-fluid-micro font-medium" style={{ color: "var(--text-muted)" }}>{label}</div>
+      <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{bn}</div>
     </div>
   );
 }

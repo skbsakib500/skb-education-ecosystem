@@ -39,8 +39,8 @@ export default function TutorsPage() {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Link href="/marketplace" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Marketplace</Link>
           <div className="flex items-center gap-2">
-            <Link href="/tutors/become" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">Become a Tutor</Link>
-            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+            <Link href="/tutors/become" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">Become a Tutor</Link>
+            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
       </header>
@@ -71,7 +71,7 @@ export default function TutorsPage() {
         </div>
 
         <div className="mt-3 flex justify-end">
-          <button onClick={load} className="rounded-full bg-emerald-500/15 px-4 py-1.5 text-[12px] font-semibold text-emerald-700">Apply filters</button>
+          <button onClick={load} className="rounded-full bg-emerald-500/15 px-4 py-1.5 text-fluid-caption font-semibold text-emerald-700">Apply filters</button>
         </div>
 
         {loading ? (
@@ -97,13 +97,13 @@ export default function TutorsPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-[15px] font-semibold truncate">{t.full_name}</div>
-                      <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>@{t.username}</div>
-                      {t.headline && <div className="text-[12px] mt-1 line-clamp-1">{t.headline}</div>}
+                      <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>@{t.username}</div>
+                      {t.headline && <div className="text-fluid-caption mt-1 line-clamp-1">{t.headline}</div>}
                     </div>
                     {t.rating_avg > 0 && (
                       <div className="text-right shrink-0">
                         <div className="text-[14px] font-bold text-amber-600">⭐ {Number(t.rating_avg).toFixed(1)}</div>
-                        <div className="text-[10px]" style={{ color: "var(--text-faint)" }}>{t.rating_count} reviews</div>
+                        <div className="text-fluid-micro" style={{ color: "var(--text-faint)" }}>{t.rating_count} reviews</div>
                       </div>
                     )}
                   </div>
@@ -111,12 +111,12 @@ export default function TutorsPage() {
                   {Array.isArray(t.subjects) && t.subjects.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {t.subjects.slice(0, 4).map((s: string) => (
-                        <span key={s} className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-700">{s}</span>
+                        <span key={s} className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-fluid-micro font-medium text-emerald-700">{s}</span>
                       ))}
                     </div>
                   )}
 
-                  <div className="mt-3 flex items-center justify-between text-[11px]">
+                  <div className="mt-3 flex items-center justify-between text-fluid-micro">
                     <span style={{ color: "var(--text-muted)" }}>
                       {t.city || t.division ? `📍 ${t.city || t.division}` : ""}
                     </span>

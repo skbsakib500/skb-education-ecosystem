@@ -89,12 +89,12 @@ function DiscussionView() {
             </button>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                {disc.topic && <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-[11px] capitalize">{disc.topic}</span>}
-                {disc.is_answered && <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">✓ Answered</span>}
+                {disc.topic && <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-fluid-micro capitalize">{disc.topic}</span>}
+                {disc.is_answered && <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-fluid-micro font-semibold text-emerald-700">✓ Answered</span>}
               </div>
               <h1 className="mt-2 text-[22px] font-semibold leading-tight">{disc.title}</h1>
               {disc.body && <p className="mt-3 text-[14px] leading-relaxed whitespace-pre-wrap">{disc.body}</p>}
-              <div className="mt-3 text-[11px]" style={{ color: "var(--text-muted)" }}>
+              <div className="mt-3 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                 Asked by <Link href={"/u/?username=" + (disc.profiles?.username || "")} className="font-medium hover:text-emerald-600">{disc.profiles?.full_name || "Anonymous"}</Link>
                 {" · "}{new Date(disc.created_at).toLocaleDateString()}
               </div>
@@ -104,7 +104,7 @@ function DiscussionView() {
 
         {/* Answer form */}
         <form onSubmit={submitAnswer} className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-          <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Your Answer</label>
+          <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Your Answer</label>
           <textarea value={answerText} onChange={(e) => setAnswerText(e.target.value)}
             rows={4} placeholder="উত্তর লিখুন..."
             className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none resize-none"
@@ -124,7 +124,7 @@ function DiscussionView() {
             <div key={a.id} className={"rounded-2xl border p-5 " + (a.is_best ? "border-emerald-500/40 bg-emerald-500/5" : "")}
               style={!a.is_best ? { borderColor: "var(--border)", background: "var(--surface-3)" } : {}}>
               {a.is_best && (
-                <div className="mb-2 text-[11px] font-bold text-emerald-700">✓ BEST ANSWER</div>
+                <div className="mb-2 text-fluid-micro font-bold text-emerald-700">✓ BEST ANSWER</div>
               )}
               <div className="flex items-start gap-4">
                 <button onClick={() => vote(a.id)} className="shrink-0 text-center rounded-xl px-3 py-2 hover:bg-emerald-500/10 transition">
@@ -134,13 +134,13 @@ function DiscussionView() {
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] leading-relaxed whitespace-pre-wrap">{a.body}</p>
                   <div className="mt-3 flex items-center justify-between gap-3 flex-wrap">
-                    <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                       by <Link href={"/u/?username=" + (a.profiles?.username || "")} className="font-medium hover:text-emerald-600">{a.profiles?.full_name || "Anonymous"}</Link>
                       {" · "}{new Date(a.created_at).toLocaleDateString()}
                     </div>
                     {isAuthor && !a.is_best && (
                       <button onClick={() => markBest(a.id)}
-                        className="rounded-full border px-3 py-1 text-[11px] font-medium"
+                        className="rounded-full border px-3 py-1 text-fluid-micro font-medium"
                         style={{ borderColor: "var(--border)" }}>
                         ✓ Mark as Best
                       </button>

@@ -58,12 +58,12 @@ export default function ExplorePage() {
                 <div key={t.id} className="rounded-2xl border p-4 hover:shadow-md transition"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full text-fluid-micro font-bold text-white"
                       style={{ background: "linear-gradient(135deg,#10b981,#14b8a6)" }}>
                       {t.author_avatar ? <img src={t.author_avatar} alt="" className="h-full w-full object-cover rounded-full" /> : (t.author_name || "U").slice(0, 1)}
                     </div>
-                    <span className="text-[12px] font-semibold">{t.author_name}</span>
-                    <span className="text-[10px]" style={{ color: "var(--text-faint)" }}>
+                    <span className="text-fluid-caption font-semibold">{t.author_name}</span>
+                    <span className="text-fluid-micro" style={{ color: "var(--text-faint)" }}>
                       {t.likes_count}❤️ · {t.comments_count}💬
                     </span>
                   </div>
@@ -94,9 +94,9 @@ export default function ExplorePage() {
                       {s.avatar_url ? <img src={s.avatar_url} alt="" className="h-full w-full object-cover rounded-full" /> : init}
                     </div>
                     <div className="mt-3 text-[13px] font-semibold truncate">{s.full_name}</div>
-                    <div className="text-[11px] truncate" style={{ color: "var(--text-muted)" }}>@{s.username}</div>
-                    {s.headline && <div className="text-[10px] truncate mt-0.5" style={{ color: "var(--text-faint)" }}>{s.headline}</div>}
-                    <div className="mt-2 text-[10px] font-medium" style={{ color: "var(--text-muted)" }}>
+                    <div className="text-fluid-micro truncate" style={{ color: "var(--text-muted)" }}>@{s.username}</div>
+                    {s.headline && <div className="text-fluid-micro truncate mt-0.5" style={{ color: "var(--text-faint)" }}>{s.headline}</div>}
+                    <div className="mt-2 text-fluid-micro font-medium" style={{ color: "var(--text-muted)" }}>
                       {s.followers_count} followers
                     </div>
                   </Link>

@@ -93,11 +93,11 @@ function JournalView() {
           <div className="flex items-start justify-between gap-3 flex-wrap">
             <div className="min-w-0 flex-1">
               <div className="text-[26px] font-semibold">📔 {journal.name}</div>
-              <div className="text-[12px] mt-1" style={{ color: "var(--text-muted)" }}>
+              <div className="text-fluid-caption mt-1" style={{ color: "var(--text-muted)" }}>
                 by {journal.profiles?.full_name || "Anonymous"} · <span className="capitalize">{journal.category}</span>
               </div>
               {journal.description && <p className="text-[13px] mt-3">{journal.description}</p>}
-              <div className="mt-3 flex gap-3 text-[12px]" style={{ color: "var(--text-muted)" }}>
+              <div className="mt-3 flex gap-3 text-fluid-caption" style={{ color: "var(--text-muted)" }}>
                 <span>📄 {journal.articles_count} articles</span>
                 <span>👥 {journal.followers_count} followers</span>
               </div>
@@ -153,7 +153,7 @@ function JournalView() {
               {articles.map((a) => (
                 <div key={a.id} className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                   <div className="text-[16px] font-semibold">{a.title}</div>
-                  <div className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
+                  <div className="text-fluid-micro mt-1" style={{ color: "var(--text-muted)" }}>
                     by {a.profiles?.full_name || "Anonymous"} · {new Date(a.published_at).toLocaleDateString()}
                   </div>
                   {a.abstract && <p className="text-[13px] mt-3 leading-relaxed" style={{ color: "var(--text-muted)" }}>{a.abstract}</p>}

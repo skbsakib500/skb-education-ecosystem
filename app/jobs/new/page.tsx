@@ -69,7 +69,7 @@ export default function NewJobPage() {
           <h1 className="text-[24px] font-semibold">💼 Post a Job</h1>
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Institution (optional)</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Institution (optional)</label>
               <select value={form.institution_id} onChange={(e) => setForm({ ...form, institution_id: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -79,14 +79,14 @@ export default function NewJobPage() {
             </div>
             <Field label="Job Title *" value={form.title} onChange={(v: string) => setForm({ ...form, title: v })} placeholder="Senior Physics Teacher" required />
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
               <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={4} className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none resize-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Role Type</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Role Type</label>
                 <select value={form.role_type} onChange={(e) => setForm({ ...form, role_type: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -94,7 +94,7 @@ export default function NewJobPage() {
                 </select>
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Employment</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Employment</label>
                 <select value={form.employment_type} onChange={(e) => setForm({ ...form, employment_type: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -104,20 +104,20 @@ export default function NewJobPage() {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Salary Min (৳)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Salary Min (৳)</label>
                 <input type="number" min="0" value={form.salary_min} onChange={(e) => setForm({ ...form, salary_min: parseInt(e.target.value) || 0 })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Salary Max (৳)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Salary Max (৳)</label>
                 <input type="number" min="0" value={form.salary_max} onChange={(e) => setForm({ ...form, salary_max: parseInt(e.target.value) || 0 })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
             </div>
             <Field label="Location" value={form.location} onChange={(v: string) => setForm({ ...form, location: v })} placeholder="Mirpur, Dhaka" />
-            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[12px] text-rose-700">{error}</div>}
+            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-fluid-caption text-rose-700">{error}</div>}
             <button type="submit" disabled={saving}
               className="w-full rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-3 text-[14px] font-semibold text-white shadow disabled:opacity-50">
               {saving ? "Posting..." : "Post Job →"}
@@ -132,7 +132,7 @@ export default function NewJobPage() {
 function Field({ label, value, onChange, placeholder, required }: any) {
   return (
     <div>
-      <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>{label}</label>
+      <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>{label}</label>
       <input type="text" value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required={required}
         className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
         style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />

@@ -39,10 +39,10 @@ export default function PersonalSpace() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 text-white text-[14px] font-bold shadow-lg">🎯</div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Personal Space</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>ব্যক্তিগত শেখার জায়গা</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>ব্যক্তিগত শেখার জায়গা</div>
             </div>
           </Link>
-          <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+          <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
         </div>
       </header>
 
@@ -50,7 +50,7 @@ export default function PersonalSpace() {
         <div className="rounded-3xl bg-gradient-to-br from-rose-500 via-pink-600 to-rose-700 p-6 md:p-8 text-white relative overflow-hidden">
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
               Independent Mode
             </div>
@@ -66,11 +66,11 @@ export default function PersonalSpace() {
           {interests.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {interests.map((s: string) => (
-                <span key={s} className="rounded-full bg-rose-500/15 px-3 py-1.5 text-[12px] font-medium text-rose-700">{s}</span>
+                <span key={s} className="rounded-full bg-rose-500/15 px-3 py-1.5 text-fluid-caption font-medium text-rose-700">{s}</span>
               ))}
             </div>
           ) : (
-            <div className="text-[12px]" style={{ color: "var(--text-muted)" }}>কোনো আগ্রহ যোগ করা হয়নি</div>
+            <div className="text-fluid-caption" style={{ color: "var(--text-muted)" }}>কোনো আগ্রহ যোগ করা হয়নি</div>
           )}
         </div>
 
@@ -82,7 +82,7 @@ export default function PersonalSpace() {
 
         <div className="mt-6 rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="text-[14px] font-semibold">🔗 প্রতিষ্ঠানে যুক্ত হতে চান?</div>
-          <div className="text-[12px] mt-1" style={{ color: "var(--text-muted)" }}>
+          <div className="text-fluid-caption mt-1" style={{ color: "var(--text-muted)" }}>
             যেকোনো সময় প্রতিষ্ঠানে join করার request পাঠাতে পারবেন — personal data নিরাপদ থাকবে।
           </div>
           <Link href="/onboarding/student/" className="mt-3 inline-block rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-5 py-2 text-[13px] font-semibold text-white shadow">
@@ -90,7 +90,7 @@ export default function PersonalSpace() {
           </Link>
         </div>
 
-        <div className="mt-10 text-center text-[11px]" style={{ color: "var(--text-faint)" }}>
+        <div className="mt-10 text-center text-fluid-micro" style={{ color: "var(--text-faint)" }}>
           © 2025 SKB Education Ecosystem · Personal Space
         </div>
       </div>
@@ -103,8 +103,8 @@ function FeatureCard({ icon, title, bn, desc }: any) {
     <div className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[24px]">{icon}</div>
       <div className="mt-2 text-[14px] font-semibold">{title}</div>
-      <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>{bn}</div>
-      <div className="text-[11px] mt-1" style={{ color: "var(--text-faint)" }}>{desc}</div>
+      <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>{bn}</div>
+      <div className="text-fluid-micro mt-1" style={{ color: "var(--text-faint)" }}>{desc}</div>
     </div>
   );
 }

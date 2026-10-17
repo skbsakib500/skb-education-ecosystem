@@ -68,7 +68,7 @@ export default function NotificationPrefsPage() {
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[20px] shadow-lg">🔔</div>
             <div>
               <h1 className="text-[18px] font-semibold">Notification Preferences</h1>
-              <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>কোন নোটিফিকেশন পেতে চান</div>
+              <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>কোন নোটিফিকেশন পেতে চান</div>
             </div>
           </div>
 
@@ -80,7 +80,7 @@ export default function NotificationPrefsPage() {
                   <div className="text-[20px]">{t.e}</div>
                   <div>
                     <div className="text-[13px] font-semibold">{t.l}</div>
-                    <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>{t.bn}</div>
+                    <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>{t.bn}</div>
                   </div>
                 </div>
                 <button onClick={() => toggle(t.k)}
@@ -93,16 +93,16 @@ export default function NotificationPrefsPage() {
 
           <div className="mt-6 rounded-2xl border p-4 space-y-3" style={{ borderColor: "var(--border)" }}>
             <div className="text-[13px] font-semibold">🌙 Quiet Hours (Optional)</div>
-            <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>এই সময়ে কোনো নোটিফিকেশন আসবে না</div>
+            <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>এই সময়ে কোনো নোটিফিকেশন আসবে না</div>
             <div className="grid grid-cols-2 gap-3 mt-2">
               <div>
-                <label className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>Start</label>
+                <label className="text-fluid-micro font-medium" style={{ color: "var(--text-muted)" }}>Start</label>
                 <input type="time" value={prefs.quiet_hours_start || ""} onChange={(e) => setPrefs({ ...prefs, quiet_hours_start: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
               <div>
-                <label className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>End</label>
+                <label className="text-fluid-micro font-medium" style={{ color: "var(--text-muted)" }}>End</label>
                 <input type="time" value={prefs.quiet_hours_end || ""} onChange={(e) => setPrefs({ ...prefs, quiet_hours_end: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />

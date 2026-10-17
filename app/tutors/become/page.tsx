@@ -97,7 +97,7 @@ export default function BecomeTutorPage() {
           <form onSubmit={submit} className="mt-6 space-y-5">
             <Field label="Headline" value={form.headline} onChange={(v) => setForm({ ...form, headline: v })} placeholder="Physics & Math Tutor for Class 9-12" />
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Bio</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Bio</label>
               <textarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })}
                 rows={3} placeholder="আপনার পড়ানোর স্টাইল, অভিজ্ঞতা..."
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none resize-none"
@@ -105,11 +105,11 @@ export default function BecomeTutorPage() {
             </div>
 
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Subjects</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Subjects</label>
               <div className="mt-2 flex flex-wrap gap-2">
                 {SUBJECTS.map((s) => (
                   <button key={s} type="button" onClick={() => toggle("subjects", s)}
-                    className={"rounded-full border px-3 py-1.5 text-[11px] font-medium " + (form.subjects.includes(s) ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700" : "")}
+                    className={"rounded-full border px-3 py-1.5 text-fluid-micro font-medium " + (form.subjects.includes(s) ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700" : "")}
                     style={!form.subjects.includes(s) ? { borderColor: "var(--border)" } : {}}>
                     {s}
                   </button>
@@ -118,11 +118,11 @@ export default function BecomeTutorPage() {
             </div>
 
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Levels</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Levels</label>
               <div className="mt-2 flex flex-wrap gap-2">
                 {LEVELS.map((s) => (
                   <button key={s} type="button" onClick={() => toggle("levels", s)}
-                    className={"rounded-full border px-3 py-1.5 text-[11px] font-medium " + (form.levels.includes(s) ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700" : "")}
+                    className={"rounded-full border px-3 py-1.5 text-fluid-micro font-medium " + (form.levels.includes(s) ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700" : "")}
                     style={!form.levels.includes(s) ? { borderColor: "var(--border)" } : {}}>
                     {s}
                   </button>
@@ -132,14 +132,14 @@ export default function BecomeTutorPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Hourly Rate (৳)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Hourly Rate (৳)</label>
                 <input type="number" min="0" value={form.hourly_rate_bdt}
                   onChange={(e) => setForm({ ...form, hourly_rate_bdt: parseInt(e.target.value) || 0 })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Experience (years)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Experience (years)</label>
                 <input type="number" min="0" value={form.experience_years}
                   onChange={(e) => setForm({ ...form, experience_years: parseInt(e.target.value) || 0 })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
@@ -149,7 +149,7 @@ export default function BecomeTutorPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Mode</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Mode</label>
                 <select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -159,7 +159,7 @@ export default function BecomeTutorPage() {
                 </select>
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Division</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Division</label>
                 <select value={form.division} onChange={(e) => setForm({ ...form, division: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -171,8 +171,8 @@ export default function BecomeTutorPage() {
             <Field label="City" value={form.city} onChange={(v) => setForm({ ...form, city: v })} placeholder="Mirpur, Dhanmondi..." />
             <Field label="Education" value={form.education} onChange={(v) => setForm({ ...form, education: v })} placeholder="BSc in Physics, DU" />
 
-            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[12px] text-rose-700">{error}</div>}
-            {ok && <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-[12px] text-emerald-700">{ok}</div>}
+            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-fluid-caption text-rose-700">{error}</div>}
+            {ok && <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-fluid-caption text-emerald-700">{ok}</div>}
 
             <button type="submit" disabled={saving}
               className="w-full rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-3 text-[14px] font-semibold text-white shadow disabled:opacity-50">
@@ -188,7 +188,7 @@ export default function BecomeTutorPage() {
 function Field({ label, value, onChange, placeholder }: any) {
   return (
     <div>
-      <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>{label}</label>
+      <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>{label}</label>
       <input type="text" value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
         className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
         style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />

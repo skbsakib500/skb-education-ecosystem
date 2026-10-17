@@ -48,10 +48,10 @@ export default function InboxPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[14px] shadow-lg">💬</div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Messages</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>বার্তা</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>বার্তা</div>
             </div>
           </Link>
-          <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+          <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
         </div>
       </header>
 
@@ -65,7 +65,7 @@ export default function InboxPage() {
             <div className="bangla text-[13px] mt-1" style={{ color: "var(--text-muted)" }}>
               কোনো conversation নেই
             </div>
-            <div className="mt-4 text-[12px]" style={{ color: "var(--text-faint)" }}>
+            <div className="mt-4 text-fluid-caption" style={{ color: "var(--text-faint)" }}>
               Explore tab → যেকোনো user-এর profile → "Message" button
             </div>
           </div>
@@ -90,11 +90,11 @@ export default function InboxPage() {
                         </span>
                       )}
                     </div>
-                    <div className="text-[12px] truncate mt-0.5" style={{ color: "var(--text-muted)" }}>
+                    <div className="text-fluid-caption truncate mt-0.5" style={{ color: "var(--text-muted)" }}>
                       {c.last_message || "No messages"}
                     </div>
                   </div>
-                  <div className="text-[10px] shrink-0" style={{ color: "var(--text-faint)" }}>
+                  <div className="text-fluid-micro shrink-0" style={{ color: "var(--text-faint)" }}>
                     {c.last_message_at ? timeAgo(c.last_message_at) : ""}
                   </div>
                 </Link>

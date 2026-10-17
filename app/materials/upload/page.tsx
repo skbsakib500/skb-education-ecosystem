@@ -110,14 +110,14 @@ export default function UploadMaterialPage() {
 
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Type *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Type *</label>
               <div className="mt-2 grid grid-cols-4 gap-2">
                 {TYPES.map((t) => (
                   <button key={t.v} type="button" onClick={() => setForm({ ...form, type: t.v })}
                     className={"rounded-xl border p-2 text-center " + (form.type === t.v ? "bg-emerald-500/15 border-emerald-500/40" : "")}
                     style={form.type !== t.v ? { borderColor: "var(--border)" } : {}}>
                     <div className="text-[18px]">{t.e}</div>
-                    <div className="mt-0.5 text-[10px] font-medium">{t.l}</div>
+                    <div className="mt-0.5 text-fluid-micro font-medium">{t.l}</div>
                   </button>
                 ))}
               </div>
@@ -126,7 +126,7 @@ export default function UploadMaterialPage() {
             <Field label="Title *" value={form.title} onChange={(v: string) => setForm({ ...form, title: v })} placeholder="Newton's Laws - Chapter 4" required />
 
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
               <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={2} placeholder="বিস্তারিত..."
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none resize-none"
@@ -135,7 +135,7 @@ export default function UploadMaterialPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Subject</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Subject</label>
                 <select value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -144,7 +144,7 @@ export default function UploadMaterialPage() {
                 </select>
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Tags (comma-separated)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Tags (comma-separated)</label>
                 <input type="text" value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })}
                   placeholder="class-10, hsc, mnemonic"
                   className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
@@ -156,14 +156,14 @@ export default function UploadMaterialPage() {
               <Field label="External URL *" value={form.external_url} onChange={(v: string) => setForm({ ...form, external_url: v })} placeholder="https://youtube.com/..." />
             ) : (
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>File * (max 25 MB)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>File * (max 25 MB)</label>
                 <input ref={fileRef} type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp" onChange={onFile} className="hidden" />
                 <button type="button" onClick={() => fileRef.current?.click()}
                   className="mt-1 w-full rounded-xl border-2 border-dashed py-6 text-center transition hover:border-emerald-500/40"
                   style={{ borderColor: "var(--border-strong)", background: "var(--bg-soft)" }}>
                   <div className="text-[28px]">📁</div>
                   <div className="mt-1 text-[13px] font-medium">{file ? file.name : "Click to select file"}</div>
-                  {file && <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                  {file && <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </div>}
                 </button>
@@ -175,7 +175,7 @@ export default function UploadMaterialPage() {
               🌐 Public — সবাই দেখতে পারবে
             </label>
 
-            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[12px] text-rose-700">{error}</div>}
+            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-fluid-caption text-rose-700">{error}</div>}
 
             <button type="submit" disabled={saving}
               className="w-full rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-3 text-[14px] font-semibold text-white shadow disabled:opacity-50">
@@ -191,7 +191,7 @@ export default function UploadMaterialPage() {
 function Field({ label, value, onChange, placeholder, required }: any) {
   return (
     <div>
-      <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>{label}</label>
+      <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>{label}</label>
       <input type="text" value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required={required}
         className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[13px] outline-none"
         style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />

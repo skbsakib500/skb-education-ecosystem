@@ -33,10 +33,10 @@ export default function MarketplacePage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white font-bold text-[13px] shadow-lg">🛒</div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Marketplace</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>শিক্ষা মার্কেটপ্লেস</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>শিক্ষা মার্কেটপ্লেস</div>
             </div>
           </Link>
-          <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+          <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
         </div>
       </header>
 
@@ -44,7 +44,7 @@ export default function MarketplacePage() {
         <div className="rounded-3xl bg-gradient-to-br from-violet-600 via-indigo-600 to-violet-700 p-6 md:p-8 text-white relative overflow-hidden">
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-violet-200 animate-pulse" />
               Everything in One Place
             </div>
@@ -67,16 +67,16 @@ export default function MarketplacePage() {
               <div className="mt-4">
                 <div className="text-[15px] font-semibold">{c.title}</div>
                 <div className="bangla text-[13px]" style={{ color: "var(--text-muted)" }}>{c.bn}</div>
-                <div className="mt-2 text-[11px]" style={{ color: "var(--text-faint)" }}>{c.desc}</div>
+                <div className="mt-2 text-fluid-micro" style={{ color: "var(--text-faint)" }}>{c.desc}</div>
               </div>
-              <div className="mt-3 text-[12px] font-medium opacity-0 group-hover:opacity-100 transition" style={{ color: c.color }}>
+              <div className="mt-3 text-fluid-caption font-medium opacity-0 group-hover:opacity-100 transition" style={{ color: c.color }}>
                 Open →
               </div>
             </Link>
           ))}
         </div>
 
-        <div className="mt-10 text-center text-[11px]" style={{ color: "var(--text-faint)" }}>
+        <div className="mt-10 text-center text-fluid-micro" style={{ color: "var(--text-faint)" }}>
           © 2025 SKB Education Ecosystem · Marketplace & Knowledge Hub
         </div>
       </div>

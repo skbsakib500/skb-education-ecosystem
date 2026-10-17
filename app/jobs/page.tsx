@@ -34,8 +34,8 @@ export default function JobsPage() {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Link href="/marketplace" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Marketplace</Link>
           <div className="flex gap-2">
-            <Link href="/jobs/new" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">+ Post Job</Link>
-            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+            <Link href="/jobs/new" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">+ Post Job</Link>
+            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
       </header>
@@ -62,7 +62,7 @@ export default function JobsPage() {
             <option value="librarian">Librarian</option>
             <option value="receptionist">Receptionist</option>
           </select>
-          <button onClick={load} className="rounded-full bg-emerald-500/15 px-4 py-1.5 text-[12px] font-semibold text-emerald-700">Search</button>
+          <button onClick={load} className="rounded-full bg-emerald-500/15 px-4 py-1.5 text-fluid-caption font-semibold text-emerald-700">Search</button>
         </div>
 
         {loading ? (
@@ -86,8 +86,8 @@ export default function JobsPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-[15px] font-semibold truncate">{j.title}</div>
-                    <div className="text-[12px] truncate" style={{ color: "var(--text-muted)" }}>{j.institution_name || "Independent"}</div>
-                    <div className="flex flex-wrap gap-2 mt-2 text-[11px]">
+                    <div className="text-fluid-caption truncate" style={{ color: "var(--text-muted)" }}>{j.institution_name || "Independent"}</div>
+                    <div className="flex flex-wrap gap-2 mt-2 text-fluid-micro">
                       <span className="rounded-full bg-violet-500/15 px-2 py-0.5 font-medium capitalize text-violet-700">{j.role_type}</span>
                       <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 capitalize">{j.employment_type.replace("_", " ")}</span>
                       {j.location && <span>📍 {j.location}</span>}
@@ -98,7 +98,7 @@ export default function JobsPage() {
                       )}
                     </div>
                   </div>
-                  <div className="text-[11px] text-right shrink-0" style={{ color: "var(--text-faint)" }}>
+                  <div className="text-fluid-micro text-right shrink-0" style={{ color: "var(--text-faint)" }}>
                     {j.applications_count} applied
                   </div>
                 </div>

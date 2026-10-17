@@ -60,7 +60,7 @@ export default function DashboardPage() {
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-20 h-[200px] w-[200px] rounded-full bg-teal-300/20 blur-3xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-emerald-200 animate-pulse" />
               Multi-Tenant Platform • Phase 2
             </div>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="mt-10 text-center text-[11px]" style={{ color: "var(--text-faint)" }}>
+        <div className="mt-10 text-center text-fluid-micro" style={{ color: "var(--text-faint)" }}>
           © 2025 SKB Education Ecosystem • Phase 2 (Auth + Multi-Tenant)
         </div>
       </div>
@@ -132,24 +132,24 @@ function Header({ user, profile, onSignOut }: { user: any; profile: any; onSignO
           </div>
           <div className="leading-tight">
             <div className="text-[14px] font-semibold">SKB Education</div>
-            <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>জ্ঞানের ইকোসিস্টেম</div>
+            <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>জ্ঞানের ইকোসিস্টেম</div>
           </div>
         </Link>
         <div className="flex items-center gap-2">
-          <Link href="/hub" className="hidden md:flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium" style={{ borderColor: "var(--border)" }}>🏠 Hub</Link>
+          <Link href="/hub" className="hidden md:flex items-center gap-1 rounded-full border px-3 py-1.5 text-fluid-caption font-medium" style={{ borderColor: "var(--border)" }}>🏠 Hub</Link>
           <NotificationCenter />
           <Link href="/institutions/new"
-            className="hidden md:flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
+            className="hidden md:flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">
             + New Institution
           </Link>
           <div className="relative">
             <button onClick={() => setOpen(!open)}
               className="flex items-center gap-2 rounded-full border p-1 pr-3"
               style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-[10px] font-bold text-white">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-fluid-micro font-bold text-white">
                 {initials}
               </div>
-              <span className="hidden text-[12px] font-medium md:inline">{profile?.full_name || user?.email?.split("@")[0]}</span>
+              <span className="hidden text-fluid-caption font-medium md:inline">{profile?.full_name || user?.email?.split("@")[0]}</span>
             </button>
             {open && (
               <>
@@ -158,7 +158,7 @@ function Header({ user, profile, onSignOut }: { user: any; profile: any; onSignO
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                   <div className="rounded-xl p-3" style={{ background: "var(--bg-soft)" }}>
                     <div className="text-[13px] font-semibold">{profile?.full_name || "User"}</div>
-                    <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>{user?.email}</div>
+                    <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>{user?.email}</div>
                   </div>
                   <button onClick={onSignOut}
                     className="mt-2 w-full rounded-lg px-3 py-2 text-left text-[13px] hover:bg-[var(--bg-soft)] text-rose-600">
@@ -181,8 +181,8 @@ function StatCard({ label, bn, value, icon }: { label: string; bn: string; value
         <span className="text-[16px]">{icon}</span>
       </div>
       <div className="mt-2 text-[20px] font-semibold">{value}</div>
-      <div className="text-[11px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{label}</div>
-      <div className="bangla text-[10px]" style={{ color: "var(--text-faint)" }}>{bn}</div>
+      <div className="text-fluid-micro font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{label}</div>
+      <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{bn}</div>
     </div>
   );
 }
@@ -196,7 +196,7 @@ function EmptyState() {
       <div className="bangla mt-1 text-[13px]" style={{ color: "var(--text-muted)" }}>
         এখনো কোনো প্রতিষ্ঠানে যুক্ত হননি
       </div>
-      <div className="mt-4 text-[12px]" style={{ color: "var(--text-muted)" }}>
+      <div className="mt-4 text-fluid-caption" style={{ color: "var(--text-muted)" }}>
         শুরু করতে একটি প্রতিষ্ঠান তৈরি করুন বা আমন্ত্রণ গ্রহণ করুন।
       </div>
       <Link href="/institutions/new"
@@ -222,7 +222,7 @@ function InstitutionCard({ membership }: { membership: any }) {
       {/* Top gradient with emoji/logo */}
       <div className="h-16 bg-gradient-to-br from-emerald-500 to-teal-600 relative">
         <div className="absolute top-2 right-2 flex items-center gap-1">
-          <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize ${
+          <span className={`rounded-full px-2 py-0.5 text-fluid-micro font-semibold capitalize ${
             membership.role === "admin" ? "bg-white text-emerald-700" : "bg-white/20 text-white backdrop-blur"
           }`}>{membership.role}</span>
         </div>
@@ -240,31 +240,31 @@ function InstitutionCard({ membership }: { membership: any }) {
         <div className="text-[15px] font-semibold truncate group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition">
           {inst.name}
         </div>
-        <div className="text-[11px] capitalize" style={{ color: "var(--text-muted)" }}>
+        <div className="text-fluid-micro capitalize" style={{ color: "var(--text-muted)" }}>
           {typeMeta.emoji} {typeMeta.label}
         </div>
 
         <div className="mt-2 flex flex-wrap gap-1">
           {inst.city || divisionMeta && (
-            <span className="rounded-full px-1.5 py-0.5 text-[10px]"
+            <span className="rounded-full px-1.5 py-0.5 text-fluid-micro"
               style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
               📍 {inst.city || divisionMeta?.label}
             </span>
           )}
           {inst.established_year && (
-            <span className="rounded-full px-1.5 py-0.5 text-[10px]"
+            <span className="rounded-full px-1.5 py-0.5 text-fluid-micro"
               style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
               Est. {inst.established_year}
             </span>
           )}
         </div>
 
-        <div className="mt-2 truncate text-[10px] font-mono" style={{ color: "var(--text-faint)" }}>
+        <div className="mt-2 truncate text-fluid-micro font-mono" style={{ color: "var(--text-faint)" }}>
           {boardMeta.emoji} {boardMeta.label}
         </div>
       </div>
 
-      <div className="border-t px-4 py-2.5 flex items-center justify-between text-[10px]"
+      <div className="border-t px-4 py-2.5 flex items-center justify-between text-fluid-micro"
         style={{ borderColor: "var(--border)", background: "var(--bg-soft)", color: "var(--text-faint)" }}>
         <span className="font-mono truncate">skb.edu.bd/{inst.slug}</span>
         <span className="opacity-0 group-hover:opacity-100 transition">→</span>

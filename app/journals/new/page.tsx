@@ -39,21 +39,21 @@ export default function NewJournalPage() {
           <h1 className="text-[22px] font-semibold">📔 Create Journal</h1>
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Journal Name *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Journal Name *</label>
               <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value, slug: slugify(e.target.value) })}
                 placeholder="SKB Physics Research"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>URL slug</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>URL slug</label>
               <input type="text" value={form.slug} onChange={(e) => setForm({ ...form, slug: slugify(e.target.value) })}
                 placeholder="skb-physics-research"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none font-mono"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Category</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Category</label>
               <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -61,7 +61,7 @@ export default function NewJournalPage() {
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
               <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={3} placeholder="এই journal সম্পর্কে..."
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none resize-none"
@@ -71,7 +71,7 @@ export default function NewJournalPage() {
               <input type="checkbox" checked={form.is_public} onChange={(e) => setForm({ ...form, is_public: e.target.checked })} className="accent-emerald-500" />
               🌐 Public (everyone can see)
             </label>
-            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-[12px] text-rose-700">{error}</div>}
+            {error && <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-fluid-caption text-rose-700">{error}</div>}
             <button type="submit" disabled={saving}
               className="w-full rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-3 text-[14px] font-semibold text-white shadow disabled:opacity-50">
               {saving ? "Creating..." : "Create Journal →"}

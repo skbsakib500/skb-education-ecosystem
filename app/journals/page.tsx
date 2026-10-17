@@ -42,8 +42,8 @@ export default function JournalsPage() {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Link href="/hub" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Hub</Link>
           <div className="flex gap-2">
-            <Link href="/journals/new" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">+ New Journal</Link>
-            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+            <Link href="/journals/new" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">+ New Journal</Link>
+            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
       </header>
@@ -57,7 +57,7 @@ export default function JournalsPage() {
         <div className="mt-5 flex gap-2 overflow-x-auto">
           {CATS.map((c) => (
             <button key={c.value} onClick={() => setCat(c.value)}
-              className={"rounded-full border px-4 py-1.5 text-[12px] font-medium whitespace-nowrap " + (cat === c.value ? "bg-[var(--text)] text-[var(--bg)]" : "")}
+              className={"rounded-full border px-4 py-1.5 text-fluid-caption font-medium whitespace-nowrap " + (cat === c.value ? "bg-[var(--text)] text-[var(--bg)]" : "")}
               style={cat !== c.value ? { borderColor: "var(--border)" } : {}}>{c.label}</button>
           ))}
         </div>
@@ -78,11 +78,11 @@ export default function JournalsPage() {
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                 <div className="text-[18px]">📔</div>
                 <div className="mt-2 text-[16px] font-semibold">{j.name}</div>
-                <div className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
+                <div className="text-fluid-micro mt-1" style={{ color: "var(--text-muted)" }}>
                   by {j.profiles?.full_name || "Anonymous"}
                 </div>
-                {j.description && <div className="text-[12px] mt-2 line-clamp-2" style={{ color: "var(--text-muted)" }}>{j.description}</div>}
-                <div className="mt-3 flex gap-3 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                {j.description && <div className="text-fluid-caption mt-2 line-clamp-2" style={{ color: "var(--text-muted)" }}>{j.description}</div>}
+                <div className="mt-3 flex gap-3 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                   <span>📄 {j.articles_count} articles</span>
                   <span>👥 {j.followers_count} followers</span>
                   <span className="capitalize">{j.category}</span>

@@ -75,12 +75,12 @@ export default function MaterialsPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[14px] shadow-lg">📚</div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Study Materials</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>পাঠ্য সামগ্রী</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>পাঠ্য সামগ্রী</div>
             </div>
           </Link>
           <div className="flex gap-2">
-            <Link href="/materials/upload" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">+ Upload</Link>
-            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+            <Link href="/materials/upload" className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">+ Upload</Link>
+            <button onClick={signOut} className="rounded-full border px-3 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
       </header>
@@ -102,13 +102,13 @@ export default function MaterialsPage() {
             <option value="">All subjects</option>
             {SUBJECTS.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <button onClick={load} className="rounded-full bg-emerald-500/15 px-4 py-2 text-[12px] font-semibold text-emerald-700">Apply</button>
+          <button onClick={load} className="rounded-full bg-emerald-500/15 px-4 py-2 text-fluid-caption font-semibold text-emerald-700">Apply</button>
         </div>
 
         <div className="mt-4 flex gap-1.5 overflow-x-auto pb-2">
           {TYPES.map((t) => (
             <button key={t.v} onClick={() => { setType(t.v); load(); }}
-              className={"rounded-full border px-3 py-1.5 text-[11px] font-medium whitespace-nowrap transition " + (type === t.v ? "bg-[var(--text)] text-[var(--bg)]" : "")}
+              className={"rounded-full border px-3 py-1.5 text-fluid-micro font-medium whitespace-nowrap transition " + (type === t.v ? "bg-[var(--text)] text-[var(--bg)]" : "")}
               style={type !== t.v ? { borderColor: "var(--border)" } : {}}>
               {t.e} {t.l}
             </button>
@@ -142,7 +142,7 @@ export default function MaterialsPage() {
                     <div className="flex items-start gap-2">
                       <div className="min-w-0 flex-1">
                         <div className="text-[14px] font-semibold line-clamp-2">{m.title}</div>
-                        <div className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
+                        <div className="text-fluid-micro mt-1" style={{ color: "var(--text-muted)" }}>
                           {m.subject && <span>{m.subject} · </span>}
                           by {m.uploader_name || "Anonymous"}
                         </div>
@@ -152,14 +152,14 @@ export default function MaterialsPage() {
                         {m.is_bookmarked ? "🔖" : "📑"}
                       </button>
                     </div>
-                    {m.description && <p className="mt-2 text-[11px] line-clamp-2" style={{ color: "var(--text-muted)" }}>{m.description}</p>}
+                    {m.description && <p className="mt-2 text-fluid-micro line-clamp-2" style={{ color: "var(--text-muted)" }}>{m.description}</p>}
                     <div className="mt-3 flex items-center justify-between">
-                      <div className="text-[10px] flex gap-2" style={{ color: "var(--text-faint)" }}>
+                      <div className="text-fluid-micro flex gap-2" style={{ color: "var(--text-faint)" }}>
                         <span>👁 {m.views}</span>
                         <span>⬇ {m.downloads}</span>
                       </div>
                       <button onClick={() => openMaterial(m)}
-                        className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-1.5 text-[11px] font-semibold text-white shadow">
+                        className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-1.5 text-fluid-micro font-semibold text-white shadow">
                         {m.type === "link" ? "Open →" : "Download →"}
                       </button>
                     </div>
