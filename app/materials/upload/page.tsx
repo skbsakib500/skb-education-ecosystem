@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth";
 
 const TYPES: Array<{ v: string; l: string; e: string }> = [
   { v: "pdf", l: "PDF", e: "📄" },
-  { v: "video", l: "Video", e: "🎥" },
+  { v: "video", l: "Video (YouTube link)", e: "🎥" },
   { v: "note", l: "Note", e: "📝" },
   { v: "link", l: "External Link", e: "🔗" },
   { v: "audio", l: "Audio", e: "🎵" },
@@ -44,8 +44,20 @@ export default function UploadMaterialPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    if (form.type !== "link" && !file) { setError("File select করুন"); return; }
-    if (form.type === "link" && !form.external_url.trim()) { setError("URL দিন"); return; }
+    const externalTypes = ["video", "audio", "link"];
+    const isExternal = externalTypes.includes(form.type);
+    if (isExternal && !form.external_url.trim()) {
+      setError("YouTube / Drive / External URL দিন (video সরাসরি upload করা যাবে না)");
+      return;
+    }
+    if (!isExternal && !file) {
+      setError("File select করুন");
+      return;
+    }
+    if (!isExternal && file && file.size > 5 * 1024 * 1024) {
+      setError("File size max 5 MB (বড় ফাইল চাইলে Google Drive link ব্যবহার করুন)");
+      return;
+    }
 
     setSaving(true); setError(""); setProgress(0);
 
@@ -79,7 +91,7 @@ export default function UploadMaterialPage() {
       type: form.type,
       file_url,
       file_size,
-      external_url: form.type === "link" ? form.external_url.trim() : null,
+      external_url: ["video","audio","link"].includes(form.type) ? form.external_url.trim() : null,
       tags,
       is_public: form.is_public,
     });
@@ -145,7 +157,7 @@ export default function UploadMaterialPage() {
             ) : (
               <div>
                 <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>File * (max 25 MB)</label>
-                <input ref={fileRef} type="file" onChange={onFile} className="hidden" />
+                <input ref={fileRef} type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp" onChange={onFile} className="hidden" />
                 <button type="button" onClick={() => fileRef.current?.click()}
                   className="mt-1 w-full rounded-xl border-2 border-dashed py-6 text-center transition hover:border-emerald-500/40"
                   style={{ borderColor: "var(--border-strong)", background: "var(--bg-soft)" }}>
