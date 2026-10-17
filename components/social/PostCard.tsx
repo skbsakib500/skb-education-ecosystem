@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import ReportButton from "@/components/moderation/ReportButton";
 
 interface Post {
   id: string;
@@ -184,6 +185,10 @@ export default function PostCard({ post, onChange }: { post: Post; onChange?: ()
           </form>
         </div>
       )}
+      {/* Report — bottom right corner */}
+      <div className="mt-2 flex justify-end">
+        <ReportButton contentType="post" contentId={post.id} />
+      </div>
     </div>
   );
 }

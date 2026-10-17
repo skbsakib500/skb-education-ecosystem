@@ -3,7 +3,7 @@ import {
   GraduationCap, BookOpen, Users, MessageCircle,
   BookMarked, FolderOpen, UserCheck, Briefcase,
   ShoppingBag, Trophy, BarChart3, Sparkles,
-  User, Bell, CreditCard, Compass, Shield, ShieldCheck,
+  User, Bell, CreditCard, Compass, Shield, ShieldCheck, Flag,
   type LucideIcon,
 } from "lucide-react";
 
