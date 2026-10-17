@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[20px] shadow-lg">🔐</div>
           <div>
             <div className="text-[16px] font-semibold">Reset Password</div>
-            <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>পাসওয়ার্ড রিসেট করুন</div>
+            <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>পাসওয়ার্ড রিসেট করুন</div>
           </div>
         </div>
 
@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
             <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-4 text-[13px] text-emerald-700">
               ✅ Reset link sent! আপনার email চেক করুন।
             </div>
-            <p className="mt-4 text-[12px]" style={{ color: "var(--text-muted)" }}>
+            <p className="mt-4 text-fluid-caption" style={{ color: "var(--text-muted)" }}>
               Email না পেলে <strong>Spam folder</strong> চেক করুন।
             </p>
             <Link href="/login" className="mt-5 block text-center text-[13px] font-medium text-emerald-700">
@@ -47,12 +47,12 @@ export default function ForgotPasswordPage() {
         ) : (
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Email</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Email</label>
               <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@school.edu.bd"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
-              <p className="mt-2 text-[11px] flex items-start gap-1.5" style={{ color: "var(--text-faint)" }}>
+              <p className="mt-2 text-fluid-micro flex items-start gap-1.5" style={{ color: "var(--text-faint)" }}>
                 <span>💡</span>
                 <span>Email আসবে <strong>SKB Education</strong>-এর পক্ষ থেকে, subject: "Reset your password"</span>
               </p>

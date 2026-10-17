@@ -16,30 +16,30 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+    <main className="min-h-screen flex items-center justify-center p-6 bg-canvas-soft">
       <div className="max-w-md w-full text-center">
         <div className="mx-auto w-16 h-16 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mb-4">
           <AlertCircle size={28} />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Something went wrong</h1>
-        <p className="mt-2 text-sm text-slate-500">
+        <h1 className="text-2xl font-bold text-fg">Something went wrong</h1>
+        <p className="mt-2 text-fluid-body-sm text-fg-muted">
           কিছু একটা ভুল হয়েছে। আপনি আবার চেষ্টা করতে পারেন, অথবা Hub-এ ফিরে যান।
         </p>
         {error.digest && (
-          <p className="mt-3 text-[11px] font-mono text-slate-400">
+          <p className="mt-3 text-fluid-micro font-mono text-fg-subtle">
             ref: {error.digest}
           </p>
         )}
         <div className="mt-6 flex flex-wrap gap-2 justify-center">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-fluid-body-sm font-medium text-white hover:bg-slate-800"
           >
             <RefreshCw size={14} /> Try again
           </button>
           <Link
             href="/hub/"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-border-strong px-4 py-2 text-fluid-body-sm font-medium text-fg hover:bg-white"
           >
             <Home size={14} /> Go to Hub
           </Link>

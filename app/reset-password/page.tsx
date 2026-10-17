@@ -66,20 +66,20 @@ export default function ResetPasswordPage() {
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[20px] shadow-lg">🔑</div>
           <div>
             <div className="text-[16px] font-semibold">Set New Password</div>
-            <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>নতুন পাসওয়ার্ড দিন</div>
+            <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>নতুন পাসওয়ার্ড দিন</div>
           </div>
         </div>
 
         <form onSubmit={submit} className="mt-6 space-y-4">
           <div>
-            <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>New Password</label>
+            <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>New Password</label>
             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"
               style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
           </div>
           <div>
-            <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Confirm Password</label>
+            <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Confirm Password</label>
             <input type="password" required value={confirm} onChange={(e) => setConfirm(e.target.value)}
               placeholder="••••••••"
               className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none focus:ring-2 focus:ring-emerald-500/30"

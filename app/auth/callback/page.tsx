@@ -17,9 +17,9 @@ export default function AuthCallbackPage() {
 
 function Spinner() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-4 bg-slate-50">
+    <main className="min-h-screen flex flex-col items-center justify-center gap-4 bg-canvas-soft">
       <Loader2 size={32} className="animate-spin text-emerald-600" />
-      <p className="text-sm text-slate-500">Verifying your email…</p>
+      <p className="text-fluid-body-sm text-fg-muted">Verifying your email…</p>
     </main>
   );
 }
@@ -76,25 +76,25 @@ function CallbackInner() {
   if (!failed) return <Spinner />;
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="max-w-md w-full rounded-2xl border border-slate-200 bg-white p-8 text-center">
+    <main className="min-h-screen flex items-center justify-center bg-canvas-soft px-4">
+      <div className="max-w-md w-full rounded-2xl border border-border bg-white p-8 text-center">
         <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
           <AlertCircle size={22} />
         </div>
-        <h1 className="mt-4 text-lg font-semibold text-slate-900">Verification link expired</h1>
-        <p className="mt-2 text-sm text-slate-500">
+        <h1 className="mt-4 text-lg font-semibold text-fg">Verification link expired</h1>
+        <p className="mt-2 text-fluid-body-sm text-fg-muted">
           Link-টি কাজ করেনি বা মেয়াদ শেষ। আবার sign in করুন, অথবা নতুন confirmation email নিন।
         </p>
         <div className="mt-6 space-y-2">
           <Link
             href="/login/"
-            className="block w-full rounded-xl bg-slate-900 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+            className="block w-full rounded-xl bg-slate-900 py-2.5 text-fluid-body-sm font-semibold text-white hover:bg-slate-800"
           >
             Go to sign in
           </Link>
           <Link
             href="/signup/"
-            className="block w-full rounded-xl border border-slate-300 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="block w-full rounded-xl border border-border-strong py-2.5 text-fluid-body-sm font-medium text-fg hover:bg-canvas-soft"
           >
             Sign up again
           </Link>
