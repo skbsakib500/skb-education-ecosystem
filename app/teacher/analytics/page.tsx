@@ -78,7 +78,7 @@ export default function TeacherAnalyticsPage() {
 
       <div className="mx-auto max-w-6xl px-4 md:px-8 pt-6 space-y-5">
         <div className="rounded-3xl bg-gradient-to-br from-violet-500 via-indigo-600 to-violet-700 p-6 text-white">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
             <span className="h-2 w-2 rounded-full bg-violet-200 animate-pulse" />
             {inst.emoji || "🏫"} {inst.name}
           </div>
@@ -101,7 +101,7 @@ export default function TeacherAnalyticsPage() {
             <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
               <div className="text-[14px] font-semibold">Class Performance</div>
               <select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}
-                className="rounded-full border px-3.5 py-1.5 text-[12px] outline-none"
+                className="rounded-full border px-3.5 py-1.5 text-fluid-caption outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                 {classes.map((c: any) => <option key={c.class_id} value={c.class_id}>{c.class_name}{c.section ? " · " + c.section : ""}</option>)}
               </select>
@@ -115,18 +115,18 @@ export default function TeacherAnalyticsPage() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                   <div className="rounded-xl p-3" style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)" }}>
-                    <div className="text-[11px] font-bold uppercase mb-2" style={{ color: "#10b981" }}>🏆 Top 5</div>
+                    <div className="text-fluid-micro font-bold uppercase mb-2" style={{ color: "#10b981" }}>🏆 Top 5</div>
                     {top5.map((p) => (
-                      <div key={p.student_id} className="flex justify-between text-[12px] py-1">
+                      <div key={p.student_id} className="flex justify-between text-fluid-caption py-1">
                         <span className="truncate">{p.full_name}</span>
                         <span className="font-bold text-emerald-600 shrink-0 ml-2">{Number(p.avg_exam).toFixed(1)}%</span>
                       </div>
                     ))}
                   </div>
                   <div className="rounded-xl p-3" style={{ background: "rgba(244,63,94,0.08)", border: "1px solid rgba(244,63,94,0.2)" }}>
-                    <div className="text-[11px] font-bold uppercase mb-2" style={{ color: "#f43f5e" }}>⚠️ Needs Help (Bottom 5)</div>
+                    <div className="text-fluid-micro font-bold uppercase mb-2" style={{ color: "#f43f5e" }}>⚠️ Needs Help (Bottom 5)</div>
                     {bottom5.map((p) => (
-                      <div key={p.student_id} className="flex justify-between text-[12px] py-1">
+                      <div key={p.student_id} className="flex justify-between text-fluid-caption py-1">
                         <span className="truncate">{p.full_name}</span>
                         <span className="font-bold text-rose-600 shrink-0 ml-2">{Number(p.avg_exam).toFixed(1)}%</span>
                       </div>
@@ -135,14 +135,14 @@ export default function TeacherAnalyticsPage() {
                 </div>
 
                 <div className="overflow-x-auto rounded-xl border" style={{ borderColor: "var(--border)" }}>
-                  <table className="w-full text-[12px]">
+                  <table className="w-full text-fluid-caption">
                     <thead>
                       <tr style={{ background: "var(--bg-soft)" }}>
-                        <th className="text-left p-2.5 font-semibold text-[10px] uppercase" style={{ color: "var(--text-muted)" }}>Student</th>
-                        <th className="text-center p-2.5 font-semibold text-[10px] uppercase" style={{ color: "var(--text-muted)" }}>Att%</th>
-                        <th className="text-center p-2.5 font-semibold text-[10px] uppercase" style={{ color: "var(--text-muted)" }}>Exam%</th>
-                        <th className="text-center p-2.5 font-semibold text-[10px] uppercase" style={{ color: "var(--text-muted)" }}>Assgn</th>
-                        <th className="text-right p-2.5 font-semibold text-[10px] uppercase" style={{ color: "var(--text-muted)" }}>Fee Due</th>
+                        <th className="text-left p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Student</th>
+                        <th className="text-center p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Att%</th>
+                        <th className="text-center p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Exam%</th>
+                        <th className="text-center p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Assgn</th>
+                        <th className="text-right p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Fee Due</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -150,10 +150,10 @@ export default function TeacherAnalyticsPage() {
                         <tr key={p.student_id} className="border-t" style={{ borderColor: "var(--border)" }}>
                           <td className="p-2.5">
                             <div className="font-semibold truncate max-w-[180px]">{p.full_name}</div>
-                            <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>Roll {p.roll_number || "—"}</div>
+                            <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>Roll {p.roll_number || "—"}</div>
                           </td>
                           <td className="p-2.5 text-center">
-                            <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold " +
+                            <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold " +
                               (Number(p.attendance_pct) >= 80 ? "bg-emerald-500/15 text-emerald-700" :
                                Number(p.attendance_pct) >= 60 ? "bg-amber-500/15 text-amber-700" :
                                "bg-rose-500/15 text-rose-700")}>
@@ -161,17 +161,17 @@ export default function TeacherAnalyticsPage() {
                             </span>
                           </td>
                           <td className="p-2.5 text-center">
-                            <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold " +
+                            <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold " +
                               (Number(p.avg_exam) >= 70 ? "bg-emerald-500/15 text-emerald-700" :
                                Number(p.avg_exam) >= 50 ? "bg-amber-500/15 text-amber-700" :
                                Number(p.avg_exam) > 0 ? "bg-rose-500/15 text-rose-700" :
-                               "bg-slate-500/10 text-slate-600")}>
+                               "bg-slate-500/10 text-fg-muted")}>
                               {Number(p.avg_exam).toFixed(1)}%
                             </span>
                           </td>
                           <td className="p-2.5 text-center font-medium">{p.assignments_submitted}/{p.assignments_total}</td>
                           <td className="p-2.5 text-right">
-                            <span className={"text-[11px] font-semibold " + (Number(p.fee_due) > 0 ? "text-rose-600" : "text-emerald-600")}>
+                            <span className={"text-fluid-micro font-semibold " + (Number(p.fee_due) > 0 ? "text-rose-600" : "text-emerald-600")}>
                               ৳{Number(p.fee_due).toLocaleString()}
                             </span>
                           </td>
@@ -194,7 +194,7 @@ function KPI({ e, v, l, color }: any) {
     <div className="rounded-2xl border p-3" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[16px]">{e}</div>
       <div className="text-[20px] font-bold mt-0.5" style={{ color: color || "var(--text)" }}>{v}</div>
-      <div className="text-[10px] uppercase font-medium" style={{ color: "var(--text-muted)" }}>{l}</div>
+      <div className="text-fluid-micro uppercase font-medium" style={{ color: "var(--text-muted)" }}>{l}</div>
     </div>
   );
 }

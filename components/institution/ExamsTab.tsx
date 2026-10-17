@@ -54,7 +54,7 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
         <h2 className="text-[16px] font-semibold">Exams · <span className="bangla font-normal">পরীক্ষা</span></h2>
         {isAdmin && (
           <button onClick={() => setShowForm(!showForm)}
-            className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
+            className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">
             {showForm ? "Cancel" : "+ New Exam"}
           </button>
         )}
@@ -65,21 +65,21 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="sm:col-span-2">
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Title *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Title *</label>
               <input type="text" required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })}
                 placeholder="Mid-term Physics"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Subject</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Subject</label>
               <input type="text" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}
                 placeholder="Physics"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Class</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Class</label>
               <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -88,7 +88,7 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Type</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Type</label>
               <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -98,7 +98,7 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Duration (min)</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Duration (min)</label>
               <input type="number" value={form.duration_minutes}
                 onChange={(e) => setForm({ ...form, duration_minutes: parseInt(e.target.value) || 60 })}
                 min="5" max="480"
@@ -106,7 +106,7 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Total Marks</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Total Marks</label>
               <input type="number" value={form.total_marks}
                 onChange={(e) => setForm({ ...form, total_marks: parseInt(e.target.value) || 100 })}
                 min="1"
@@ -114,7 +114,7 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
           </div>
-          {err && <div className="text-[12px] text-rose-600">{err}</div>}
+          {err && <div className="text-fluid-caption text-rose-600">{err}</div>}
           <button type="submit" disabled={saving}
             className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-5 py-2 text-[13px] font-semibold text-white disabled:opacity-50">
             {saving ? "Creating..." : "Create Exam"}
@@ -128,7 +128,7 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
         <div className="rounded-2xl border p-10 text-center" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="text-[36px]">📝</div>
           <div className="mt-3 text-[15px] font-semibold">No exams yet</div>
-          <div className="bangla mt-1 text-[12px]" style={{ color: "var(--text-muted)" }}>এখনো কোনো পরীক্ষা নেই</div>
+          <div className="bangla mt-1 text-fluid-caption" style={{ color: "var(--text-muted)" }}>এখনো কোনো পরীক্ষা নেই</div>
         </div>
       ) : (
         <div className="space-y-3">
@@ -139,12 +139,12 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-[15px] font-semibold">{ex.title}</span>
-                    <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold " +
+                    <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold " +
                       (ex.status === "published" ? "bg-emerald-500/15 text-emerald-700" :
                        ex.status === "ongoing" ? "bg-amber-500/15 text-amber-700" :
-                       "bg-slate-500/10 text-slate-600")}>{ex.status.toUpperCase()}</span>
+                       "bg-slate-500/10 text-fg-muted")}>{ex.status.toUpperCase()}</span>
                   </div>
-                  <div className="mt-1 flex flex-wrap gap-2 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                  <div className="mt-1 flex flex-wrap gap-2 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                     {ex.subject && <span>📖 {ex.subject}</span>}
                     {ex.classes?.name && <span>🎓 {ex.classes.name}</span>}
                     <span>⏱️ {ex.duration_minutes}min</span>
@@ -155,13 +155,13 @@ export default function ExamsTab({ institutionId, isAdmin }: { institutionId: st
               {isAdmin && (
                 <div className="mt-3 flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: "var(--border)" }}>
                   <button onClick={() => setActiveExam(ex)}
-                    className="rounded-full bg-[var(--bg-soft)] px-3 py-1.5 text-[11px] font-medium">✏️ Manage Questions</button>
+                    className="rounded-full bg-[var(--bg-soft)] px-3 py-1.5 text-fluid-micro font-medium">✏️ Manage Questions</button>
                   {ex.status === "draft" && (
                     <button onClick={() => publish(ex.id, "published")}
-                      className="rounded-full bg-emerald-500/15 px-3 py-1.5 text-[11px] font-medium text-emerald-700">✓ Publish</button>
+                      className="rounded-full bg-emerald-500/15 px-3 py-1.5 text-fluid-micro font-medium text-emerald-700">✓ Publish</button>
                   )}
                   <button onClick={() => remove(ex.id)}
-                    className="rounded-full px-3 py-1.5 text-[11px] font-medium text-rose-600 hover:bg-rose-500/10">Delete</button>
+                    className="rounded-full px-3 py-1.5 text-fluid-micro font-medium text-rose-600 hover:bg-rose-500/10">Delete</button>
                 </div>
               )}
             </div>
@@ -216,13 +216,13 @@ function QuestionBuilder({ exam, onBack, isAdmin }: { exam: any; onBack: () => v
       <button onClick={onBack} className="text-[13px] mb-3" style={{ color: "var(--text-muted)" }}>← Back</button>
       <div className="mb-4">
         <h2 className="text-[18px] font-semibold">{exam.title}</h2>
-        <div className="text-[12px]" style={{ color: "var(--text-muted)" }}>{questions.length} questions · {totalMarks} marks</div>
+        <div className="text-fluid-caption" style={{ color: "var(--text-muted)" }}>{questions.length} questions · {totalMarks} marks</div>
       </div>
       {isAdmin && (
         <form onSubmit={add} className="mb-6 rounded-2xl border p-4 space-y-3"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div>
-            <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Question *</label>
+            <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Question *</label>
             <textarea required value={form.question_text} onChange={(e) => setForm({ ...form, question_text: e.target.value })}
               rows={2} placeholder="What is the SI unit of force?"
               className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none resize-none"
@@ -244,7 +244,7 @@ function QuestionBuilder({ exam, onBack, isAdmin }: { exam: any; onBack: () => v
           </div>
           <div className="flex gap-3 items-end">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Marks</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Marks</label>
               <input type="number" value={form.marks} onChange={(e) => setForm({ ...form, marks: parseInt(e.target.value) || 1 })}
                 min="1" className="mt-1 w-24 rounded-xl border px-3 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
@@ -270,14 +270,14 @@ function QuestionBuilder({ exam, onBack, isAdmin }: { exam: any; onBack: () => v
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-[10px] font-semibold">Q{i + 1}</span>
-                    <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">{q.marks} marks</span>
+                    <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-fluid-micro font-semibold">Q{i + 1}</span>
+                    <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-fluid-micro font-semibold text-emerald-700">{q.marks} marks</span>
                   </div>
                   <div className="text-[14px] font-medium">{q.question_text}</div>
                   {q.options && (
                     <div className="mt-2 space-y-1">
                       {q.options.map((opt: any) => (
-                        <div key={opt.key} className={"text-[12px] flex gap-2 " + (opt.key === q.correct_answer ? "text-emerald-700 dark:text-emerald-300 font-semibold" : "")}
+                        <div key={opt.key} className={"text-fluid-caption flex gap-2 " + (opt.key === q.correct_answer ? "text-emerald-700 dark:text-emerald-300 font-semibold" : "")}
                           style={opt.key !== q.correct_answer ? { color: "var(--text-muted)" } : {}}>
                           <span>{opt.key}.</span><span>{opt.text || "—"}</span>
                           {opt.key === q.correct_answer && <span>✓</span>}
@@ -287,7 +287,7 @@ function QuestionBuilder({ exam, onBack, isAdmin }: { exam: any; onBack: () => v
                   )}
                 </div>
                 {isAdmin && (
-                  <button onClick={() => remove(q.id)} className="shrink-0 rounded-full px-2 py-1 text-[11px] text-rose-600 hover:bg-rose-500/10">Delete</button>
+                  <button onClick={() => remove(q.id)} className="shrink-0 rounded-full px-2 py-1 text-fluid-micro text-rose-600 hover:bg-rose-500/10">Delete</button>
                 )}
               </div>
             </div>

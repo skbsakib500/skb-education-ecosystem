@@ -31,7 +31,7 @@ export default function FinanceTab({ institutionId, isAdmin }: { institutionId: 
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h2 className="text-[16px] font-semibold">Finance · <span className="bangla font-normal">হিসাব</span></h2>
-        <div className="flex gap-1 rounded-full border p-1 text-[12px]"
+        <div className="flex gap-1 rounded-full border p-1 text-fluid-caption"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           {[
             { k: "overview",  l: "Overview" },
@@ -67,12 +67,12 @@ function Overview({ stats, loading }: { stats: any; loading: boolean }) {
         style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
         <div className="flex items-center justify-between mb-3">
           <div>
-            <div className="text-[12px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Collection Rate</div>
+            <div className="text-fluid-caption font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Collection Rate</div>
             <div className="text-[28px] font-semibold">{pct}%</div>
           </div>
           <div className="text-right">
             <div className="text-[24px] font-bold text-emerald-600">৳{Number(stats.total_collected).toLocaleString()}</div>
-            <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+            <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
               of ৳{Number(stats.total_expected).toLocaleString()}
             </div>
           </div>
@@ -94,9 +94,9 @@ function StatBox({ label, bn, value, color }: { label: string; bn: string; value
   const colors: any = { emerald: "#10b981", amber: "#f59e0b", rose: "#f43f5e", teal: "#14b8a6" };
   return (
     <div className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-      <div className="text-[11px] font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{label}</div>
+      <div className="text-fluid-micro font-medium uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{label}</div>
       <div className="text-[22px] font-semibold mt-1" style={{ color: colors[color] ?? "var(--text)" }}>{value}</div>
-      <div className="bangla text-[11px]" style={{ color: "var(--text-faint)" }}>{bn}</div>
+      <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{bn}</div>
     </div>
   );
 }
@@ -151,7 +151,7 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
     <div>
       {isAdmin && (
         <button onClick={() => setShowForm(!showForm)}
-          className="mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
+          className="mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">
           {showForm ? "Cancel" : "+ New Fee Plan"}
         </button>
       )}
@@ -161,21 +161,21 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="sm:col-span-2">
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Fee Name *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Fee Name *</label>
               <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Monthly Tuition / Admission Fee / Exam Fee"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Amount (৳) *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Amount (৳) *</label>
               <input type="number" required min="1" value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: parseInt(e.target.value) || 0 })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Frequency</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Frequency</label>
               <select value={form.frequency} onChange={(e) => setForm({ ...form, frequency: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -186,7 +186,7 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Class</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Class</label>
               <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -195,14 +195,14 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Due Day (of month)</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Due Day (of month)</label>
               <input type="number" min="1" max="31" value={form.due_day}
                 onChange={(e) => setForm({ ...form, due_day: parseInt(e.target.value) || 10 })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
           </div>
-          {err && <div className="text-[12px] text-rose-600">{err}</div>}
+          {err && <div className="text-fluid-caption text-rose-600">{err}</div>}
           <button type="submit" disabled={saving}
             className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-5 py-2 text-[13px] font-semibold text-white disabled:opacity-50">
             {saving ? "Saving..." : "Save Fee Plan"}
@@ -216,7 +216,7 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
         <div className="rounded-2xl border p-10 text-center" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="text-[36px]">💵</div>
           <div className="mt-2 text-[14px] font-semibold">No fee plans yet</div>
-          <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>প্রথম fee plan তৈরি করুন</div>
+          <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>প্রথম fee plan তৈরি করুন</div>
         </div>
       ) : (
         <div className="space-y-2">
@@ -225,7 +225,7 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
               style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
               <div className="min-w-0 flex-1">
                 <div className="text-[14px] font-semibold">{f.name}</div>
-                <div className="flex flex-wrap gap-2 mt-1 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                <div className="flex flex-wrap gap-2 mt-1 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                   <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-700 font-semibold">৳{Number(f.amount).toLocaleString()}</span>
                   <span className="capitalize">{f.frequency.replace("_", " ")}</span>
                   {f.classes?.name && <span>🎓 {f.classes.name}</span>}
@@ -234,7 +234,7 @@ function FeeStructures({ institutionId, isAdmin }: { institutionId: string; isAd
               </div>
               {isAdmin && (
                 <button onClick={() => remove(f.id)}
-                  className="rounded-full px-2 py-1 text-[11px] text-rose-600 hover:bg-rose-500/10">Delete</button>
+                  className="rounded-full px-2 py-1 text-fluid-micro text-rose-600 hover:bg-rose-500/10">Delete</button>
               )}
             </div>
           ))}
@@ -322,16 +322,16 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
   const statusMeta = (s: string) => ({
     paid:    { label: "Paid",    cls: "bg-emerald-500/15 text-emerald-700" },
     partial: { label: "Partial", cls: "bg-amber-500/15 text-amber-700" },
-    pending: { label: "Pending", cls: "bg-slate-500/10 text-slate-600" },
+    pending: { label: "Pending", cls: "bg-slate-500/10 text-fg-muted" },
     overdue: { label: "Overdue", cls: "bg-rose-500/15 text-rose-700" },
-    waived:  { label: "Waived",  cls: "bg-slate-500/10 text-slate-500" },
+    waived:  { label: "Waived",  cls: "bg-slate-500/10 text-fg-muted" },
   } as any)[s] ?? { label: s, cls: "" };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <select value={filter} onChange={(e) => setFilter(e.target.value)}
-          className="rounded-full border px-3 py-1.5 text-[12px] outline-none"
+          className="rounded-full border px-3 py-1.5 text-fluid-caption outline-none"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <option value="all">All</option>
           <option value="paid">Paid</option>
@@ -341,7 +341,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
         </select>
         {isAdmin && (
           <button onClick={() => setShowForm(!showForm)}
-            className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-[12px] font-semibold text-white shadow">
+            className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-1.5 text-fluid-caption font-semibold text-white shadow">
             {showForm ? "Cancel" : "+ Record Payment"}
           </button>
         )}
@@ -352,7 +352,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Student *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Student *</label>
               <select required value={form.student_id} onChange={(e) => setForm({ ...form, student_id: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -363,7 +363,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Fee Plan</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Fee Plan</label>
               <select value={form.fee_structure_id} onChange={(e) => onStructChange(e.target.value)}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -373,7 +373,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
             </div>
             {!form.fee_structure_id && (
               <div className="sm:col-span-2">
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Fee Name</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Fee Name</label>
                 <input type="text" value={form.fee_name} onChange={(e) => setForm({ ...form, fee_name: e.target.value })}
                   placeholder="Exam Fee"
                   className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
@@ -381,21 +381,21 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
               </div>
             )}
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Total Amount (৳) *</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Total Amount (৳) *</label>
               <input type="number" required min="1" value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: parseInt(e.target.value) || 0 })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Paid Amount (৳)</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Paid Amount (৳)</label>
               <input type="number" min="0" value={form.paid_amount}
                 onChange={(e) => setForm({ ...form, paid_amount: parseInt(e.target.value) || 0 })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Payment Method</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Payment Method</label>
               <select value={form.payment_method} onChange={(e) => setForm({ ...form, payment_method: e.target.value })}
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -403,21 +403,21 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
               </select>
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Transaction ID</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Transaction ID</label>
               <input type="text" value={form.transaction_id} onChange={(e) => setForm({ ...form, transaction_id: e.target.value })}
                 placeholder="TRX123..."
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none font-mono"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Month</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Month</label>
               <input type="text" value={form.month} onChange={(e) => setForm({ ...form, month: e.target.value })}
                 placeholder="January"
                 className="mt-1 w-full rounded-xl border px-3.5 py-2 text-[14px] outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
             </div>
           </div>
-          {err && <div className="text-[12px] text-rose-600">{err}</div>}
+          {err && <div className="text-fluid-caption text-rose-600">{err}</div>}
           <button type="submit" disabled={saving}
             className="rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 px-5 py-2 text-[13px] font-semibold text-white disabled:opacity-50">
             {saving ? "Saving..." : "Record Payment"}
@@ -441,20 +441,20 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                 <div className="min-w-0 flex-1">
                   <div className="text-[13px] font-semibold truncate">{p.students?.full_name}</div>
-                  <div className="flex flex-wrap gap-2 mt-0.5 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                  <div className="flex flex-wrap gap-2 mt-0.5 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                     <span>{p.fee_name || "Fee"}</span>
                     {p.month && <span>· {p.month} {p.year}</span>}
                     {p.payment_method && <span>· {p.payment_method}</span>}
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-[13px] font-bold">৳{Number(p.paid_amount).toLocaleString()}<span className="text-[11px] font-normal" style={{ color: "var(--text-muted)" }}>/{Number(p.amount).toLocaleString()}</span></div>
-                  <span className={"inline-block mt-1 rounded-full px-2 py-0.5 text-[10px] font-semibold " + sm.cls}>{sm.label}</span>
+                  <div className="text-[13px] font-bold">৳{Number(p.paid_amount).toLocaleString()}<span className="text-fluid-micro font-normal" style={{ color: "var(--text-muted)" }}>/{Number(p.amount).toLocaleString()}</span></div>
+                  <span className={"inline-block mt-1 rounded-full px-2 py-0.5 text-fluid-micro font-semibold " + sm.cls}>{sm.label}</span>
                 </div>
                 <div className="flex gap-1">
                   {(p.status === "paid" || p.status === "partial") && (
                     <button onClick={() => setReceiptId(p.id)}
-                      className="rounded-full border px-2 py-1 text-[11px] font-medium"
+                      className="rounded-full border px-2 py-1 text-fluid-micro font-medium"
                       style={{ borderColor: "var(--border)" }}>🧾</button>
                   )}
                   {isAdmin && p.status !== "paid" && p.status !== "waived" && (
@@ -467,7 +467,7 @@ function Payments({ institutionId, isAdmin, onChange }: { institutionId: string;
                         feeName={p.fee_name}
                       />
                       <button onClick={() => markPaid(p.id, Number(p.amount))}
-                        className="rounded-full bg-emerald-500/15 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+                        className="rounded-full bg-emerald-500/15 px-2 py-1 text-fluid-micro font-semibold text-emerald-700">
                         Paid
                       </button>
                     </>

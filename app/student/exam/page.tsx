@@ -135,7 +135,7 @@ function ExamAttempt() {
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           <div className="text-[56px]">🎉</div>
           <div className="mt-2 text-[16px] font-semibold">{exam.title}</div>
-          <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>পরীক্ষা সম্পন্ন হয়েছে</div>
+          <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>পরীক্ষা সম্পন্ন হয়েছে</div>
 
           <div className="mt-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-5">
             <div className="text-[13px] opacity-90">Your Score</div>
@@ -143,17 +143,17 @@ function ExamAttempt() {
             <div className="text-[13px] opacity-90 mt-1">{pct}%</div>
           </div>
 
-          <div className="mt-5 grid grid-cols-3 gap-2 text-[12px]">
+          <div className="mt-5 grid grid-cols-3 gap-2 text-fluid-caption">
             <div className="rounded-xl p-2" style={{ background: "var(--bg-soft)" }}>
-              <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>Grade</div>
+              <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>Grade</div>
               <div className="font-bold">{pct >= 80 ? "A+" : pct >= 70 ? "A" : pct >= 60 ? "A-" : pct >= 50 ? "B" : pct >= 40 ? "C" : "F"}</div>
             </div>
             <div className="rounded-xl p-2" style={{ background: "var(--bg-soft)" }}>
-              <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>Correct</div>
+              <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>Correct</div>
               <div className="font-bold">{questions.filter((q) => answers[q.id] === q.correct_answer).length}/{questions.length}</div>
             </div>
             <div className="rounded-xl p-2" style={{ background: "var(--bg-soft)" }}>
-              <div className="text-[10px]" style={{ color: "var(--text-muted)" }}>Status</div>
+              <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>Status</div>
               <div className="font-bold text-emerald-600">Graded</div>
             </div>
           </div>
@@ -164,11 +164,11 @@ function ExamAttempt() {
               const userAns = answers[q.id];
               const correct = userAns === q.correct_answer;
               return (
-                <div key={q.id} className={`rounded-xl border p-3 text-[12px] ${
+                <div key={q.id} className={`rounded-xl border p-3 text-fluid-caption ${
                   correct ? "border-emerald-500/30 bg-emerald-500/5" : "border-rose-500/30 bg-rose-500/5"
                 }`}>
                   <div className="font-medium">Q{i + 1}. {q.question_text}</div>
-                  <div className="mt-1 text-[11px]">
+                  <div className="mt-1 text-fluid-micro">
                     Your answer: <strong>{userAns || "—"}</strong>
                     {!correct && <> · Correct: <strong className="text-emerald-700">{q.correct_answer}</strong></>}
                   </div>
@@ -194,7 +194,7 @@ function ExamAttempt() {
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4">
           <div className="min-w-0">
             <div className="text-[13px] font-semibold truncate">{exam.title}</div>
-            <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+            <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
               {questions.length} questions · {Object.keys(answers).length} answered
             </div>
           </div>
@@ -211,12 +211,12 @@ function ExamAttempt() {
           <div key={q.id} className="rounded-2xl border p-5"
             style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             <div className="flex items-start gap-3">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[12px] font-bold">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-fluid-caption font-bold">
                 {i + 1}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-[14px] font-medium">{q.question_text}</div>
-                <div className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
+                <div className="text-fluid-micro mt-1" style={{ color: "var(--text-muted)" }}>
                   {q.marks} mark{q.marks !== 1 ? "s" : ""}
                 </div>
               </div>
@@ -232,7 +232,7 @@ function ExamAttempt() {
                         active ? "bg-emerald-500/10 border-emerald-500/40" : ""
                       }`}
                       style={!active ? { borderColor: "var(--border)" } : {}}>
-                      <span className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold ${
+                      <span className={`flex h-6 w-6 items-center justify-center rounded-full text-fluid-micro font-bold ${
                         active ? "bg-emerald-500 text-white" : ""
                       }`}
                       style={!active ? { background: "var(--bg-soft)" } : {}}>

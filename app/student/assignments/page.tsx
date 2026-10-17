@@ -76,7 +76,7 @@ function AssignmentsStudent() {
           <>
             {upcoming.length > 0 && (
               <div className="mb-6">
-                <div className="text-[12px] font-bold uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
+                <div className="text-fluid-caption font-bold uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
                   Pending ({upcoming.length})
                 </div>
                 <div className="space-y-2">
@@ -89,14 +89,14 @@ function AssignmentsStudent() {
                         <div className="flex items-start justify-between gap-3 flex-wrap">
                           <div className="min-w-0 flex-1">
                             <div className="text-[14px] font-semibold">{a.title}</div>
-                            <div className="text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                            <div className="text-fluid-micro mt-0.5" style={{ color: "var(--text-muted)" }}>
                               {a.teacher_name && <>{a.teacher_name} · </>}{a.institution_name}
                             </div>
-                            <div className="text-[11px] mt-2" style={{ color: overdue ? "#f43f5e" : "var(--text-muted)" }}>
+                            <div className="text-fluid-micro mt-2" style={{ color: overdue ? "#f43f5e" : "var(--text-muted)" }}>
                               📅 Due {new Date(a.due_at).toLocaleString()}
                             </div>
                           </div>
-                          <span className="rounded-full bg-amber-500/15 px-2 py-1 text-[10px] font-semibold text-amber-700">Pending</span>
+                          <span className="rounded-full bg-amber-500/15 px-2 py-1 text-fluid-micro font-semibold text-amber-700">Pending</span>
                         </div>
                       </button>
                     );
@@ -106,7 +106,7 @@ function AssignmentsStudent() {
             )}
             {submitted.length > 0 && (
               <div>
-                <div className="text-[12px] font-bold uppercase tracking-widest mb-2" style={{ color: "var(--text-faint)" }}>
+                <div className="text-fluid-caption font-bold uppercase tracking-widest mb-2" style={{ color: "var(--text-faint)" }}>
                   Submitted ({submitted.length})
                 </div>
                 <div className="space-y-2">
@@ -116,17 +116,17 @@ function AssignmentsStudent() {
                       <div className="flex items-start justify-between gap-3 flex-wrap">
                         <div className="min-w-0 flex-1">
                           <div className="text-[14px] font-semibold">{a.title}</div>
-                          <div className="text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                          <div className="text-fluid-micro mt-0.5" style={{ color: "var(--text-muted)" }}>
                             {a.teacher_name && <>{a.teacher_name} · </>}{a.institution_name}
                           </div>
                           {a.marks_obtained !== null && (
-                            <div className="text-[12px] mt-1 font-semibold text-emerald-700">
+                            <div className="text-fluid-caption mt-1 font-semibold text-emerald-700">
                               🎯 {a.marks_obtained}/{a.max_marks}
                             </div>
                           )}
-                          {a.feedback && <div className="text-[11px] italic mt-1" style={{ color: "var(--text-muted)" }}>💬 {a.feedback}</div>}
+                          {a.feedback && <div className="text-fluid-micro italic mt-1" style={{ color: "var(--text-muted)" }}>💬 {a.feedback}</div>}
                         </div>
-                        <span className={"rounded-full px-2 py-1 text-[10px] font-semibold " +
+                        <span className={"rounded-full px-2 py-1 text-fluid-micro font-semibold " +
                           (a.submission_status === "graded" ? "bg-emerald-500/15 text-emerald-700" : "bg-cyan-500/15 text-cyan-700")}>
                           {a.submission_status}
                         </span>
@@ -149,7 +149,7 @@ function AssignmentsStudent() {
               <button onClick={() => { setSelected(null); setMsg(""); }} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[var(--bg-soft)]">✕</button>
             </div>
             <div className="p-5">
-              <div className="text-[12px] flex flex-wrap gap-3 mb-3" style={{ color: "var(--text-muted)" }}>
+              <div className="text-fluid-caption flex flex-wrap gap-3 mb-3" style={{ color: "var(--text-muted)" }}>
                 <span>🎯 {selected.max_marks} marks</span>
                 <span>📅 Due {new Date(selected.due_at).toLocaleString()}</span>
               </div>
@@ -158,7 +158,7 @@ function AssignmentsStudent() {
                   {selected.description}
                 </div>
               )}
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Your Answer</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Your Answer</label>
               <textarea value={content} onChange={(e) => setContent(e.target.value)}
                 rows={6} placeholder="Write your answer here..."
                 className="mt-1 w-full rounded-xl border px-3.5 py-2.5 text-[14px] outline-none resize-none"

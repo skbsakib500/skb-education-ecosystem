@@ -73,15 +73,15 @@ export default function StudentHome() {
             </div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Student Portal</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>শিক্ষার্থী পোর্টাল</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>শিক্ষার্থী পোর্টাল</div>
             </div>
           </Link>
           <div className="flex items-center gap-2">
-            <Link href="/dashboard" className="rounded-full border px-3.5 py-1.5 text-[12px] font-medium"
+            <Link href="/dashboard" className="rounded-full border px-3.5 py-1.5 text-fluid-caption font-medium"
               style={{ borderColor: "var(--border)" }}>
               Dashboard
             </Link>
-            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px] font-medium"
+            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-fluid-caption font-medium"
               style={{ borderColor: "var(--border)" }}>
               Sign out
             </button>
@@ -94,7 +94,7 @@ export default function StudentHome() {
         <div className="rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 p-6 md:p-8 text-white overflow-hidden relative">
           <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[12px] backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-caption backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-emerald-200 animate-pulse" />
               Student Workspace
             </div>
@@ -128,12 +128,12 @@ export default function StudentHome() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-[14px] font-semibold truncate">{s.institutions?.name}</div>
-                      <div className="text-[11px] font-mono" style={{ color: "var(--text-muted)" }}>
+                      <div className="text-fluid-micro font-mono" style={{ color: "var(--text-muted)" }}>
                         🆔 {s.student_id || "Pending"}
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-1.5 text-[10px]">
+                  <div className="mt-3 flex flex-wrap gap-1.5 text-fluid-micro">
                     {s.classes?.name && (
                       <span className="rounded-full px-2 py-0.5 font-medium"
                         style={{ background: "var(--bg-soft)", color: "var(--text-muted)" }}>
@@ -169,16 +169,16 @@ export default function StudentHome() {
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
                         <div className="text-[14px] font-semibold">{ex.title}</div>
-                        <div className="text-[11px] mt-0.5 flex flex-wrap gap-2" style={{ color: "var(--text-muted)" }}>
+                        <div className="text-fluid-micro mt-0.5 flex flex-wrap gap-2" style={{ color: "var(--text-muted)" }}>
                           {ex.subject && <span>📖 {ex.subject}</span>}
                           {ex.classes?.name && <span>🎓 {ex.classes.name}</span>}
                         </div>
                       </div>
-                      <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                      <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-fluid-micro font-semibold text-emerald-700">
                         {ex.type.toUpperCase()}
                       </span>
                     </div>
-                    <div className="mt-3 flex flex-wrap gap-2 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    <div className="mt-3 flex flex-wrap gap-2 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                       <span>⏱️ {ex.duration_minutes} min</span>
                       <span>🎯 {ex.total_marks} marks</span>
                     </div>
@@ -213,13 +213,13 @@ export default function StudentHome() {
                     style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                     <div className="min-w-0 flex-1">
                       <div className="text-[14px] font-semibold truncate">{a.exams?.title}</div>
-                      <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                      <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                         {a.exams?.subject} · {new Date(a.submitted_at).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="text-right">
                       <div className={`text-[18px] font-bold text-${grade.c}-600`}>{a.score}/{a.total_marks}</div>
-                      <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                      <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                         {pct}% · Grade {grade.g}
                       </div>
                     </div>
@@ -240,8 +240,8 @@ function EmptyBox({ icon, title, bn, note }: { icon: string; title: string; bn: 
       style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[36px]">{icon}</div>
       <div className="mt-3 text-[15px] font-semibold">{title}</div>
-      <div className="bangla text-[12px]" style={{ color: "var(--text-muted)" }}>{bn}</div>
-      <div className="mt-2 text-[12px]" style={{ color: "var(--text-faint)" }}>{note}</div>
+      <div className="bangla text-fluid-caption" style={{ color: "var(--text-muted)" }}>{bn}</div>
+      <div className="mt-2 text-fluid-caption" style={{ color: "var(--text-faint)" }}>{note}</div>
     </div>
   );
 }

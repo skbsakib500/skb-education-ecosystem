@@ -81,21 +81,21 @@ export default function TeacherPortal() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white text-[14px] font-bold shadow-lg">👨‍🏫</div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Teacher Portal</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>শিক্ষক পোর্টাল</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>শিক্ষক পোর্টাল</div>
             </div>
           </Link>
           <div className="flex items-center gap-2">
             {memberships.length > 1 && (
               <select value={selectedInst.institution_id}
                 onChange={(e) => setSelectedInst(memberships.find((m) => m.institution_id === e.target.value))}
-                className="rounded-full border px-3 py-1.5 text-[12px] outline-none"
+                className="rounded-full border px-3 py-1.5 text-fluid-caption outline-none"
                 style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                 {memberships.map((m) => (
                   <option key={m.id} value={m.institution_id}>{m.institutions?.name}</option>
                 ))}
               </select>
             )}
-            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]"
+            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-fluid-caption"
               style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
@@ -110,12 +110,12 @@ export default function TeacherPortal() {
               {inst?.logo_url ? <img src={inst.logo_url} alt="" className="h-full w-full object-cover" /> : (inst?.emoji || "🏫")}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] backdrop-blur">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-fluid-micro backdrop-blur">
                 <span className="h-2 w-2 rounded-full bg-violet-200 animate-pulse" />
                 Teacher Access
               </div>
               <h1 className="mt-3 text-[22px] md:text-[28px] font-semibold truncate">{inst?.name}</h1>
-              <div className="mt-2 text-[12px] opacity-90">
+              <div className="mt-2 text-fluid-caption opacity-90">
                 {classes.length}টি class · {upcomingExams.length}টি published exam
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function TeacherPortal() {
 
         {/* My Classes */}
         <div className="mt-6 flex justify-end">
-          <Link href="/teacher/analytics" className="rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 px-4 py-2 text-[12px] font-semibold text-white shadow">
+          <Link href="/teacher/analytics" className="rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 px-4 py-2 text-fluid-caption font-semibold text-white shadow">
             📊 Class Analytics
           </Link>
         </div>
@@ -148,10 +148,10 @@ export default function TeacherPortal() {
                     </div>
                     <div className="min-w-0">
                       <div className="text-[14px] font-semibold truncate">{c.class_name}</div>
-                      {c.section && <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>Section {c.section}</div>}
+                      {c.section && <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>Section {c.section}</div>}
                     </div>
                     {c.is_primary && (
-                      <span className="ml-auto rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                      <span className="ml-auto rounded-full bg-emerald-500/15 px-2 py-0.5 text-fluid-micro font-semibold text-emerald-700">
                         Primary
                       </span>
                     )}
@@ -177,14 +177,14 @@ export default function TeacherPortal() {
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
                   <div className="min-w-0 flex-1">
                     <div className="text-[14px] font-semibold">{e.title}</div>
-                    <div className="flex flex-wrap gap-2 mt-1 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    <div className="flex flex-wrap gap-2 mt-1 text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                       {e.subject && <span>📖 {e.subject}</span>}
                       {e.classes?.name && <span>🎓 {e.classes.name}</span>}
                       <span>🎯 {e.total_marks} marks</span>
                     </div>
                   </div>
                   <Link href={"/institutions/view/?slug=" + inst.slug}
-                    className="rounded-full bg-violet-500/15 px-3 py-1 text-[11px] font-semibold text-violet-700">
+                    className="rounded-full bg-violet-500/15 px-3 py-1 text-fluid-micro font-semibold text-violet-700">
                     View
                   </Link>
                 </div>

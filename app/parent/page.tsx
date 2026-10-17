@@ -50,13 +50,13 @@ export default function ParentPortal() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white font-bold text-[13px] shadow-lg">👪</div>
             <div className="leading-tight">
               <div className="text-[14px] font-semibold">Parent Portal</div>
-              <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>অভিভাবক পোর্টাল</div>
+              <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>অভিভাবক পোর্টাল</div>
             </div>
           </Link>
           <div className="flex items-center gap-2">
             <PointsBadge />
             <NotificationCenter />
-            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-[12px]" style={{ borderColor: "var(--border)" }}>Sign out</button>
+            <button onClick={signOut} className="rounded-full border px-3.5 py-1.5 text-fluid-caption" style={{ borderColor: "var(--border)" }}>Sign out</button>
           </div>
         </div>
       </header>
@@ -107,7 +107,7 @@ export default function ParentPortal() {
             <div className="mt-8">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-[16px] font-semibold">Recent Activity · <span className="bangla font-normal">সাম্প্রতিক কার্যক্রম</span></h2>
-                <button onClick={() => setSelected({ ...selected })} className="text-[12px] font-medium text-teal-700">🔄 Refresh</button>
+                <button onClick={() => setSelected({ ...selected })} className="text-fluid-caption font-medium text-teal-700">🔄 Refresh</button>
               </div>
 
               {activityLoading ? (
@@ -130,8 +130,8 @@ export default function ParentPortal() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="text-[13px] font-semibold">{a.title}</div>
-                        {a.description && <div className="text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>{a.description}</div>}
-                        <div className="text-[10px] mt-1" style={{ color: "var(--text-faint)" }}>
+                        {a.description && <div className="text-fluid-micro mt-0.5" style={{ color: "var(--text-muted)" }}>{a.description}</div>}
+                        <div className="text-fluid-micro mt-1" style={{ color: "var(--text-faint)" }}>
                           {new Date(a.at).toLocaleString()}
                         </div>
                       </div>
@@ -159,12 +159,12 @@ function ChildHero({ child }: any) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="text-[22px] font-semibold truncate">{child.full_name}</div>
-          <div className="flex flex-wrap gap-2 mt-1 text-[11px]">
+          <div className="flex flex-wrap gap-2 mt-1 text-fluid-micro">
             {child.student_code && <span className="rounded-full bg-white/15 px-2 py-0.5 font-mono">🆔 {child.student_code}</span>}
             {child.class_name && <span className="rounded-full bg-white/15 px-2 py-0.5">📚 {child.class_name}{child.section ? " · " + child.section : ""}</span>}
             <span className="rounded-full bg-white/15 px-2 py-0.5">{child.institution_emoji || "🏫"} {child.institution_name}</span>
           </div>
-          {child.relationship && <div className="text-[11px] mt-2 opacity-90">Your relationship: <span className="capitalize font-semibold">{child.relationship}</span></div>}
+          {child.relationship && <div className="text-fluid-micro mt-2 opacity-90">Your relationship: <span className="capitalize font-semibold">{child.relationship}</span></div>}
         </div>
       </div>
     </div>
@@ -176,8 +176,8 @@ function StatCard({ label, bn, value, color, emoji }: any) {
     <div className="rounded-2xl border p-4" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[18px]">{emoji}</div>
       <div className="text-[22px] font-bold mt-1" style={{ color }}>{value}</div>
-      <div className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{label}</div>
-      <div className="bangla text-[10px]" style={{ color: "var(--text-faint)" }}>{bn}</div>
+      <div className="text-fluid-micro font-medium" style={{ color: "var(--text-muted)" }}>{label}</div>
+      <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{bn}</div>
     </div>
   );
 }
@@ -188,8 +188,8 @@ function QuickLink({ href, icon, title, bn }: any) {
       className="rounded-2xl border p-4 text-center transition hover:-translate-y-0.5 hover:shadow-md"
       style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
       <div className="text-[24px]">{icon}</div>
-      <div className="mt-2 text-[12px] font-semibold">{title}</div>
-      <div className="bangla text-[10px]" style={{ color: "var(--text-faint)" }}>{bn}</div>
+      <div className="mt-2 text-fluid-caption font-semibold">{title}</div>
+      <div className="bangla text-fluid-micro" style={{ color: "var(--text-faint)" }}>{bn}</div>
     </Link>
   );
 }

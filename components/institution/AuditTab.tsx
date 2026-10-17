@@ -50,10 +50,10 @@ export default function AuditTab({ institutionId, isAdmin }: { institutionId: st
         <h2 className="text-[16px] font-semibold">Audit Log · <span className="bangla font-normal">কার্যক্রম লগ</span></h2>
         <div className="flex gap-2">
           <button onClick={doExport} disabled={logs.length === 0}
-            className="rounded-full border px-3 py-1.5 text-[12px] font-medium disabled:opacity-50"
+            className="rounded-full border px-3 py-1.5 text-fluid-caption font-medium disabled:opacity-50"
             style={{ borderColor: "var(--border)" }}>📥 Export CSV</button>
           <select value={filter} onChange={(e) => setFilter(e.target.value)}
-            className="rounded-full border px-3 py-1.5 text-[12px] outline-none"
+            className="rounded-full border px-3 py-1.5 text-fluid-caption outline-none"
             style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
             {entityTypes.map((t) => <option key={t} value={t}>{t || "All entities"}</option>)}
           </select>
@@ -69,13 +69,13 @@ export default function AuditTab({ institutionId, isAdmin }: { institutionId: st
         </div>
       ) : (
         <div className="overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
-          <table className="w-full text-[12px]">
+          <table className="w-full text-fluid-caption">
             <thead>
               <tr style={{ background: "var(--bg-soft)" }}>
-                <th className="text-left p-2.5 font-semibold text-[11px] uppercase" style={{ color: "var(--text-muted)" }}>When</th>
-                <th className="text-left p-2.5 font-semibold text-[11px] uppercase" style={{ color: "var(--text-muted)" }}>Actor</th>
-                <th className="text-left p-2.5 font-semibold text-[11px] uppercase" style={{ color: "var(--text-muted)" }}>Action</th>
-                <th className="text-left p-2.5 font-semibold text-[11px] uppercase hidden sm:table-cell" style={{ color: "var(--text-muted)" }}>Entity</th>
+                <th className="text-left p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>When</th>
+                <th className="text-left p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Actor</th>
+                <th className="text-left p-2.5 font-semibold text-fluid-micro uppercase" style={{ color: "var(--text-muted)" }}>Action</th>
+                <th className="text-left p-2.5 font-semibold text-fluid-micro uppercase hidden sm:table-cell" style={{ color: "var(--text-muted)" }}>Entity</th>
               </tr>
             </thead>
             <tbody>
@@ -86,11 +86,11 @@ export default function AuditTab({ institutionId, isAdmin }: { institutionId: st
                   </td>
                   <td className="p-2.5 font-medium truncate max-w-[150px]">{l.profiles?.full_name || l.profiles?.email || "System"}</td>
                   <td className="p-2.5">
-                    <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold " +
+                    <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold " +
                       (l.action === "insert" ? "bg-emerald-500/15 text-emerald-700" :
                        l.action === "update" ? "bg-amber-500/15 text-amber-700" :
                        l.action === "delete" ? "bg-rose-500/15 text-rose-700" :
-                       "bg-slate-500/10 text-slate-600")}>{l.action}</span>
+                       "bg-slate-500/10 text-fg-muted")}>{l.action}</span>
                   </td>
                   <td className="p-2.5 hidden sm:table-cell" style={{ color: "var(--text-muted)" }}>{l.entity_type || "—"}</td>
                 </tr>

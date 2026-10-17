@@ -54,7 +54,7 @@ export default function LeaveTab({ institutionId, isAdmin }: { institutionId: st
     pending:  { l: "Pending",  c: "bg-amber-500/15 text-amber-700" },
     approved: { l: "Approved", c: "bg-emerald-500/15 text-emerald-700" },
     rejected: { l: "Rejected", c: "bg-rose-500/15 text-rose-700" },
-    cancelled:{ l: "Cancelled",c: "bg-slate-500/10 text-slate-600" },
+    cancelled:{ l: "Cancelled",c: "bg-slate-500/10 text-fg-muted" },
   } as any)[s] ?? { l: s, c: "" };
 
   const daysBetween = (a: string, b: string) => Math.max(1, Math.round((new Date(b).getTime() - new Date(a).getTime()) / 864e5) + 1);
@@ -63,7 +63,7 @@ export default function LeaveTab({ institutionId, isAdmin }: { institutionId: st
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h2 className="text-[16px] font-semibold">Leave Requests · <span className="bangla font-normal">ছুটির অনুরোধ</span></h2>
-        <div className="flex gap-1 rounded-full border p-1 text-[12px]"
+        <div className="flex gap-1 rounded-full border p-1 text-fluid-caption"
           style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
           {(["pending","approved","rejected","all"] as const).map((f) => (
             <button key={f} onClick={() => setFilter(f)}
@@ -97,23 +97,23 @@ export default function LeaveTab({ institutionId, isAdmin }: { institutionId: st
                       <span className="text-[14px] font-semibold">
                         {l.students?.full_name || l.profiles?.full_name || "User"}
                       </span>
-                      <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-[10px] font-medium capitalize">
+                      <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-fluid-micro font-medium capitalize">
                         {l.requester_role}
                       </span>
-                      <span className={"rounded-full px-2 py-0.5 text-[10px] font-semibold " + sm.c}>{sm.l}</span>
+                      <span className={"rounded-full px-2 py-0.5 text-fluid-micro font-semibold " + sm.c}>{sm.l}</span>
                     </div>
-                    <div className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
+                    <div className="text-fluid-micro mt-1" style={{ color: "var(--text-muted)" }}>
                       {t.l} · {new Date(l.start_date).toLocaleDateString()} → {new Date(l.end_date).toLocaleDateString()} ({days} day{days > 1 ? "s" : ""})
                     </div>
-                    <div className="mt-2 text-[12px]">{l.reason}</div>
-                    {l.review_note && <div className="mt-1 text-[11px] italic" style={{ color: "var(--text-muted)" }}>Note: {l.review_note}</div>}
+                    <div className="mt-2 text-fluid-caption">{l.reason}</div>
+                    {l.review_note && <div className="mt-1 text-fluid-micro italic" style={{ color: "var(--text-muted)" }}>Note: {l.review_note}</div>}
                   </div>
                   {l.status === "pending" && (
                     <div className="flex gap-1 shrink-0">
                       <button onClick={() => review(l.id, true)}
-                        className="rounded-full bg-emerald-500/15 px-3 py-1.5 text-[11px] font-semibold text-emerald-700">✓ Approve</button>
+                        className="rounded-full bg-emerald-500/15 px-3 py-1.5 text-fluid-micro font-semibold text-emerald-700">✓ Approve</button>
                       <button onClick={() => review(l.id, false)}
-                        className="rounded-full bg-rose-500/15 px-3 py-1.5 text-[11px] font-semibold text-rose-700">✕ Reject</button>
+                        className="rounded-full bg-rose-500/15 px-3 py-1.5 text-fluid-micro font-semibold text-rose-700">✕ Reject</button>
                     </div>
                   )}
                 </div>
