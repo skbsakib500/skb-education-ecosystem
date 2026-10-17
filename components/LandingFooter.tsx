@@ -142,7 +142,7 @@ export default function LandingFooter() {
           <div className="flex items-center gap-4">
             <span className="bangla">বাংলাদেশ • NCTB কারিকুলাম-সংগতিপূর্ণ</span>
             <span className="hidden md:inline">•</span>
-            <span>Made with 💚 in Dhaka</span>
+            <span>Made for Bangladesh 🇧🇩</span>
           </div>
         </div>
       </div>
