@@ -11,6 +11,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth";
+import { Card, Badge, Input } from "@/components/ui";
 import { INTERESTS } from "@/lib/onboarding";
 
 const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -487,61 +488,140 @@ export default function ProfilePage() {
 
 const inp = "w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
 
-function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+
+/* ═══════════════════════════════════════════════════════════
+   Sub-components — Phase 6c.1 design system upgrade
+   ═══════════════════════════════════════════════════════════ */
+
+function Section({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
-      <div className="flex items-baseline justify-between mb-3">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">{title}</h2>
-        {hint && <span className="text-[11px] text-slate-500">{hint}</span>}
+    <Card variant="surface" padding="lg">
+      <div className="flex items-baseline justify-between mb-4">
+        <h2 className="text-fluid-caption font-semibold text-fg uppercase tracking-wider">
+          {title}
+        </h2>
+        {hint && (
+          <span className="text-fluid-micro text-fg-muted">{hint}</span>
+        )}
       </div>
       <div className="space-y-3">{children}</div>
-    </div>
+    </Card>
   );
 }
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 mb-1.5">{label}</label>
+      <label className="block text-fluid-body-sm font-medium text-fg mb-1.5">
+        {label}
+      </label>
       {children}
-      {hint && <p className="mt-1 text-[11px] text-slate-500">{hint}</p>}
+      {hint && (
+        <p className="mt-1 text-fluid-caption text-fg-muted">{hint}</p>
+      )}
     </div>
   );
 }
 
-function Info({ icon, label, value }: { icon: React.ReactNode; label: string; value: React.ReactNode }) {
+function Info({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+}) {
   return (
-    <div className="flex items-start gap-2 text-slate-700">
-      <span className="text-slate-400 mt-0.5">{icon}</span>
+    <div className="flex items-start gap-2 text-fg">
+      <span className="text-fg-muted mt-0.5 shrink-0">{icon}</span>
       <div className="min-w-0">
-        <div className="text-[11px] text-slate-500 uppercase tracking-wide">{label}</div>
-        <div className="text-sm break-words">{value}</div>
+        <div className="text-fluid-micro text-fg-muted uppercase tracking-wider">
+          {label}
+        </div>
+        <div className="text-fluid-body-sm break-words">{value}</div>
       </div>
     </div>
   );
 }
 
-function ChipList({ label, chips, color }: { label: string; chips: string[]; color: "emerald" | "cyan" | "violet" }) {
-  const c = { emerald: "bg-emerald-50 text-emerald-700", cyan: "bg-cyan-50 text-cyan-700", violet: "bg-violet-50 text-violet-700" }[color];
+function ChipList({
+  label,
+  chips,
+  color,
+}: {
+  label: string;
+  chips: string[];
+  color: "emerald" | "cyan" | "violet";
+}) {
+  const variantMap: Record<typeof color, "success" | "default" | "accent"> = {
+    emerald: "success",
+    cyan: "default",
+    violet: "accent",
+  };
   return (
     <div>
-      <div className="text-[11px] text-slate-500 uppercase tracking-wide mb-1.5">{label}</div>
+      <div className="text-fluid-micro text-fg-muted uppercase tracking-wider mb-2">
+        {label}
+      </div>
       <div className="flex flex-wrap gap-1.5">
-        {chips.map((s) => <span key={s} className={`rounded-full px-2.5 py-1 text-xs font-medium ${c}`}>{s}</span>)}
+        {chips.map((s) => (
+          <Badge key={s} variant={variantMap[color]} size="md">
+            {s}
+          </Badge>
+        ))}
       </div>
     </div>
   );
 }
 
-function ChipPicker({ options, selected, onToggle, color }: { options: readonly string[]; selected: string[]; onToggle: (v: string) => void; color: "emerald" | "cyan" }) {
-  const c = { emerald: "bg-emerald-50 border-emerald-300 text-emerald-700", cyan: "bg-cyan-50 border-cyan-300 text-cyan-700" }[color];
+function ChipPicker({
+  options,
+  selected,
+  onToggle,
+  color,
+}: {
+  options: readonly string[];
+  selected: string[];
+  onToggle: (v: string) => void;
+  color: "emerald" | "cyan";
+}) {
+  const activeClass =
+    color === "emerald"
+      ? "bg-emerald-100 border-emerald-500 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700"
+      : "bg-cyan-100 border-cyan-500 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-700";
+
   return (
     <div className="flex flex-wrap gap-1.5">
       {options.map((s) => {
         const active = selected.includes(s);
         return (
-          <button key={s} type="button" onClick={() => onToggle(s)}
-            className={"rounded-full border px-2.5 py-1 text-xs font-medium transition " + (active ? c : "border-slate-300 text-slate-600 hover:bg-slate-50")}>
+          <button
+            key={s}
+            type="button"
+            onClick={() => onToggle(s)}
+            className={`rounded-full border px-3 py-1 text-fluid-caption font-medium transition-colors duration-fast ${
+              active
+                ? activeClass
+                : "border-border text-fg-muted hover:bg-surface-hover"
+            }`}
+          >
             {s}
           </button>
         );
@@ -550,18 +630,43 @@ function ChipPicker({ options, selected, onToggle, color }: { options: readonly 
   );
 }
 
-function SocialInput({ icon, value, onChange, placeholder }: { icon: React.ReactNode; value: string; onChange: (v: string) => void; placeholder: string }) {
+function SocialInput({
+  icon,
+  value,
+  onChange,
+  placeholder,
+}: {
+  icon: React.ReactNode;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+}) {
   return (
-    <div className="flex items-center gap-2">
-      <span className="shrink-0 w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">{icon}</span>
-      <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={inp} />
-    </div>
+    <Input
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      iconLeft={icon}
+    />
   );
 }
 
-function SocialBtn({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+function SocialBtn({
+  href,
+  icon,
+  label,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+}) {
   return (
-    <a href={href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-solid px-3 py-1.5 text-fluid-caption font-medium text-fg hover:bg-surface-hover transition-colors duration-fast"
+    >
       {icon} {label}
     </a>
   );
