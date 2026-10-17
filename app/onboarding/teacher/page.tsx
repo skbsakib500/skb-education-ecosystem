@@ -49,7 +49,7 @@ export default function TeacherOnboarding() {
       <div className="mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
           <Link href="/onboarding/?pick=1" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
-          <div className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 2</div>
+          <div className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 2</div>
         </div>
 
         <div className="rounded-3xl border p-6 md:p-8" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -63,7 +63,7 @@ export default function TeacherOnboarding() {
           {step === 1 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>
+                <label className="text-fluid-caption font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>
                   আপনার প্রতিষ্ঠান খুঁজুন
                 </label>
                 <InstitutionSearch
@@ -80,16 +80,16 @@ export default function TeacherOnboarding() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[14px] font-semibold truncate">{selectedInst.name}</div>
-                    <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>{selectedInst.city || selectedInst.division}</div>
+                    <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>{selectedInst.city || selectedInst.division}</div>
                   </div>
-                  <button onClick={() => setSelectedInst(null)} className="text-[12px] text-rose-600">Change</button>
+                  <button onClick={() => setSelectedInst(null)} className="text-fluid-caption text-rose-600">Change</button>
                 </div>
               )}
 
               {requestName && !selectedInst && (
                 <div className="rounded-xl border-2 border-amber-500/40 bg-amber-500/5 p-4">
                   <div className="text-[13px] font-semibold">📝 নতুন প্রতিষ্ঠান request: {requestName}</div>
-                  <div className="text-[12px] mt-1" style={{ color: "var(--text-muted)" }}>
+                  <div className="text-fluid-caption mt-1" style={{ color: "var(--text-muted)" }}>
                     SKB Super Admin approve করবেন, তারপর আপনি admin হবেন
                   </div>
                 </div>
@@ -109,11 +109,11 @@ export default function TeacherOnboarding() {
           {step === 2 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>যে বিষয়গুলো পড়ান</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>যে বিষয়গুলো পড়ান</label>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {SUBJECTS.map((s) => (
                     <button key={s} onClick={() => toggleSubj(s)}
-                      className={"rounded-full border px-3 py-1.5 text-[12px] font-medium transition " + (subjects.includes(s) ? "bg-violet-500/15 border-violet-500/40 text-violet-700" : "")}
+                      className={"rounded-full border px-3 py-1.5 text-fluid-caption font-medium transition " + (subjects.includes(s) ? "bg-violet-500/15 border-violet-500/40 text-violet-700" : "")}
                       style={!subjects.includes(s) ? { borderColor: "var(--border)" } : {}}>
                       {s}
                     </button>
@@ -122,7 +122,7 @@ export default function TeacherOnboarding() {
               </div>
 
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>অভিজ্ঞতা</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>অভিজ্ঞতা</label>
                 <select value={experience} onChange={(e) => setExperience(e.target.value)}
                   className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>

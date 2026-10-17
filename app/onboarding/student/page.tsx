@@ -44,7 +44,7 @@ export default function StudentOnboarding() {
       <div className="mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
           <Link href="/onboarding/?pick=1" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
-          <div className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 3</div>
+          <div className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 3</div>
         </div>
 
         <div className="rounded-3xl border p-6 md:p-8" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -55,7 +55,7 @@ export default function StudentOnboarding() {
           {step === 1 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>
+                <label className="text-fluid-caption font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>
                   আপনার প্রতিষ্ঠান খুঁজুন
                 </label>
                 <InstitutionSearch
@@ -75,9 +75,9 @@ export default function StudentOnboarding() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[14px] font-semibold truncate">{selectedInst.name}</div>
-                    <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>{selectedInst.city || selectedInst.division}</div>
+                    <div className="text-fluid-micro" style={{ color: "var(--text-muted)" }}>{selectedInst.city || selectedInst.division}</div>
                   </div>
-                  <button onClick={() => setSelectedInst(null)} className="text-[12px] text-rose-600">Change</button>
+                  <button onClick={() => setSelectedInst(null)} className="text-fluid-caption text-rose-600">Change</button>
                 </div>
               )}
 
@@ -86,7 +86,7 @@ export default function StudentOnboarding() {
                 style={{ borderColor: "var(--border-strong)" }}>
                 <div className="text-[20px]">🎯</div>
                 <div className="text-[13px] font-semibold mt-1">Personal Space ব্যবহার করুন</div>
-                <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>
+                <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>
                   প্রতিষ্ঠান ছাড়াই self-study, notes, practice
                 </div>
               </button>
@@ -103,14 +103,14 @@ export default function StudentOnboarding() {
           {step === 2 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Class / Grade</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Class / Grade</label>
                 <input type="text" value={className} onChange={(e) => setClassName(e.target.value)}
                   placeholder="Class 10 / HSC 1 / Ebtedayee 3"
                   className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Roll Number (যদি থাকে)</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Roll Number (যদি থাকে)</label>
                 <input type="text" value={roll} onChange={(e) => setRoll(e.target.value)}
                   placeholder="01"
                   className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
@@ -130,11 +130,11 @@ export default function StudentOnboarding() {
           {step === 3 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>আপনি কোন বিষয়ে আগ্রহী?</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>আপনি কোন বিষয়ে আগ্রহী?</label>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {INTERESTS.map((s) => (
                     <button key={s} onClick={() => toggle(s)}
-                      className={"rounded-full border px-3 py-1.5 text-[12px] font-medium transition " + (interests.includes(s) ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-700" : "")}
+                      className={"rounded-full border px-3 py-1.5 text-fluid-caption font-medium transition " + (interests.includes(s) ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-700" : "")}
                       style={!interests.includes(s) ? { borderColor: "var(--border)" } : {}}>
                       {s}
                     </button>

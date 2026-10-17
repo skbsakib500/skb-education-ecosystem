@@ -39,7 +39,7 @@ export default function IndependentOnboarding() {
 
           <div className="mt-6 space-y-5">
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>আপনি কী করতে চান?</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>আপনি কী করতে চান?</label>
               <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {SUB_ROLES.independent.map((s) => (
                   <button key={s.key} onClick={() => setSubRole(s.key)}
@@ -47,18 +47,18 @@ export default function IndependentOnboarding() {
                     style={subRole !== s.key ? { borderColor: "var(--border)" } : {}}>
                     <div className="text-[22px]">{s.emoji}</div>
                     <div className="mt-2 text-[13px] font-semibold">{s.label}</div>
-                    <div className="bangla text-[11px]" style={{ color: "var(--text-muted)" }}>{s.bn}</div>
+                    <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>{s.bn}</div>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>আগ্রহের বিষয়</label>
+              <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>আগ্রহের বিষয়</label>
               <div className="mt-2 flex flex-wrap gap-2">
                 {INTERESTS.map((s) => (
                   <button key={s} onClick={() => toggle(s)}
-                    className={"rounded-full border px-3 py-1.5 text-[12px] font-medium " + (interests.includes(s) ? "bg-rose-500/15 border-rose-500/40 text-rose-700" : "")}
+                    className={"rounded-full border px-3 py-1.5 text-fluid-caption font-medium " + (interests.includes(s) ? "bg-rose-500/15 border-rose-500/40 text-rose-700" : "")}
                     style={!interests.includes(s) ? { borderColor: "var(--border)" } : {}}>
                     {s}
                   </button>

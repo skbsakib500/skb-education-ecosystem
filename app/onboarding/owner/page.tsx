@@ -47,7 +47,7 @@ export default function OwnerOnboarding() {
       <div className="mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
           <Link href="/onboarding/?pick=1" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
-          <div className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 3</div>
+          <div className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 3</div>
         </div>
 
         <div className="rounded-3xl border p-6 md:p-8" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -62,22 +62,22 @@ export default function OwnerOnboarding() {
             {step === 1 && (
               <div className="space-y-5">
                 <div>
-                  <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Institution Type *</label>
+                  <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Institution Type *</label>
                   <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {TYPES.map((t) => (
                       <button key={t.v} onClick={() => update("type", t.v)}
                         className={"rounded-xl border p-3 text-left transition " + (form.type === t.v ? "bg-emerald-500/15 border-emerald-500/40" : "")}
                         style={form.type !== t.v ? { borderColor: "var(--border)" } : {}}>
                         <div className="text-[20px]">{t.e}</div>
-                        <div className="mt-1 text-[12px] font-semibold">{t.l}</div>
-                        <div className="bangla text-[10px]" style={{ color: "var(--text-muted)" }}>{t.bn}</div>
+                        <div className="mt-1 text-fluid-caption font-semibold">{t.l}</div>
+                        <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>{t.bn}</div>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Institution Name *</label>
+                  <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Institution Name *</label>
                   <input type="text" value={form.name} onChange={(e) => update("name", e.target.value)}
                     placeholder="Dhaka Ideal School"
                     className="mt-1 w-full rounded-xl border px-4 py-3 text-[15px] outline-none"
@@ -90,7 +90,7 @@ export default function OwnerOnboarding() {
               <div className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Division</label>
+                    <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Division</label>
                     <select value={form.division} onChange={(e) => update("division", e.target.value)}
                       className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                       style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -98,7 +98,7 @@ export default function OwnerOnboarding() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>District</label>
+                    <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>District</label>
                     <input type="text" value={form.district} onChange={(e) => update("district", e.target.value)}
                       placeholder="Dhaka"
                       className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
@@ -107,7 +107,7 @@ export default function OwnerOnboarding() {
                 </div>
 
                 <div>
-                  <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>City / Area</label>
+                  <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>City / Area</label>
                   <input type="text" value={form.city} onChange={(e) => update("city", e.target.value)}
                     placeholder="Mirpur, Dhanmondi..."
                     className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
@@ -115,7 +115,7 @@ export default function OwnerOnboarding() {
                 </div>
 
                 <div>
-                  <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Education Board</label>
+                  <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Education Board</label>
                   <input type="text" value={form.education_board} onChange={(e) => update("education_board", e.target.value)}
                     placeholder="Dhaka Board / BTEB / Cambridge"
                     className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
@@ -128,14 +128,14 @@ export default function OwnerOnboarding() {
               <div className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Contact Email</label>
+                    <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Contact Email</label>
                     <input type="email" value={form.contact_email} onChange={(e) => update("contact_email", e.target.value)}
                       placeholder="info@school.edu.bd"
                       className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                       style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
                   </div>
                   <div>
-                    <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Contact Phone</label>
+                    <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Contact Phone</label>
                     <input type="tel" value={form.contact_phone} onChange={(e) => update("contact_phone", e.target.value)}
                       placeholder="+880 1700-000000"
                       className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
@@ -144,14 +144,14 @@ export default function OwnerOnboarding() {
                 </div>
 
                 <div>
-                  <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
+                  <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Description</label>
                   <textarea value={form.description} onChange={(e) => update("description", e.target.value)}
                     rows={3} placeholder="প্রতিষ্ঠান সম্পর্কে সংক্ষেপে..."
                     className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none resize-none"
                     style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
                 </div>
 
-                <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-3 text-[12px] text-emerald-800">
+                <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-3 text-fluid-caption text-emerald-800">
                   ✅ Submit করার পর SKB Super Admin যাচাই করে approve করবেন। সাধারণত ২৪ ঘণ্টার মধ্যে।
                 </div>
               </div>

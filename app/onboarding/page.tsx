@@ -95,7 +95,7 @@ function OnboardingInner() {
             </div>
           </Link>
           <div
-            className="mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[12px] font-medium"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-fluid-caption font-medium"
             style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}
           >
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -133,12 +133,12 @@ function OnboardingInner() {
                 <div className="bangla text-[13px]" style={{ color: "var(--text-muted)" }}>
                   {r.bn}
                 </div>
-                <div className="mt-2 text-[12px] leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                <div className="mt-2 text-fluid-caption leading-relaxed" style={{ color: "var(--text-muted)" }}>
                   {r.desc}
                 </div>
               </div>
               <div
-                className="mt-4 text-[12px] font-medium opacity-0 group-hover:opacity-100 transition"
+                className="mt-4 text-fluid-caption font-medium opacity-0 group-hover:opacity-100 transition"
                 style={{ color: r.color }}
               >
                 Continue →
@@ -147,7 +147,7 @@ function OnboardingInner() {
           ))}
         </div>
 
-        <div className="mt-10 text-center text-[11px]" style={{ color: "var(--text-faint)" }}>
+        <div className="mt-10 text-center text-fluid-micro" style={{ color: "var(--text-faint)" }}>
           আপনার ভূমিকা পরে পরিবর্তন করা যাবে
         </div>
       </div>

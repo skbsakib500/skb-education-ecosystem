@@ -31,7 +31,7 @@ export default function ParentOnboarding() {
       <div className="mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
           <Link href="/onboarding/?pick=1" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
-          <div className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 2</div>
+          <div className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 2</div>
         </div>
 
         <div className="rounded-3xl border p-6 md:p-8" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -45,7 +45,7 @@ export default function ParentOnboarding() {
           {step === 1 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>
+                <label className="text-fluid-caption font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>
                   সন্তানের প্রতিষ্ঠান
                 </label>
                 <InstitutionSearch
@@ -72,21 +72,21 @@ export default function ParentOnboarding() {
           {step === 2 && (
             <div className="mt-6 space-y-4">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>সন্তানের নাম</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>সন্তানের নাম</label>
                 <input type="text" value={childName} onChange={(e) => setChildName(e.target.value)}
                   placeholder="Sakib Al Hasan"
                   className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>সন্তানের Roll</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>সন্তানের Roll</label>
                 <input type="text" value={childRoll} onChange={(e) => setChildRoll(e.target.value)}
                   placeholder="01"
                   className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }} />
               </div>
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>সম্পর্ক</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>সম্পর্ক</label>
                 <select value={relationship} onChange={(e) => setRelationship(e.target.value)}
                   className="mt-1 w-full rounded-xl border px-4 py-3 text-[14px] outline-none"
                   style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>

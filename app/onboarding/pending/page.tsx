@@ -63,7 +63,7 @@ function PendingView() {
 
           {!loading && requests.length > 0 && (
             <div className="mt-6 text-left">
-              <div className="text-[12px] font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
+              <div className="text-fluid-caption font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
                 আপনার Pending Requests
               </div>
               <div className="space-y-2">
@@ -72,11 +72,11 @@ function PendingView() {
                     style={{ borderColor: "var(--border)" }}>
                     <div className="min-w-0 flex-1">
                       <div className="text-[13px] font-semibold truncate">{r.institution_name}</div>
-                      <div className="text-[11px] capitalize" style={{ color: "var(--text-muted)" }}>
+                      <div className="text-fluid-micro capitalize" style={{ color: "var(--text-muted)" }}>
                         {r.request_type} · {r.role_or_status}
                       </div>
                     </div>
-                    <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-700">pending</span>
+                    <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-fluid-micro font-semibold text-amber-700">pending</span>
                   </div>
                 ))}
               </div>
@@ -87,10 +87,10 @@ function PendingView() {
             <Link href="/hub" className="rounded-full border px-5 py-2.5 text-[13px]"
               style={{ borderColor: "var(--border)" }}>🏠 Go to Hub</Link>
             <button onClick={async () => { await signOut(); router.push("/login/"); }}
-              className="text-[12px]" style={{ color: "var(--text-faint)" }}>Sign out</button>
+              className="text-fluid-caption" style={{ color: "var(--text-faint)" }}>Sign out</button>
           </div>
 
-          <div className="mt-6 text-[11px]" style={{ color: "var(--text-faint)" }}>
+          <div className="mt-6 text-fluid-micro" style={{ color: "var(--text-faint)" }}>
             💡 পেজটি auto-refresh হয় প্রতি ১০ সেকেন্ডে
           </div>
         </div>

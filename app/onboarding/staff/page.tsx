@@ -29,7 +29,7 @@ export default function StaffOnboarding() {
       <div className="mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
           <Link href="/onboarding/?pick=1" className="text-[13px]" style={{ color: "var(--text-muted)" }}>← Back</Link>
-          <div className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 2</div>
+          <div className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>Step {step} of 2</div>
         </div>
 
         <div className="rounded-3xl border p-6 md:p-8" style={{ borderColor: "var(--border)", background: "var(--surface-3)" }}>
@@ -40,22 +40,22 @@ export default function StaffOnboarding() {
           {step === 1 && (
             <div className="mt-6 space-y-5">
               <div>
-                <label className="text-[12px] font-medium" style={{ color: "var(--text-muted)" }}>আপনার পদ</label>
+                <label className="text-fluid-caption font-medium" style={{ color: "var(--text-muted)" }}>আপনার পদ</label>
                 <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {SUB_ROLES.staff.map((s) => (
                     <button key={s.key} onClick={() => setSubRole(s.key)}
                       className={"rounded-xl border p-3 text-left " + (subRole === s.key ? "bg-amber-500/15 border-amber-500/40" : "")}
                       style={subRole !== s.key ? { borderColor: "var(--border)" } : {}}>
                       <div className="text-[20px]">{s.emoji}</div>
-                      <div className="mt-1 text-[12px] font-semibold">{s.label}</div>
-                      <div className="bangla text-[10px]" style={{ color: "var(--text-muted)" }}>{s.bn}</div>
+                      <div className="mt-1 text-fluid-caption font-semibold">{s.label}</div>
+                      <div className="bangla text-fluid-micro" style={{ color: "var(--text-muted)" }}>{s.bn}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="text-[12px] font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>প্রতিষ্ঠান খুঁজুন</label>
+                <label className="text-fluid-caption font-medium mb-2 block" style={{ color: "var(--text-muted)" }}>প্রতিষ্ঠান খুঁজুন</label>
                 <InstitutionSearch onSelect={(i) => setSelectedInst(i)} onRequestNew={() => {}} />
               </div>
 
